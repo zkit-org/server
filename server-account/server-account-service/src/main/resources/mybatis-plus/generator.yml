@@ -1,0 +1,25 @@
+# 基础包名
+basePackage: org.zkit.support.server.account
+mapperPackage: src/main/resources/mapper
+# 数据源
+datasource:
+  url: jdbc:mysql://zkit.org:7706/clover_account
+# 激活的模块
+actives:
+  - access
+  - auth
+# 模块配置
+modules:
+  - name: access
+    tables:
+      - access_api
+      - access_authority
+      - access_authority_api
+      - access_role
+      - access_role_authority
+  - name: auth
+    tables:
+      - auth_account
+      - auth_account_role
+      - auth_app
+      - auth_open_user

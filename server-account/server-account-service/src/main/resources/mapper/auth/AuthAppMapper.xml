@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zkit.support.server.account.auth.mapper.AuthAppMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.zkit.support.server.account.auth.entity.dto.AuthApp">
+        <id column="id" property="id" />
+        <result column="name" property="name" />
+        <result column="clientId" property="clientId" />
+        <result column="clientSecret" property="clientSecret" />
+        <result column="authorizeUrl" property="authorizeUrl" />
+        <result column="tokenUrl" property="tokenUrl" />
+        <result column="callbackUrl" property="callbackUrl" />
+        <result column="infoUrl" property="infoUrl" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, name, clientId, clientSecret, authorizeUrl, tokenUrl, callbackUrl, infoUrl
+    </sql>
+
+</mapper>
