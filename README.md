@@ -3,5 +3,4 @@
 Server 项目，Monorepo repository
 
 ## 项目
-- `server-gateway` 网关
-- `server-main` 主项目
+- `server-account` 账号相关
