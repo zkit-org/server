@@ -1,6 +1,7 @@
 package org.zkit.support.server.account.auth.service;
 
-import org.zkit.support.server.account.api.entity.AccountResponse;
+import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
+import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -14,6 +15,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface AuthAccountService extends IService<AuthAccount> {
 
-    AuthAccount test(String username);
+    AuthAccount findByUsername(String username);
+    AuthAccount add(AuthAccount account);
+    TokenResponse createToken(CreateTokenRequest request);
 
 }
