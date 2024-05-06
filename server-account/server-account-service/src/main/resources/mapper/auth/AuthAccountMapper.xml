@@ -9,9 +9,9 @@
         <result column="password" property="password" />
         <result column="status" property="status" />
         <result column="deleted" property="deleted" />
-        <result column="createTime" property="createTime" />
-        <result column="otpSecret" property="otpSecret" />
-        <result column="otpStatus" property="otpStatus" />
+        <result column="create_time" property="createTime" />
+        <result column="otp_secret" property="otpSecret" />
+        <result column="otp_status" property="otpStatus" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
