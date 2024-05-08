@@ -1,5 +1,7 @@
 package org.zkit.support.server.account.access.mapper;
+import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.zkit.support.server.account.access.entity.dto.AccessAuthority;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2024-05-04
  */
 public interface AccessAuthorityMapper extends BaseMapper<AccessAuthority> {
+
+    List<AccessAuthority> findAuthoritiesByAccountId(@Param("accountId") Long accountId);
 
 }

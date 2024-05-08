@@ -3,8 +3,12 @@ package org.zkit.support.server.account.auth.entity.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
+
+import java.io.Serial;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.Date;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -21,13 +25,14 @@ import lombok.Setter;
 @TableName("auth_open_user")
 public class AuthOpenUser implements Serializable {
 
+    @Serial
     private static final long serialVersionUID = 1L;
 
     /**
      * 主键
      */
     @TableId(value = "id", type = IdType.AUTO)
-    private Integer id;
+    private Long id;
 
     /**
      * 用户唯一ID
@@ -47,7 +52,7 @@ public class AuthOpenUser implements Serializable {
     /**
      * 绑定账号 ID
      */
-    private Integer accountId;
+    private Long accountId;
 
     /**
      * 头像
@@ -67,10 +72,10 @@ public class AuthOpenUser implements Serializable {
     /**
      * 创建时间
      */
-    private LocalDateTime createTime;
+    private Date createTime;
 
     /**
      * 更新时间
      */
-    private LocalDateTime updateTime;
+    private Date updateTime;
 }

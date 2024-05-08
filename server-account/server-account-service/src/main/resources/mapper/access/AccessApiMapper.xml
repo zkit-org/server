@@ -14,4 +14,14 @@
         id, path, method
     </sql>
 
+    <select id="findApisByAuthorityIds" resultMap="BaseResultMap">
+        SELECT aa.*
+        FROM access_api as aa
+        JOIN access_authority_api as aaa ON aa.id = aaa.api_id
+        WHERE aaa.authority_id IN
+        <foreach item="authorityId" collection="authorityIds" open="(" separator="," close=")">
+            #{authorityId}
+        </foreach>
+    </select>
+
 </mapper>

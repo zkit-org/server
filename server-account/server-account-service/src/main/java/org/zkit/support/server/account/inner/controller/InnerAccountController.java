@@ -31,6 +31,12 @@ public class InnerAccountController {
         return authAccountMapStruct.toAccountResponse(account);
     }
 
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_ADD_OR_GET)
+    public AccountResponse addOrGet(@RequestBody() AccountAddRequest request) {
+        AuthAccount account = authAccountService.addOrGet(authAccountMapStruct.toAuthAccount(request));
+        return authAccountMapStruct.toAccountResponse(account);
+    }
+
     @PostMapping(AccountApiRoute.AUTH_CREATE_TOKEN)
     public TokenResponse createToken(@RequestBody() CreateTokenRequest request) {
         return authAccountService.createToken(request);

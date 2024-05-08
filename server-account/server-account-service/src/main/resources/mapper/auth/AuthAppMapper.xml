@@ -6,17 +6,17 @@
     <resultMap id="BaseResultMap" type="org.zkit.support.server.account.auth.entity.dto.AuthApp">
         <id column="id" property="id" />
         <result column="name" property="name" />
-        <result column="clientId" property="clientId" />
-        <result column="clientSecret" property="clientSecret" />
-        <result column="authorizeUrl" property="authorizeUrl" />
-        <result column="tokenUrl" property="tokenUrl" />
-        <result column="callbackUrl" property="callbackUrl" />
-        <result column="infoUrl" property="infoUrl" />
+        <result column="client_id" property="clientId" />
+        <result column="client_secret" property="clientSecret" />
+        <result column="authorize_url" property="authorizeUrl" />
+        <result column="token_url" property="tokenUrl" />
+        <result column="callback_url" property="callbackUrl" />
+        <result column="info_url" property="infoUrl" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, clientId, clientSecret, authorizeUrl, tokenUrl, callbackUrl, infoUrl
+        id, name, client_id, client_secret, authorize_url, token_url, callback_url, info_url
     </sql>
 
 </mapper>
