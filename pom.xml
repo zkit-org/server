@@ -28,5 +28,10 @@
             <artifactId>redisson-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.zkit.support</groupId>
+            <artifactId>throttler-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 </project>

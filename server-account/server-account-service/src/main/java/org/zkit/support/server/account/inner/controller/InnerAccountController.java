@@ -7,6 +7,7 @@ import org.zkit.support.server.account.api.constant.AccountApiRoute;
 import org.zkit.support.server.account.api.entity.request.AccountAddRequest;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
+import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.mapstruct.AuthAccountMapStruct;
@@ -40,6 +41,11 @@ public class InnerAccountController {
     @PostMapping(AccountApiRoute.AUTH_CREATE_TOKEN)
     public TokenResponse createToken(@RequestBody() CreateTokenRequest request) {
         return authAccountService.createToken(request);
+    }
+
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_OTP_SECRET)
+    public OTPResponse otpSecret(@RequestParam("id") Long id) {
+        return null;
     }
 
     @Autowired
