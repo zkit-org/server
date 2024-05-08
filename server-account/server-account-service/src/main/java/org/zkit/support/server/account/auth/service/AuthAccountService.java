@@ -17,6 +17,7 @@ public interface AuthAccountService extends IService<AuthAccount> {
 
     AuthAccount findByUsername(String username);
     AuthAccount add(AuthAccount account);
+    AuthAccount addOrGet(AuthAccount account);
     TokenResponse createToken(CreateTokenRequest request);
 
 }

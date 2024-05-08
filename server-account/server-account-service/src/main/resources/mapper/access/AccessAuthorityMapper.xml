@@ -5,7 +5,7 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.zkit.support.server.account.access.entity.dto.AccessAuthority">
         <id column="id" property="id" />
-        <result column="parentId" property="parentId" />
+        <result column="parent_id" property="parentId" />
         <result column="name" property="name" />
         <result column="key" property="key" />
         <result column="sort" property="sort" />
@@ -13,7 +13,17 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, parentId, name, key, sort
+        id, parent_id, name, key, sort
     </sql>
+
+    <select id="findAuthoritiesByAccountId" resultMap="BaseResultMap">
+        SELECT aa.id, aa.key
+        FROM auth_account AS account
+        JOIN auth_account_role AS ar ON ar.account_id = account.id
+        JOIN access_role AS role ON role.id = ar.role_id
+        JOIN access_role_authority AS ara ON ara.role_id = role.id
+        JOIN access_authority AS aa ON aa.id = ara.authority_id
+        WHERE account.id = #{accountId} AND aa.id IS NOT NULL
+    </select>
 
 </mapper>

@@ -5,13 +5,13 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.zkit.support.server.account.access.entity.dto.AccessAuthorityApi">
         <id column="id" property="id" />
-        <result column="authorityId" property="authorityId" />
-        <result column="apiId" property="apiId" />
+        <result column="authority_id" property="authorityId" />
+        <result column="api_id" property="apiId" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, authorityId, apiId
+        id, authority_id, api_id
     </sql>
 
 </mapper>

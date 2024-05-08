@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.zkit.support.cloud.starter.entity.Result;
 import org.zkit.support.server.account.api.constant.AccountApi;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
 import org.zkit.support.server.account.api.entity.request.AccountAddRequest;
@@ -18,12 +19,15 @@ import org.zkit.support.server.account.api.entity.response.TokenResponse;
 public interface AuthAccountApi {
 
     @GetMapping(value = AccountApiRoute.AUTH_FIND_BY_USERNAME)
-    AccountResponse findByUsername(@RequestParam("username") String username);
+    Result<AccountResponse> findByUsername(@RequestParam("username") String username);
 
     @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_ADD)
-    AccountResponse add(@RequestBody() AccountAddRequest request);
+    Result<AccountResponse> add(@RequestBody() AccountAddRequest request);
+
+    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_ADD_OR_GET)
+    Result<AccountResponse> addOrGet(@RequestBody() AccountAddRequest request);
 
     @PostMapping(value = AccountApiRoute.AUTH_CREATE_TOKEN)
-    TokenResponse createToken(@RequestBody() CreateTokenRequest request);
+    Result<TokenResponse> createToken(@RequestBody() CreateTokenRequest request);
 
 }

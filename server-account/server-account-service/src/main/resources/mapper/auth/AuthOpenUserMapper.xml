@@ -5,20 +5,20 @@
     <!-- 通用查询映射结果 -->
     <resultMap id="BaseResultMap" type="org.zkit.support.server.account.auth.entity.dto.AuthOpenUser">
         <id column="id" property="id" />
-        <result column="openId" property="openId" />
+        <result column="open_id" property="openId" />
         <result column="username" property="username" />
         <result column="platform" property="platform" />
-        <result column="accountId" property="accountId" />
+        <result column="account_id" property="accountId" />
         <result column="avatar" property="avatar" />
-        <result column="accessToken" property="accessToken" />
-        <result column="tokenType" property="tokenType" />
-        <result column="createTime" property="createTime" />
-        <result column="updateTime" property="updateTime" />
+        <result column="access_token" property="accessToken" />
+        <result column="token_type" property="tokenType" />
+        <result column="create_time" property="createTime" />
+        <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, openId, username, platform, accountId, avatar, accessToken, tokenType, createTime, updateTime
+        id, open_id, username, platform, account_id, avatar, access_token, token_type, create_time, update_time
     </sql>
 
 </mapper>
