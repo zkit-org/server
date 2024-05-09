@@ -3,7 +3,8 @@ package org.zkit.support.server.account.api.entity.code;
 public enum AccountCode {
 
     ADD_OTP_ERROR(10001, "account.add.otp.error"),
-    OTP_IS_BIND(10002, "account.otp.is.bind");
+    OTP_IS_BIND(10002, "account.otp.is.bind"),
+    OTP_ERROR(10003, "account.otp.error");
 
     public final int code;
     public final String key;

@@ -1,9 +1,9 @@
 package org.zkit.support.server.account.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.zkit.support.cloud.starter.configuration.AuthConfiguration;
 import org.zkit.support.cloud.starter.entity.CreateTokenData;
@@ -12,6 +12,8 @@ import org.zkit.support.cloud.starter.exception.ResultException;
 import org.zkit.support.cloud.starter.otp.OTPService;
 import org.zkit.support.cloud.starter.service.SessionService;
 import org.zkit.support.cloud.starter.service.TokenService;
+import org.zkit.support.cloud.starter.utils.AESUtils;
+import org.zkit.support.cloud.starter.utils.RSAUtils;
 import org.zkit.support.cloud.starter.utils.MD5Utils;
 import org.zkit.support.cloud.starter.utils.MessageUtils;
 import org.zkit.support.redisson.starter.DistributedLock;
@@ -20,8 +22,10 @@ import org.zkit.support.server.account.access.entity.dto.AccessAuthority;
 import org.zkit.support.server.account.access.entity.mapstruct.AccessApiMapStruct;
 import org.zkit.support.server.account.access.mapper.AccessApiMapper;
 import org.zkit.support.server.account.access.mapper.AccessAuthorityMapper;
+import org.zkit.support.server.account.access.service.AccessRoleService;
 import org.zkit.support.server.account.api.entity.code.AccountCode;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
+import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
@@ -45,6 +49,7 @@ import java.util.stream.Collectors;
  * @since 2024-05-04
  */
 @Service
+@Slf4j
 public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthAccount> implements AuthAccountService {
 
     private TokenService tokenService;
@@ -54,6 +59,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     private AccessApiMapper accessApiMapper;
     private AccessApiMapStruct accessApiMapStruct;
     private OTPService otpService;
+    private AccessRoleService accessRoleService;
 
     @Cacheable(value = "account", key = "#username")
     @Override
@@ -162,6 +168,40 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         return response;
     }
 
+    @Override
+    @CacheEvict(value = "account", key = "#result.username")
+    @DistributedLock(value = "auth:account", key = "#request.id")
+    public TokenResponse setPassword(SetPasswordRequest request) {
+        AuthAccount account = getById(request.getId());
+        boolean verified = otpService.check(account.getOtpSecret(), request.getCode());
+        if(!verified) {
+            throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
+        }
+        String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
+        password = AESUtils.encrypt(password, authConfiguration.getAesKey());
+
+        // 更新账号信息
+        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
+        update.eq("id",account.getId());
+        update
+                .set("password", password)
+                .set("otp_status", 1)
+                .set("status", 1);
+        getBaseMapper().update(update);
+
+        // 保存角色
+        String defaultRole = authConfiguration.getDefaultRole();
+        if(defaultRole != null) {
+            accessRoleService.addRoles(account.getId(), List.of(defaultRole));
+        }
+
+        // 生成token
+        CreateTokenRequest tokenRequest = new CreateTokenRequest(request.getId(), authConfiguration.getExpiresIn());
+        TokenResponse response = this.createToken(tokenRequest);
+        response.setUsername(account.getUsername());
+        return response;
+    }
+
     @Autowired
     public void setTokenService(TokenService tokenService) {
         this.tokenService = tokenService;
@@ -195,5 +235,10 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @Autowired
     public void setOtpService(OTPService otpService) {
         this.otpService = otpService;
+    }
+
+    @Autowired
+    public void setAccessRoleService(AccessRoleService accessRoleService) {
+        this.accessRoleService = accessRoleService;
     }
 }

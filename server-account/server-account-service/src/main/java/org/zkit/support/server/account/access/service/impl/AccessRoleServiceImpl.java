@@ -6,6 +6,8 @@ import org.zkit.support.server.account.access.service.AccessRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务实现类
@@ -16,5 +18,8 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class AccessRoleServiceImpl extends ServiceImpl<AccessRoleMapper, AccessRole> implements AccessRoleService {
+    @Override
+    public void addRoles(Long accountId, List<String> roles) {
 
+    }
 }

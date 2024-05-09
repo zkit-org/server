@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.*;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
 import org.zkit.support.server.account.api.entity.request.AccountAddRequest;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
+import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
@@ -46,6 +47,11 @@ public class InnerAccountController {
     @PostMapping(AccountApiRoute.AUTH_ACCOUNT_OTP_SECRET)
     public OTPResponse otpSecret(@RequestParam("id") Long id) {
         return authAccountService.otpSecret(id);
+    }
+
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_SET_PASSWORD)
+    public TokenResponse setPassword(@RequestBody() SetPasswordRequest request) {
+        return authAccountService.setPassword(request);
     }
 
     @Autowired
