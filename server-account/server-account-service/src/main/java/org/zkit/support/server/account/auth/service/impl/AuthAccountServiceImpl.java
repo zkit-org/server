@@ -178,6 +178,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
             throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
         }
         String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
+        log.info("password: {}", password);
         password = AESUtils.encrypt(password, authConfiguration.getAesKey());
 
         // 更新账号信息
