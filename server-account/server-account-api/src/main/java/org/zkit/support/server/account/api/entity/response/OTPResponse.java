@@ -7,5 +7,6 @@ public class OTPResponse {
 
     private String secret;
     private String qrcode;
+    private String username;
 
 }
