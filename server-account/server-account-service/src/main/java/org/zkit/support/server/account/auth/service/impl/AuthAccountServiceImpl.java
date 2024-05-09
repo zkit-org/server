@@ -1,12 +1,15 @@
 package org.zkit.support.server.account.auth.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.zkit.support.cloud.starter.configuration.AuthConfiguration;
 import org.zkit.support.cloud.starter.entity.CreateTokenData;
 import org.zkit.support.cloud.starter.entity.SessionUser;
 import org.zkit.support.cloud.starter.exception.ResultException;
+import org.zkit.support.cloud.starter.otp.OTPService;
 import org.zkit.support.cloud.starter.service.SessionService;
 import org.zkit.support.cloud.starter.service.TokenService;
 import org.zkit.support.cloud.starter.utils.MD5Utils;
@@ -19,6 +22,7 @@ import org.zkit.support.server.account.access.mapper.AccessApiMapper;
 import org.zkit.support.server.account.access.mapper.AccessAuthorityMapper;
 import org.zkit.support.server.account.api.entity.code.AccountCode;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
+import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.response.AuthAccountAccessData;
@@ -49,6 +53,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     private AccessAuthorityMapper accessAuthorityMapper;
     private AccessApiMapper accessApiMapper;
     private AccessApiMapStruct accessApiMapStruct;
+    private OTPService otpService;
 
     @Cacheable(value = "account", key = "#username")
     @Override
@@ -57,7 +62,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @CachePut(value = "account", key = "#account.username")
+    @Cacheable(value = "account", key = "#account.username")
     @DistributedLock(value = "auth:account")
     public AuthAccount add(AuthAccount account) {
         account.setCreateTime(new Date());
@@ -66,7 +71,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @CachePut(value = "account", key = "#account.username")
+    @Cacheable(value = "account", key = "#account.username")
     @DistributedLock(value = "auth:account")
     public AuthAccount addOrGet(AuthAccount account) {
         AuthAccount origin = baseMapper.findOneByUsername(account.getUsername());
@@ -133,6 +138,30 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         return data;
     }
 
+    @Override
+    @CacheEvict(value = "account", key = "#result.username")
+    @DistributedLock(value = "auth:account", key = "#id")
+    public OTPResponse otpSecret(Long id) {
+        AuthAccount account = getById(id);
+        if(account.getOtpStatus() == 1) {
+            throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
+        }
+        String key = otpService.generateSecretKey();
+        String qrCode = otpService.getQRCode(account.getUsername(), key);
+
+        // 更新otp信息
+        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
+        update.eq("id",account.getId());
+        update.set("otp_secret", key);
+        getBaseMapper().update(update);
+
+        OTPResponse response = new OTPResponse();
+        response.setSecret(key);
+        response.setQrcode(qrCode);
+        response.setUsername(account.getUsername());
+        return response;
+    }
+
     @Autowired
     public void setTokenService(TokenService tokenService) {
         this.tokenService = tokenService;
@@ -161,5 +190,10 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @Autowired
     public void setAccessApiMapStruct(AccessApiMapStruct accessApiMapStruct) {
         this.accessApiMapStruct = accessApiMapStruct;
+    }
+
+    @Autowired
+    public void setOtpService(OTPService otpService) {
+        this.otpService = otpService;
     }
 }

@@ -45,7 +45,7 @@ public class InnerAccountController {
 
     @PostMapping(AccountApiRoute.AUTH_ACCOUNT_OTP_SECRET)
     public OTPResponse otpSecret(@RequestParam("id") Long id) {
-        return null;
+        return authAccountService.otpSecret(id);
     }
 
     @Autowired
