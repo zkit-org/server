@@ -5,6 +5,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.transaction.annotation.Transactional;
 import org.zkit.support.cloud.starter.configuration.AuthConfiguration;
 import org.zkit.support.cloud.starter.entity.CreateTokenData;
 import org.zkit.support.cloud.starter.entity.SessionUser;
@@ -50,6 +51,7 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
+@Transactional
 public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthAccount> implements AuthAccountService {
 
     private TokenService tokenService;
@@ -173,6 +175,9 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @DistributedLock(value = "auth:account", key = "#request.id")
     public TokenResponse setPassword(SetPasswordRequest request) {
         AuthAccount account = getById(request.getId());
+        if(account.getOtpStatus() == 1) {
+            throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
+        }
         boolean verified = otpService.check(account.getOtpSecret(), request.getCode());
         if(!verified) {
             throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
