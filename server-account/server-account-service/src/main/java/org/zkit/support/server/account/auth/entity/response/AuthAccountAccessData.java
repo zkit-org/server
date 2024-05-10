@@ -1,7 +1,7 @@
 package org.zkit.support.server.account.auth.entity.response;
 
 import lombok.Data;
-import org.zkit.support.cloud.starter.entity.SessionUser;
+import org.zkit.support.starter.boot.entity.SessionUser;
 
 import java.util.List;
 
