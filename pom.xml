@@ -3,7 +3,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <parent>
         <groupId>org.zkit.support</groupId>
-        <artifactId>cloud-dependencies</artifactId>
+        <artifactId>boot-dependencies</artifactId>
         <version>0.0.1-SNAPSHOT</version>
         <relativePath/>
     </parent>
@@ -13,11 +13,21 @@
     <name>Easy Kit Server</name>
     <packaging>pom</packaging>
 
+    <properties>
+        <java.version>17</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
     <modules>
         <module>server-account</module>
     </modules>
 
     <dependencies>
+        <dependency>
+            <groupId>org.zkit.support</groupId>
+            <artifactId>boot-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
         <dependency>
             <groupId>org.zkit.support</groupId>
             <artifactId>cloud-starter</artifactId>
@@ -26,6 +36,11 @@
         <dependency>
             <groupId>org.zkit.support</groupId>
             <artifactId>redisson-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zkit.support</groupId>
+            <artifactId>openapi-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
