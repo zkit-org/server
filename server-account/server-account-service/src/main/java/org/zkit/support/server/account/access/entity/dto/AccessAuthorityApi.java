@@ -3,41 +3,33 @@ package org.zkit.support.server.account.access.entity.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.io.Serial;
 import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serial;
+import lombok.Data;
 
 /**
  * <p>
- * 
+ * 权限包含的接口
  * </p>
  *
  * @author generator
- * @since 2024-05-04
+ * @since 2024-05-11
  */
-@Getter
-@Setter
+@Data
 @TableName("access_authority_api")
+@Schema(name = "AccessAuthorityApi", description = "权限包含的接口")
 public class AccessAuthorityApi implements Serializable {
-
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 权限ID
-     */
+    @Schema(description = "权限ID")
     private Long authorityId;
 
-    /**
-     * 接口ID
-     */
+    @Schema(description = "接口ID")
     private Long apiId;
 }

@@ -1,17 +1,17 @@
 package org.zkit.support.server.account.auth.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
- *  前端控制器
+ * 三方用户绑定 前端控制器
  * </p>
  *
  * @author generator
- * @since 2024-05-04
+ * @since 2024-05-11
  */
-@Controller
+@RestController
 @RequestMapping("/auth/authOpenUser")
 public class AuthOpenUserController {
 

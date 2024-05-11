@@ -3,46 +3,36 @@ package org.zkit.support.server.account.access.entity.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.io.Serial;
 import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serial;
+import lombok.Data;
 
 /**
  * <p>
- * 
+ * 角色
  * </p>
  *
  * @author generator
- * @since 2024-05-04
+ * @since 2024-05-11
  */
-@Getter
-@Setter
+@Data
 @TableName("access_role")
+@Schema(name = "AccessRole", description = "角色")
 public class AccessRole implements Serializable {
-
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 角色名称
-     */
+    @Schema(description = "角色名称")
     private String name;
 
-    /**
-     * 备注
-     */
+    @Schema(description = "备注")
     private String description;
 
-    /**
-     * 是否启用
-     */
+    @Schema(description = "是否启用")
     private Boolean enable;
 }

@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 权限包含的接口 服务实现类
  * </p>
  *
  * @author generator
- * @since 2024-05-04
+ * @since 2024-05-11
  */
 @Service
 public class AccessAuthorityApiServiceImpl extends ServiceImpl<AccessAuthorityApiMapper, AccessAuthorityApi> implements AccessAuthorityApiService {

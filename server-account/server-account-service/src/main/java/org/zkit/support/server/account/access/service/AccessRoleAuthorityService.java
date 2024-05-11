@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
  * <p>
- *  服务类
+ * 角色包含的权限 服务类
  * </p>
  *
  * @author generator
- * @since 2024-05-04
+ * @since 2024-05-11
  */
 public interface AccessRoleAuthorityService extends IService<AccessRoleAuthority> {
 

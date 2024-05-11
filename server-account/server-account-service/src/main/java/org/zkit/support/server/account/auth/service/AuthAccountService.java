@@ -4,8 +4,8 @@ import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
 import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
-import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 
 /**
  * <p>
