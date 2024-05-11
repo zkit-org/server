@@ -3,41 +3,33 @@ package org.zkit.support.server.account.auth.entity.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.io.Serial;
 import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serial;
+import lombok.Data;
 
 /**
  * <p>
- * 
+ * 账号的角色
  * </p>
  *
  * @author generator
- * @since 2024-05-04
+ * @since 2024-05-11
  */
-@Getter
-@Setter
+@Data
 @TableName("auth_account_role")
+@Schema(name = "AuthAccountRole", description = "账号的角色")
 public class AuthAccountRole implements Serializable {
-
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 账号ID
-     */
+    @Schema(description = "账号ID")
     private Long accountId;
 
-    /**
-     * 角色ID
-     */
+    @Schema(description = "角色ID")
     private Long roleId;
 }

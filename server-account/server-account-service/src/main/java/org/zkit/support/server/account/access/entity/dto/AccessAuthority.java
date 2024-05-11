@@ -3,51 +3,39 @@ package org.zkit.support.server.account.access.entity.dto;
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
-
-import java.io.Serial;
 import java.io.Serializable;
-import lombok.Getter;
-import lombok.Setter;
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.io.Serial;
+import lombok.Data;
 
 /**
  * <p>
- * 
+ * 权限
  * </p>
  *
  * @author generator
- * @since 2024-05-04
+ * @since 2024-05-11
  */
-@Getter
-@Setter
+@Data
 @TableName("access_authority")
+@Schema(name = "AccessAuthority", description = "权限")
 public class AccessAuthority implements Serializable {
-
     @Serial
     private static final long serialVersionUID = 1L;
 
-    /**
-     * 主键
-     */
+    @Schema(description = "主键")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
-    /**
-     * 上级ID
-     */
+    @Schema(description = "上级ID")
     private Long parentId;
 
-    /**
-     * 名称
-     */
+    @Schema(description = "名称")
     private String name;
 
-    /**
-     * 权限码
-     */
+    @Schema(description = "权限码")
     private String key;
 
-    /**
-     * 排序
-     */
+    @Schema(description = "排序")
     private Integer sort;
 }

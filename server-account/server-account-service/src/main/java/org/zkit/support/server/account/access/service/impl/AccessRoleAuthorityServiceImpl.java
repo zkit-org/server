@@ -8,11 +8,11 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- *  服务实现类
+ * 角色包含的权限 服务实现类
  * </p>
  *
  * @author generator
- * @since 2024-05-04
+ * @since 2024-05-11
  */
 @Service
 public class AccessRoleAuthorityServiceImpl extends ServiceImpl<AccessRoleAuthorityMapper, AccessRoleAuthority> implements AccessRoleAuthorityService {
