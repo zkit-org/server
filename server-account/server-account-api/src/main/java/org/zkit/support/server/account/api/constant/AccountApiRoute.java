@@ -8,5 +8,7 @@ public class AccountApiRoute {
     public static final String AUTH_CREATE_TOKEN = "/internal/auth/create/token";
     public static final String AUTH_ACCOUNT_OTP_SECRET = "/internal/auth/account/otp/secret";
     public static final String AUTH_ACCOUNT_SET_PASSWORD = "/internal/auth/account/set/password";
+    public static final String AUTH_ACCOUNT_LOGIN = "/internal/auth/account/login";
+    public static final String AUTH_ACCOUNT_LOGOUT = "/internal/auth/account/logout";
 
 }

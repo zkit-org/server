@@ -1,5 +1,6 @@
 package org.zkit.support.server.account.auth.service;
 
+import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
 import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
@@ -23,5 +24,6 @@ public interface AuthAccountService extends IService<AuthAccount> {
     TokenResponse createToken(CreateTokenRequest request);
     OTPResponse otpSecret(Long id);
     TokenResponse setPassword(SetPasswordRequest request);
+    TokenResponse login(AccountLoginRequest request);
 
 }

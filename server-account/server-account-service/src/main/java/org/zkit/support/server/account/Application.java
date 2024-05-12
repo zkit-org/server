@@ -8,7 +8,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.AdviceMode;
 import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
-@SpringBootApplication(scanBasePackages = {"org.zkit.support"})
+@SpringBootApplication
 @MapperScan("org.zkit.support.server.account.*.mapper")
 @EnableDiscoveryClient
 @EnableCaching(mode = AdviceMode.ASPECTJ)
