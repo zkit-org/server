@@ -3,11 +3,13 @@ package org.zkit.support.server.account.inner.controller;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
 import org.zkit.support.server.account.api.entity.request.AccountAddRequest;
+import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
 import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
@@ -16,6 +18,7 @@ import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.mapstruct.AuthAccountMapStruct;
 import org.zkit.support.server.account.auth.service.AuthAccountService;
+import org.zkit.support.starter.boot.service.SessionService;
 
 @RestController
 @Slf4j
@@ -24,6 +27,8 @@ public class InnerAccountController {
 
     private AuthAccountService authAccountService;
     private AuthAccountMapStruct authAccountMapStruct;
+    @Resource
+    private SessionService sessionService;
 
     @Operation(summary = "根据用户名查找账户")
     @GetMapping(AccountApiRoute.AUTH_FIND_BY_USERNAME)
@@ -62,6 +67,18 @@ public class InnerAccountController {
     @Operation(summary = "设置密码")
     public TokenResponse setPassword(@RequestBody() SetPasswordRequest request) {
         return authAccountService.setPassword(request);
+    }
+
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_LOGIN)
+    @Operation(summary = "登录")
+    public TokenResponse login(@RequestBody() AccountLoginRequest request) {
+        return authAccountService.login(request);
+    }
+
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_LOGOUT)
+    @Operation(summary = "退出")
+    public void logout(@Parameter(description = "令牌") @RequestParam("token") String token) {
+        sessionService.logout(token);
     }
 
     @Autowired

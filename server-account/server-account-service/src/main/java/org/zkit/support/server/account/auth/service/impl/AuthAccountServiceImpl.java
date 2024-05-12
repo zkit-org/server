@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
+import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.starter.boot.configuration.AuthConfiguration;
 import org.zkit.support.starter.boot.entity.CreateTokenData;
@@ -63,14 +64,13 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     private OTPService otpService;
     private AccessRoleService accessRoleService;
 
-    @Cacheable(value = "account", key = "#username")
+    @Cacheable(value = "auth:account", key = "#username")
     @Override
     public AuthAccount findByUsername(String username) {
         return baseMapper.findOneByUsername(username);
     }
 
     @Override
-    @Cacheable(value = "account", key = "#account.username")
     @DistributedLock(value = "auth:account")
     public AuthAccount add(AuthAccount account) {
         account.setCreateTime(new Date());
@@ -79,7 +79,6 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @Cacheable(value = "account", key = "#account.username")
     @DistributedLock(value = "auth:account")
     public AuthAccount addOrGet(AuthAccount account) {
         AuthAccount origin = baseMapper.findOneByUsername(account.getUsername());
@@ -147,7 +146,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @CacheEvict(value = "account", key = "#result.username")
+    @CacheEvict(value = "auth:account", key = "#result.username")
     @DistributedLock(value = "auth:account", key = "#id")
     public OTPResponse otpSecret(Long id) {
         AuthAccount account = getById(id);
@@ -171,7 +170,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @CacheEvict(value = "account", key = "#result.username")
+    @CacheEvict(value = "auth:account", key = "#result.username")
     @DistributedLock(value = "auth:account", key = "#request.id")
     public TokenResponse setPassword(SetPasswordRequest request) {
         AuthAccount account = getById(request.getId());
@@ -206,6 +205,34 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         TokenResponse response = this.createToken(tokenRequest);
         response.setUsername(account.getUsername());
         return response;
+    }
+
+    @Override
+    public TokenResponse login(AccountLoginRequest request) {
+        String code = request.getCode();
+        String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
+        AuthAccount account = baseMapper.findOneByUsername(request.getUsername());
+        if(account == null) {
+            throw new ResultException(AccountCode.LOGIN_ERROR.code, MessageUtils.get(AccountCode.LOGIN_ERROR.key));
+        }
+        if(!password.equals(AESUtils.decrypt(account.getPassword(), authConfiguration.getAesKey()))) {
+            throw new ResultException(AccountCode.LOGIN_ERROR.code, MessageUtils.get(AccountCode.LOGIN_ERROR.key));
+        }
+        if(code != null) {
+            if(authConfiguration.getResetOtpCode().equals(code)) { // 重置OTP
+                if(account.getOtpStatus() == 0) {
+                    return this.createToken(new CreateTokenRequest(account.getId(), 5 * 60 * 1000L));
+                }else{
+                    throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
+                }
+            }else{
+                boolean verified = otpService.check(account.getOtpSecret(), code);
+                if(!verified) {
+                    throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
+                }
+            }
+        }
+        return this.createToken(new CreateTokenRequest(account.getId(), authConfiguration.getExpiresIn()));
     }
 
     @Autowired

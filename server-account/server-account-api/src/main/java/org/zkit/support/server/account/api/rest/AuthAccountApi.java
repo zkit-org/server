@@ -10,6 +10,7 @@ import org.zkit.support.server.account.api.constant.AccountApi;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
 import org.zkit.support.server.account.api.entity.request.AccountAddRequest;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
+import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
 import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
@@ -37,5 +38,11 @@ public interface AuthAccountApi {
 
     @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_SET_PASSWORD)
     Result<TokenResponse> setPassword(@RequestBody() SetPasswordRequest request);
+
+    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_LOGIN)
+    Result<TokenResponse> login(@RequestBody() AccountLoginRequest request);
+
+    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_LOGOUT)
+    Result<?> logout(@RequestParam("token") String token);
 
 }
