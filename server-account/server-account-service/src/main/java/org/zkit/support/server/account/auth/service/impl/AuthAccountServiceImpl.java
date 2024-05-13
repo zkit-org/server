@@ -127,12 +127,12 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         List<Long> authorityIds = Collections.emptyList();
         if (authConfiguration.getSu().equals(account.getUsername())) { // 超管
             List<AccessAuthority> all = accessAuthorityMapper.selectList(null);
-            authorityNames = all.stream().map(AccessAuthority::getKey).toList();
+            authorityNames = all.stream().map(AccessAuthority::getValue).toList();
             authorityIds = all.stream().map(AccessAuthority::getId).toList();
         } else { // 普通用户
             // 这里需要根据实际情况调整查询逻辑
             List<AccessAuthority> authorities = accessAuthorityMapper.findAuthoritiesByAccountId(account.getId());
-            authorityNames = authorities.stream().map(AccessAuthority::getKey).collect(Collectors.toList());
+            authorityNames = authorities.stream().map(AccessAuthority::getValue).collect(Collectors.toList());
             authorityIds = authorities.stream().map(AccessAuthority::getId).collect(Collectors.toList());
         }
         // 假设这里已经处理了树形结构和扁平化逻辑

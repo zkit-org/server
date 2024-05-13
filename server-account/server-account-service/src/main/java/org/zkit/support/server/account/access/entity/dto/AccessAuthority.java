@@ -14,7 +14,7 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-05-11
+ * @since 2024-05-13
  */
 @Data
 @TableName("access_authority")
@@ -34,7 +34,7 @@ public class AccessAuthority implements Serializable {
     private String name;
 
     @Schema(description = "权限码")
-    private String key;
+    private String value;
 
     @Schema(description = "排序")
     private Integer sort;

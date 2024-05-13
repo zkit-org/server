@@ -14,7 +14,7 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-05-11
+ * @since 2024-05-13
  */
 @Data
 @TableName("access_authority_api")
