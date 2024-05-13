@@ -1,4 +1,4 @@
-package org.zkit.support.server.account.inner.controller;
+package org.zkit.support.server.account.internal;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -23,7 +23,7 @@ import org.zkit.support.starter.boot.service.SessionService;
 @RestController
 @Slf4j
 @Tag(name = "[inner]account", description = "[内部接口]用户账户")
-public class InnerAccountController {
+public class InternalAccountController {
 
     private AuthAccountService authAccountService;
     private AuthAccountMapStruct authAccountMapStruct;

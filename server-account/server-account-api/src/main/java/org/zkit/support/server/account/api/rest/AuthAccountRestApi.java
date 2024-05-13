@@ -19,7 +19,7 @@ import org.zkit.support.starter.boot.entity.Result;
 
 @FeignClient(value = AccountApi.APP_NAME)
 @Service
-public interface AuthAccountApi {
+public interface AuthAccountRestApi {
 
     @GetMapping(value = AccountApiRoute.AUTH_FIND_BY_USERNAME)
     Result<AccountResponse> findByUsername(@RequestParam("username") String username);
