@@ -1,8 +1,8 @@
 package org.zkit.support.server.account.auth.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
@@ -55,13 +55,21 @@ import java.util.stream.Collectors;
 @Transactional
 public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthAccount> implements AuthAccountService {
 
+    @Resource
     private TokenService tokenService;
+    @Resource
     private SessionService sessionService;
+    @Resource
     private AuthConfiguration authConfiguration;
+    @Resource
     private AccessAuthorityMapper accessAuthorityMapper;
+    @Resource
     private AccessApiMapper accessApiMapper;
+    @Resource
     private AccessApiMapStruct accessApiMapStruct;
+    @Resource
     private OTPService otpService;
+    @Resource
     private AccessRoleService accessRoleService;
 
     @Cacheable(value = "auth:account", key = "#username")
@@ -233,45 +241,5 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
             }
         }
         return this.createToken(new CreateTokenRequest(account.getId(), authConfiguration.getExpiresIn()));
-    }
-
-    @Autowired
-    public void setTokenService(TokenService tokenService) {
-        this.tokenService = tokenService;
-    }
-
-    @Autowired
-    public void setSessionService(SessionService sessionService) {
-        this.sessionService = sessionService;
-    }
-
-    @Autowired
-    public void setAuthConfiguration(AuthConfiguration authConfiguration) {
-        this.authConfiguration = authConfiguration;
-    }
-
-    @Autowired
-    public void setAccessAuthorityMapper(AccessAuthorityMapper accessAuthorityMapper) {
-        this.accessAuthorityMapper = accessAuthorityMapper;
-    }
-
-    @Autowired
-    public void setAccessApiMapper(AccessApiMapper accessApiMapper) {
-        this.accessApiMapper = accessApiMapper;
-    }
-
-    @Autowired
-    public void setAccessApiMapStruct(AccessApiMapStruct accessApiMapStruct) {
-        this.accessApiMapStruct = accessApiMapStruct;
-    }
-
-    @Autowired
-    public void setOtpService(OTPService otpService) {
-        this.otpService = otpService;
-    }
-
-    @Autowired
-    public void setAccessRoleService(AccessRoleService accessRoleService) {
-        this.accessRoleService = accessRoleService;
     }
 }
