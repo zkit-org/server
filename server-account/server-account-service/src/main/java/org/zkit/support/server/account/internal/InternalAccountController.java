@@ -5,7 +5,6 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
 import org.zkit.support.server.account.api.entity.request.AccountAddRequest;
@@ -25,7 +24,9 @@ import org.zkit.support.starter.boot.service.SessionService;
 @Tag(name = "[inner]account", description = "[内部接口]用户账户")
 public class InternalAccountController {
 
+    @Resource
     private AuthAccountService authAccountService;
+    @Resource
     private AuthAccountMapStruct authAccountMapStruct;
     @Resource
     private SessionService sessionService;
@@ -79,15 +80,5 @@ public class InternalAccountController {
     @Operation(summary = "退出")
     public void logout(@Parameter(description = "令牌") @RequestParam("token") String token) {
         sessionService.logout(token);
-    }
-
-    @Autowired
-    public void setAuthAccountService(AuthAccountService authAccountService) {
-        this.authAccountService = authAccountService;
-    }
-
-    @Autowired
-    public void setAuthAccountMapStruct(AuthAccountMapStruct authAccountMapStruct) {
-        this.authAccountMapStruct = authAccountMapStruct;
     }
 }
