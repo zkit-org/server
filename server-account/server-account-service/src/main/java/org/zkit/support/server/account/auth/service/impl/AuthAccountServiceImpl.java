@@ -52,7 +52,6 @@ import java.util.stream.Collectors;
  */
 @Service
 @Slf4j
-@Transactional
 public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthAccount> implements AuthAccountService {
 
     @Resource
@@ -84,6 +83,45 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         account.setCreateTime(new Date());
         this.save(account);
         return account;
+    }
+
+    @Override
+    @CacheEvict(value = "auth:account", key = "#result.username")
+    @DistributedLock(value = "auth:account", key = "#request.id")
+    @Transactional
+    public TokenResponse setPassword(SetPasswordRequest request) {
+        AuthAccount account = getById(request.getId());
+        if(account.getOtpStatus() == 1) {
+            throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
+        }
+        boolean verified = otpService.check(account.getOtpSecret(), request.getCode());
+        if(!verified) {
+            throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
+        }
+        String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
+        log.info("password: {}", password);
+        password = AESUtils.encrypt(password, authConfiguration.getAesKey());
+
+        // 更新账号信息
+        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
+        update.eq("id",account.getId());
+        update
+                .set("password", password)
+                .set("otp_status", 1)
+                .set("status", 1);
+        getBaseMapper().update(update);
+
+        // 保存角色
+        String defaultRole = authConfiguration.getDefaultRole();
+        if(defaultRole != null) {
+            accessRoleService.addRoles(account.getId(), List.of(defaultRole));
+        }
+
+        // 生成token
+        CreateTokenRequest tokenRequest = new CreateTokenRequest(request.getId(), authConfiguration.getExpiresIn());
+        TokenResponse response = this.createToken(tokenRequest);
+        response.setUsername(account.getUsername());
+        return response;
     }
 
     @Override
@@ -173,44 +211,6 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         OTPResponse response = new OTPResponse();
         response.setSecret(key);
         response.setQrcode(qrCode);
-        response.setUsername(account.getUsername());
-        return response;
-    }
-
-    @Override
-    @CacheEvict(value = "auth:account", key = "#result.username")
-    @DistributedLock(value = "auth:account", key = "#request.id")
-    public TokenResponse setPassword(SetPasswordRequest request) {
-        AuthAccount account = getById(request.getId());
-        if(account.getOtpStatus() == 1) {
-            throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
-        }
-        boolean verified = otpService.check(account.getOtpSecret(), request.getCode());
-        if(!verified) {
-            throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
-        }
-        String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
-        log.info("password: {}", password);
-        password = AESUtils.encrypt(password, authConfiguration.getAesKey());
-
-        // 更新账号信息
-        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
-        update.eq("id",account.getId());
-        update
-                .set("password", password)
-                .set("otp_status", 1)
-                .set("status", 1);
-        getBaseMapper().update(update);
-
-        // 保存角色
-        String defaultRole = authConfiguration.getDefaultRole();
-        if(defaultRole != null) {
-            accessRoleService.addRoles(account.getId(), List.of(defaultRole));
-        }
-
-        // 生成token
-        CreateTokenRequest tokenRequest = new CreateTokenRequest(request.getId(), authConfiguration.getExpiresIn());
-        TokenResponse response = this.createToken(tokenRequest);
         response.setUsername(account.getUsername());
         return response;
     }
