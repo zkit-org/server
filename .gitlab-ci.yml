@@ -10,10 +10,9 @@ package:
     tags:
         - dev
     script:
-        - cd server-$SERVICE/server-$SERVICE-api
         - mvn clean install
-        - cd ../server-$SERVICE-service
-        - mvn clean package
+        - cd server-$SERVICE/server-$SERVICE-service
+        - mvn package
         - docker build -t clover-server-$SERVICE:$CI_PIPELINE_IID -f ./Dockerfile .
 
 # deploy:
