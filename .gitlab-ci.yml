@@ -1,6 +1,6 @@
 stages:
     - package
-    # - deploy
+    - deploy
 
 package:
     stage: package
@@ -13,18 +13,17 @@ package:
         - mvn clean install
         - cd server-$SERVICE/server-$SERVICE-service
         - mvn package
-        - docker build -t clover-server-$SERVICE:$CI_PIPELINE_IID -f ./Dockerfile .
+        - docker build -t zkit-server-$SERVICE:$CI_PIPELINE_IID -f ./Dockerfile .
+        - docker tag zkit-server-$SERVICE:$CI_PIPELINE_IID zkit-server-$SERVICE:latest
 
-# deploy:
-#     stage: deploy
-#     only:
-#         variables:
-#             - $SERVICE == "main"
-#             - $SERVICE == "admin"
-#             - $SERVICE == "i18n"
-#     tags:
-#         - dev
-#     script:
-#         - cd /opt/clover/test/web-$SERVICE
-#         - docker-compose down
-#         - docker-compose up -d
+deploy:
+    stage: deploy
+    only:
+        variables:
+            - $SERVICE == "account"
+    tags:
+        - dev
+    script:
+        - cd /opt/zkit/test/server-$SERVICE
+        - docker-compose down
+        - docker-compose up -d
