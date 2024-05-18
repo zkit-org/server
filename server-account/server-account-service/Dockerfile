@@ -4,7 +4,7 @@ RUN wget https://mirrors.aliyun.com/apache/skywalking/java-agent/9.2.0/apache-sk
 RUN tar -xvf apache-skywalking-java-agent-9.2.0.tgz
 RUN mv skywalking-agent agent
 RUN rm apache-skywalking-java-agent-9.2.0.tgz
-RUN mv agent/plugins/* /app/agent/optional-plugins/
+RUN mv agent/plugins/* agent/optional-plugins/
 RUN cp  \
     agent/optional-plugins/apm-mybatis-3.x-plugin-9.2.0.jar \
     agent/optional-plugins/apm-nacos-client-2.x-plugin-9.2.0.jar \

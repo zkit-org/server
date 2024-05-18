@@ -2,6 +2,9 @@ spring:
   application:
     name: easy-server-account
   cloud:
+    loadbalancer:
+      nacos:
+        enabled: true
     nacos:
       config:
         server-addr: https://nacos.zkit.org
