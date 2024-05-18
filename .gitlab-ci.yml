@@ -14,7 +14,7 @@ package:
         - cd server-$SERVICE/server-$SERVICE-service
         - mvn package
         - docker build -t easy-server-$SERVICE:$CI_PIPELINE_IID -f ./Dockerfile .
-        - docker tag easy-server-$SERVICE:$CI_PIPELINE_IID zkit-server-$SERVICE:latest
+        - docker tag easy-server-$SERVICE:$CI_PIPELINE_IID easy-server-$SERVICE:latest
 
 deploy:
     stage: deploy
