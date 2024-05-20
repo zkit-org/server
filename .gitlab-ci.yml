@@ -4,7 +4,7 @@ stages:
 
 cache:
     paths:
-        - target/
+        - server-account/server-account-service/target/
 
 build_account:
     stage: build
