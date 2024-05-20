@@ -10,7 +10,7 @@ build_account:
         - dev
     artifacts:
         paths:
-            - server-account/server-account-service/target/
+            - server-account/server-account-service/target/*.jar
     script:
         - mvn clean install
         - cd server-account/server-account-service
@@ -24,7 +24,7 @@ package_account:
         - dev
     artifacts:
         paths:
-            - server-account/server-account-service/target/
+            - server-account/server-account-service/target/*.jar
     script:
         - docker login -u gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
         - docker build -t easy-server-account:$CI_PIPELINE_IID -f ./Dockerfile .
