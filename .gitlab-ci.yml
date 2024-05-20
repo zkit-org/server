@@ -26,7 +26,7 @@ package_account:
         paths:
             - server-account/server-account-service/target/
     script:
-        - docker login -u gitlab-ci-token -p $CI_JOB_TOKEN $CI_REGISTRY
+        - docker login -u gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
         - docker build -t easy-server-account:$CI_PIPELINE_IID -f ./Dockerfile .
         - docker tag easy-server-account:$CI_PIPELINE_IID easy-server-account:latest
         - docker push easy-server-account:latest
