@@ -26,6 +26,6 @@ package_account:
     script:
         - cd server-account/server-account-service
         - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
-        - docker build -t $CI_REGISTRY/easy-server-account:$CI_PIPELINE_IID -f ./Dockerfile .
-        - docker tag $CI_REGISTRY/easy-server-account:$CI_PIPELINE_IID $CI_REGISTRY/easy-server-account:latest
-        - docker push $CI_REGISTRY/easy-server-account:latest
+        - docker build -t $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_IID -f ./Dockerfile .
+        - docker tag $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_IID $CI_REGISTRY/easy-kit-dev/server/account:latest
+        - docker push $CI_REGISTRY/easy-kit-dev/server/account:latest
