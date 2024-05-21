@@ -27,7 +27,7 @@ package_account:
             - server-account/server-account-service/target/*.jar
     script:
         - cd server-account/server-account-service
-        - docker login -u gitlab-ci-token --password $CI_JOB_TOKEN $CI_REGISTRY
+        - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_IID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_IID $CI_REGISTRY/easy-kit-dev/server/account:latest
         - docker push $CI_REGISTRY/easy-kit-dev/server/account:latest
