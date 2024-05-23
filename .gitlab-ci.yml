@@ -2,15 +2,14 @@ stages:
     - deploy
     - package
 
-deploy_account:
+deploy:
     stage: deploy
     only:
         - main
     tags:
         - dev
     script:
-        - cd server-account/server-account-api
-        - mvn clean deploy -s ../../settings.xml
+        - mvn clean deploy -s settings.xml
 
 package_account:
     stage: package
