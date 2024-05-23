@@ -9,7 +9,8 @@ deploy_maven:
     tags:
         - dev
     script:
-        - mvn clean deploy -s settings.xml
+        - cd server-account/server-account-api
+        - mvn clean deploy -s ../../settings.xml
 
 package_account:
     stage: package
