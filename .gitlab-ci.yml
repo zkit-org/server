@@ -2,7 +2,7 @@ stages:
     - deploy
     - package
 
-deploy_maven:
+deploy_account:
     stage: deploy
     only:
         - main
