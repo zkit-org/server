@@ -3,7 +3,7 @@ basePackage: org.zkit.support.server.account
 mapperPackage: src/main/resources/mapper
 # 数据源
 datasource:
-  url: jdbc:mysql://zkit.org:7706/clover_account
+  url: jdbc:mysql://mysql:7706/clover_account
 # 激活的模块
 actives:
   - access
