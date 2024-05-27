@@ -1,9 +1,10 @@
 stages:
-    - deploy
+    - maven
     - package
+    - deploy
 
-deploy:
-    stage: deploy
+maven-deploy:
+    stage: maven
     only:
         - main
     tags:
@@ -11,7 +12,7 @@ deploy:
     script:
         - mvn clean deploy -s settings.xml
 
-package_account:
+package-account:
     stage: package
     only:
         - main
@@ -30,3 +31,14 @@ package_account:
         - docker push $CI_REGISTRY/easy-kit-dev/server/account:latest
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/account:latest
+
+deploy-account:
+    stage: deploy
+    only:
+        - main
+    tags:
+        - dev
+    script:
+        - cd /opt/server/clover/server-account
+        - docker-compose down
+        - docker-compose up -d
