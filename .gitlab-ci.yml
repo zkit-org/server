@@ -32,6 +32,19 @@ package-account:
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/account:latest
 
+package-openai:
+    stage: package
+    only:
+        - main
+    tags:
+        - openai
+    artifacts:
+        paths:
+            - server-account/server-openai-service/target/*.jar
+    script:
+        - cd server-account/server-openai-service
+        - mvn clean package
+
 deploy-account:
     stage: deploy
     only:
