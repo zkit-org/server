@@ -20,6 +20,7 @@
 
     <modules>
         <module>server-account</module>
+        <module>server-openai</module>
     </modules>
 
     <dependencies>
@@ -31,16 +32,6 @@
         <dependency>
             <groupId>org.zkit.support</groupId>
             <artifactId>cloud-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zkit.support</groupId>
-            <artifactId>redisson-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zkit.support</groupId>
-            <artifactId>openapi-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
         <dependency>
