@@ -44,6 +44,8 @@ package-openai:
     script:
         - cd server-openai/server-openai-service
         - mvn clean package
+        - docker build -t easy-kit-dev/server/openai:$CI_PIPELINE_ID -f ./Dockerfile .
+        - docker tag easy-kit-dev/server/openai:$CI_PIPELINE_ID easy-kit-dev/server/openai:latest
 
 deploy-account:
     stage: deploy
@@ -55,3 +57,14 @@ deploy-account:
         - cd /opt/server/clover/server-account
         - docker-compose down
         - docker-compose up -d
+
+deploy-openai:
+    stage: deploy
+    only:
+        - main
+    tags:
+        - openai
+    script:
+        - cd ~/server/openai
+        - docker compose down
+        - docker compose up -d
