@@ -40,9 +40,9 @@ package-openai:
         - openai
     artifacts:
         paths:
-            - server-account/server-openai-service/target/*.jar
+            - server-openai/server-openai-service/target/*.jar
     script:
-        - cd server-account/server-openai-service
+        - cd server-openai/server-openai-service
         - mvn clean package
 
 deploy-account:
