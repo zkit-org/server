@@ -51,7 +51,7 @@ deploy-account:
     tags:
         - dev
     script:
-        - cd ~/clover/server-account
+        - cd ~/server/clover/server-account
         - docker-compose down
         - docker-compose up -d
 
