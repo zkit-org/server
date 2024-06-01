@@ -18,9 +18,6 @@ package-account:
         - main
     tags:
         - dev
-    artifacts:
-        paths:
-            - server-account/server-account-service/target/*.jar
     script:
         - cd server-account/server-account-service
         - mvn clean package
