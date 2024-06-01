@@ -49,8 +49,8 @@ deploy-account:
         - dev
     script:
         - cd ~/server/clover/server-account
-        - docker-compose down
-        - docker-compose up -d
+        - docker compose down
+        - docker compose up -d
 
 deploy-openai:
     stage: deploy
