@@ -38,9 +38,6 @@ package-openai:
         - main
     tags:
         - openai
-    artifacts:
-        paths:
-            - server-openai/server-openai-service/target/*.jar
     script:
         - cd server-openai/server-openai-service
         - mvn clean package
@@ -54,7 +51,7 @@ deploy-account:
     tags:
         - dev
     script:
-        - cd /opt/server/clover/server-account
+        - cd ~/clover/server-account
         - docker-compose down
         - docker-compose up -d
 
