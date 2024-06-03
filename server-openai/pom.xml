@@ -16,4 +16,12 @@
         <module>server-openai-service</module>
         <module>server-openai-api</module>
     </modules>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.zkit.support</groupId>
+            <artifactId>openapi-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
 </project>

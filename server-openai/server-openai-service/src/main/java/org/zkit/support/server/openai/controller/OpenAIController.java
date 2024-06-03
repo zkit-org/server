@@ -3,7 +3,7 @@ package org.zkit.support.server.openai.controller;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
-import org.zkit.support.server.openai.entity.TranslatorRequest;
+import org.zkit.support.server.openai.api.entity.TranslatorRequest;
 import org.zkit.support.server.openai.service.TranslatorService;
 
 import java.util.List;
