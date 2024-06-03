@@ -20,7 +20,7 @@ package-account:
         - dev
     script:
         - cd server-account/server-account-service
-        - mvn clean package
+        - mvn clean package -U
         - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/account:latest
@@ -37,7 +37,7 @@ package-openai:
         - openai
     script:
         - cd server-openai/server-openai-service
-        - mvn clean package
+        - mvn clean package -U
         - docker build -t easy-kit-dev/server/openai:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag easy-kit-dev/server/openai:$CI_PIPELINE_ID easy-kit-dev/server/openai:latest
 
