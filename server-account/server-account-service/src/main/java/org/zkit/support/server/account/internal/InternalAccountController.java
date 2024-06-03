@@ -17,7 +17,7 @@ import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.mapstruct.AuthAccountMapStruct;
 import org.zkit.support.server.account.auth.service.AuthAccountService;
-import org.zkit.support.starter.boot.service.SessionService;
+import org.zkit.support.starter.security.service.SessionService;
 
 @RestController
 @Slf4j
