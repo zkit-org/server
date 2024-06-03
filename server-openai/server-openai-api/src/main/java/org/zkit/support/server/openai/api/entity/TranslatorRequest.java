@@ -1,4 +1,4 @@
-package org.zkit.support.server.openai.entity;
+package org.zkit.support.server.openai.api.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
