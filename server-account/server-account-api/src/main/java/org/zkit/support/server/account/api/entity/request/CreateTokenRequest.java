@@ -14,7 +14,7 @@ public class CreateTokenRequest {
 
     @Schema(description = "用户ID")
     private Long id;
-    @Schema(description = "令牌类型")
+    @Schema(description = "过期时间")
     private Long expiresIn;
 
 }

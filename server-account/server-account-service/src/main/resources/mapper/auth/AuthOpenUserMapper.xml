@@ -21,4 +21,19 @@
         id, open_id, username, platform, account_id, avatar, access_token, token_type, create_time, update_time
     </sql>
 
+    <select id="findOneByPlatformAndOpenId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from auth_open_user
+        where
+        platform = #{platform,jdbcType=VARCHAR}
+        AND open_id = #{openId,jdbcType=VARCHAR}
+    </select>
+
+    <update id="updateAccountIdById">
+        update auth_open_user
+        set account_id = #{accountId,jdbcType=NUMERIC}
+        where id = #{id,jdbcType=NUMERIC}
+    </update>
+
 </mapper>

@@ -1,4 +1,5 @@
 package org.zkit.support.server.account.auth.mapper;
+import org.apache.ibatis.annotations.Param;
 
 import org.zkit.support.server.account.auth.entity.dto.AuthApp;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -12,5 +13,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2024-05-11
  */
 public interface AuthAppMapper extends BaseMapper<AuthApp> {
+
+    AuthApp findOneByName(@Param("name") String name);
 
 }
