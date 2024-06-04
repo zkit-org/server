@@ -18,5 +18,12 @@
     <sql id="Base_Column_List">
         id, name, client_id, client_secret, authorize_url, token_url, callback_url, info_url
     </sql>
+    <select id="findOneByName" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from auth_app
+        where
+        name = #{name,jdbcType=VARCHAR}
+    </select>
 
 </mapper>
