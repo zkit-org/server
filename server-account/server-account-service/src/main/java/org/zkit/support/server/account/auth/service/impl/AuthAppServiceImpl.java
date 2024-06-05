@@ -175,7 +175,7 @@ public class AuthAppServiceImpl extends ServiceImpl<AuthAppMapper, AuthApp> impl
         return response;
     }
 
-    @DistributedLock(value = "account:open:user")
+    @DistributedLock(value = "account:open:user", el = false)
     private AuthOpenUser addOrUpdateOpenUser(AuthOpenUser openUser) {
         log.info("addOrUpdateOpenUser openUser: {}", openUser);
         AuthOpenUser origin = authOpenUserMapper.findOneByPlatformAndOpenId(openUser.getPlatform(), openUser.getOpenId());

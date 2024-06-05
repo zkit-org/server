@@ -78,7 +78,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @DistributedLock(value = "auth:account")
+    @DistributedLock(value = "auth:account", el = false)
     public AuthAccount add(AuthAccount account) {
         account.setCreateTime(new Date());
         this.save(account);
@@ -87,7 +87,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
 
     @Override
     @CacheEvict(value = "auth:account", key = "#result.username")
-    @DistributedLock(value = "auth:account", key = "#request.id")
+    @DistributedLock("'auth:account:'+#request.id")
     @Transactional
     public TokenResponse setPassword(SetPasswordRequest request) {
         AuthAccount account = getById(request.getId());
@@ -125,7 +125,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @DistributedLock(value = "auth:account")
+    @DistributedLock(value = "auth:account", el = false)
     public AuthAccount addOrGet(AuthAccount account) {
         AuthAccount origin = baseMapper.findOneByUsername(account.getUsername());
         if(origin != null) {
@@ -193,7 +193,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
 
     @Override
     @CacheEvict(value = "auth:account", key = "#result.username")
-    @DistributedLock(value = "auth:account", key = "#id")
+    @DistributedLock("'auth:account'+#id")
     public OTPResponse otpSecret(Long id) {
         AuthAccount account = getById(id);
         if(account.getOtpStatus() == 1) {
