@@ -21,6 +21,7 @@
     <modules>
         <module>server-account</module>
         <module>server-openai</module>
+        <module>server-mail</module>
     </modules>
 
     <dependencies>
