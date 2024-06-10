@@ -13,4 +13,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface TemplateService extends IService<Template> {
 
+    Template findByLanguageAndPath(String language, String path);
+
 }

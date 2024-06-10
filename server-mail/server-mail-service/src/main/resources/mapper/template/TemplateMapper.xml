@@ -10,11 +10,20 @@
         <result column="content" property="content" />
         <result column="create_time" property="createTime" />
         <result column="update_time" property="updateTime" />
+        <result column="title" property="title" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, language, path, content, create_time, update_time
+        id, language, path, content, create_time, update_time, title
     </sql>
+    <select id="findOneByLanguageAndPath" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from template
+        where
+        language = #{language,jdbcType=VARCHAR}
+        AND path = #{path,jdbcType=VARCHAR}
+    </select>
 
 </mapper>
