@@ -16,7 +16,7 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-06-07
+ * @since 2024-06-10
  */
 @Data
 @Schema(name = "Template", description = "")
@@ -42,4 +42,7 @@ public class Template implements Serializable {
 
     @Schema(description = "更新时间")
     private Date updateTime;
+
+    @Schema(description = "标题")
+    private String title;
 }

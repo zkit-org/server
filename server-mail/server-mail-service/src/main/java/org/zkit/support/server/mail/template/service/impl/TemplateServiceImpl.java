@@ -17,4 +17,8 @@ import org.springframework.stereotype.Service;
 @Service
 public class TemplateServiceImpl extends ServiceImpl<TemplateMapper, Template> implements TemplateService {
 
+    @Override
+    public Template findByLanguageAndPath(String language, String path) {
+        return baseMapper.findOneByLanguageAndPath(language, path);
+    }
 }

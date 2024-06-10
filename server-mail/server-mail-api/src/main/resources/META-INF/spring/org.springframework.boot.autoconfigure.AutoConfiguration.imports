@@ -1,2 +1,4 @@
 org.zkit.support.server.mail.api.ServerMailApiLoader
 org.zkit.support.server.mail.api.ServerMailApi
+org.zkit.support.server.mail.api.EmailCodeService
+org.zkit.support.server.mail.api.configuration.EmailConfiguration
