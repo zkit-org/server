@@ -46,17 +46,17 @@ package-mail:
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/mail:latest
 
-package-openai:
-    stage: package
-    only:
-        - main
-    tags:
-        - openai
-    script:
-        - cd server-openai/server-openai-service
-        - mvn clean package -U -s ../../settings.xml
-        - docker build -t easy-kit-dev/server/openai:$CI_PIPELINE_ID -f ./Dockerfile .
-        - docker tag easy-kit-dev/server/openai:$CI_PIPELINE_ID easy-kit-dev/server/openai:latest
+#package-openai:
+#    stage: package
+#    only:
+#        - main
+#    tags:
+#        - openai
+#    script:
+#        - cd server-openai/server-openai-service
+#        - mvn clean package -U -s ../../settings.xml
+#        - docker build -t easy-kit-dev/server/openai:$CI_PIPELINE_ID -f ./Dockerfile .
+#        - docker tag easy-kit-dev/server/openai:$CI_PIPELINE_ID easy-kit-dev/server/openai:latest
 
 deploy-account:
     stage: deploy
@@ -80,13 +80,13 @@ deploy-mail:
         - docker compose down
         - docker compose up -d
 
-deploy-openai:
-    stage: deploy
-    only:
-        - main
-    tags:
-        - openai
-    script:
-        - cd ~/server/openai
-        - docker compose down
-        - docker compose up -d
+#deploy-openai:
+#    stage: deploy
+#    only:
+#        - main
+#    tags:
+#        - openai
+#    script:
+#        - cd ~/server/openai
+#        - docker compose down
+#        - docker compose up -d
