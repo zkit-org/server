@@ -8,10 +8,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.zkit.support.server.account.api.constant.AccountApi;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
-import org.zkit.support.server.account.api.entity.request.AccountAddRequest;
-import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
-import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
-import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
+import org.zkit.support.server.account.api.entity.request.*;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
@@ -44,5 +41,8 @@ public interface AuthAccountRestApi {
 
     @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_LOGOUT)
     Result<?> logout(@RequestParam("token") String token);
+
+    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_RESET_PASSWORD)
+    Result<TokenResponse> resetPassword(@RequestBody() ResetPasswordRequest request);
 
 }
