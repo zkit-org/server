@@ -10,5 +10,6 @@ public class AccountApiRoute {
     public static final String AUTH_ACCOUNT_SET_PASSWORD = "/internal/auth/account/set/password";
     public static final String AUTH_ACCOUNT_LOGIN = "/internal/auth/account/login";
     public static final String AUTH_ACCOUNT_LOGOUT = "/internal/auth/account/logout";
+    public static final String AUTH_ACCOUNT_RESET_PASSWORD = "/internal/auth/account/reset/password";
 
 }

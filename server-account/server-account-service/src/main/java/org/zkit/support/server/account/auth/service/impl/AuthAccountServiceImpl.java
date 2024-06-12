@@ -7,7 +7,9 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
 import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
+import org.zkit.support.server.account.api.entity.request.ResetPasswordRequest;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
+import org.zkit.support.server.account.auth.entity.enums.AuthAccountEnum;
 import org.zkit.support.starter.boot.exception.ResultException;
 import org.zkit.support.starter.boot.utils.AESUtils;
 import org.zkit.support.starter.boot.utils.RSAUtils;
@@ -240,6 +242,21 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
                 }
             }
         }
+        return this.createToken(new CreateTokenRequest(account.getId(), authConfiguration.getExpiresIn()));
+    }
+
+    @Override
+    public TokenResponse resetPassword(ResetPasswordRequest request) {
+        AuthAccount account = getById(request.getId());
+        if(account.getStatus() != AuthAccountEnum.STATUS_NORMAL.code) {
+            throw new ResultException(AccountCode.NOTFOUND.code, MessageUtils.get(AccountCode.NOTFOUND.key));
+        }
+        String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
+        password = AESUtils.encrypt(password, authConfiguration.getAesKey());
+        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
+        update.eq("id",account.getId());
+        update.set("password", password);
+        getBaseMapper().update(update);
         return this.createToken(new CreateTokenRequest(account.getId(), authConfiguration.getExpiresIn()));
     }
 }

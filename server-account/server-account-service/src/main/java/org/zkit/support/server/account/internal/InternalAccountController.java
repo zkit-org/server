@@ -7,10 +7,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
-import org.zkit.support.server.account.api.entity.request.AccountAddRequest;
-import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
-import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
-import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
+import org.zkit.support.server.account.api.entity.request.*;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
@@ -80,5 +77,11 @@ public class InternalAccountController {
     @Operation(summary = "退出")
     public void logout(@Parameter(description = "令牌") @RequestParam("token") String token) {
         sessionService.logout(token);
+    }
+
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_RESET_PASSWORD)
+    @Operation(summary = "重置密码")
+    public TokenResponse setPassword(@RequestBody() ResetPasswordRequest request) {
+        return authAccountService.resetPassword(request);
     }
 }
