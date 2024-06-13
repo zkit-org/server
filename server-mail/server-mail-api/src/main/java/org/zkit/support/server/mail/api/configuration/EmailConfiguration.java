@@ -11,5 +11,6 @@ public class EmailConfiguration {
 
     private String code;
     private Boolean debug;
+    private String topic;
 
 }

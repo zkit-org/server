@@ -17,7 +17,7 @@ public class MailTopicListener {
     @Resource
     private MailService mailService;
 
-    @KafkaListener(topics = {"mail"}, containerFactory = "batchFactory")
+    @KafkaListener(topics = {"${mail.topic}"}, containerFactory = "batchFactory")
     public void batchConsumer(List<ConsumerRecord<?, ?>> consumerRecords, Acknowledgment ack) {
         consumerRecords.forEach(record -> {
             mailService.sendMail(record.value().toString());
