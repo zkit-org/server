@@ -1,8 +1,6 @@
 package org.zkit.support.server.assets.service;
 
 import com.aliyun.oss.*;
-import com.aliyun.oss.common.auth.CredentialsProviderFactory;
-import com.aliyun.oss.common.auth.DefaultCredentialProvider;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -12,6 +10,7 @@ import org.apache.http.client.methods.HttpPut;
 import org.apache.http.entity.FileEntity;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
 import org.zkit.support.server.assets.configuration.AliOSSConfiguration;
 
@@ -29,6 +28,14 @@ public class AliOSSService {
     private AliOSSConfiguration configuration;
 
     public String sign(String objectName) {
+        return sign(objectName, null, null);
+    }
+
+    public String sign(String objectName, Map<String, String> headers) {
+        return sign(objectName, headers, null);
+    }
+
+    public String sign(String objectName, Map<String, String> headers, Map<String, String> metadata) {
         log.info("config {}", configuration);
         // 以华东1（杭州）的外网Endpoint为例，其它Region请按实际情况填写。
         String endpoint = configuration.getEndpoint();
@@ -39,18 +46,6 @@ public class AliOSSService {
 
         // 创建OSSClient实例
         OSS ossClient = new OSSClientBuilder().build(endpoint, configuration.getKeyId(), configuration.getKeySecret());
-
-        // 设置请求头。
-        Map<String, String> headers = new HashMap<String, String>();
-        /*// 指定Object的存储类型。
-        headers.put(OSSHeaders.STORAGE_CLASS, StorageClass.Standard.toString());
-        // 指定ContentType。
-        headers.put(OSSHeaders.CONTENT_TYPE, "text/txt");*/
-
-        // 设置用户自定义元数据。
-        Map<String, String> userMetadata = new HashMap<String, String>();
-        /*userMetadata.put("key1","value1");
-        userMetadata.put("key2","value2");*/
 
         URL signedUrl = null;
         try {
@@ -63,9 +58,9 @@ public class AliOSSService {
             request.setExpiration(expiration);
 
             // 将请求头加入到request中。
-            request.setHeaders(headers);
+            request.setHeaders(headers == null ? new HashMap<>() : headers);
             // 添加用户自定义元数据。
-            request.setUserMetadata(userMetadata);
+            request.setUserMetadata(metadata == null ? new HashMap<>() : metadata);
 
             // 通过HTTP PUT请求生成签名URL。
             signedUrl = ossClient.generatePresignedUrl(request);
@@ -113,6 +108,8 @@ public class AliOSSService {
                 log.info("使用网络库上传成功");
             }
             log.info("response: {}", response);
+            String responseString = EntityUtils.toString(response.getEntity(), "UTF-8");
+            log.info(responseString);
         } catch (Exception e){
             log.error(e.getMessage());
         } finally {
