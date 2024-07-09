@@ -1,4 +1,4 @@
-package org.zkit.support.server.assets.configuration;
+package org.zkit.support.server.assets.alioss.configuration;
 
 import lombok.Data;
 import org.springframework.boot.context.properties.ConfigurationProperties;

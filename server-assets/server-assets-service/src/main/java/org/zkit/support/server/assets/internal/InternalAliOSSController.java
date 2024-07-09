@@ -9,12 +9,12 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.zkit.support.server.assets.api.constant.AssetsApiRoute;
 import org.zkit.support.server.assets.api.entity.request.OSSSignRequest;
-import org.zkit.support.server.assets.service.AliOSSService;
+import org.zkit.support.server.assets.alioss.service.AliOSSService;
 
 @RestController
 @Slf4j
-@Tag(name = "internal-account", description = "[内部接口]阿里OSS")
-public class internalAliOSSController {
+@Tag(name = "internal-oss", description = "[内部接口]阿里OSS")
+public class InternalAliOSSController {
 
     @Resource
     private AliOSSService aliOSSService;

@@ -1,4 +1,4 @@
-package org.zkit.support.server.assets.service;
+package org.zkit.support.server.assets.alioss.service;
 
 import com.aliyun.oss.*;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
@@ -12,7 +12,7 @@ import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.stereotype.Service;
-import org.zkit.support.server.assets.configuration.AliOSSConfiguration;
+import org.zkit.support.server.assets.alioss.configuration.AliOSSConfiguration;
 
 import java.io.File;
 import java.net.URL;
