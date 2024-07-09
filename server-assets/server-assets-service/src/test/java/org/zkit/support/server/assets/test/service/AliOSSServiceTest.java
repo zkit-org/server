@@ -4,7 +4,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.zkit.support.server.assets.service.AliOSSService;
+import org.zkit.support.server.assets.alioss.service.AliOSSService;
 
 import java.io.IOException;
 import java.util.HashMap;
