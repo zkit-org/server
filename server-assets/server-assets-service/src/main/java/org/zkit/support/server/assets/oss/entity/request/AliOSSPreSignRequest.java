@@ -13,4 +13,8 @@ public class AliOSSPreSignRequest {
     private Long length;
     @Schema(description = "访问类型 0-私桶 1-公桶")
     private Integer type;
+    @Schema(description = "用户ID", hidden = true)
+    private Long userId;
+    @Schema(description = "文件类型")
+    private String contentType;
 }

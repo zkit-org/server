@@ -15,7 +15,7 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-07-10
+ * @since 2024-07-13
  */
 @Data
 @TableName("oss_file")
@@ -44,4 +44,7 @@ public class OssFile implements Serializable {
 
     @Schema(description = "上传时间")
     private Date createTime;
+
+    @Schema(description = "UUID")
+    private String hash;
 }

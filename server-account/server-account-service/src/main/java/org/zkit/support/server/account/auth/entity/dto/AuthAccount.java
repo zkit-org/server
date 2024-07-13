@@ -2,8 +2,6 @@ package org.zkit.support.server.account.auth.entity.dto;
 
 import com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.IdType;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
@@ -17,7 +15,7 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-06-05
+ * @since 2024-07-13
  */
 @Data
 @TableName("auth_account")
@@ -27,7 +25,6 @@ public class AuthAccount implements Serializable {
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")
-    @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
     @Schema(description = "用户名")
