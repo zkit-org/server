@@ -14,6 +14,11 @@ import org.springframework.context.annotation.EnableAspectJAutoProxy;
 public class Application {
 
     public static void main(String[] args) {
+        System.setProperty("http.proxyType", "4");
+        System.setProperty("http.proxyPort", System.getenv("PROXY_PORT"));
+        System.setProperty("http.proxyHost", System.getenv("PROXY_HOST"));
+        System.setProperty("http.nonProxyHosts", "localhost|127.0.0.1|easykit|nacos");
+        System.setProperty("http.proxySet", "true");
         SpringApplication.run(Application.class, args);
     }
 
