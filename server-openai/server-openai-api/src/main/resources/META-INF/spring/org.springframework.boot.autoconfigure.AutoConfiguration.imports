@@ -1,3 +1,0 @@
-org.zkit.support.server.openai.api.ServerOpenAIApiLoader
-org.zkit.support.server.openai.api.rest.OpenAIRestApi
-org.zkit.support.server.openai.api.configuration.OpenAIConfiguration
