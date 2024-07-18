@@ -46,22 +46,22 @@ package-mail:
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/mail:latest
 
-package-openai:
+package-ai:
     stage: package
     only:
         - main
     tags:
         - dev
     script:
-        - cd server-openai/server-openai-service
+        - cd server-ai/server-ai-service
         - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
         - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
-        - docker build -t $CI_REGISTRY/easy-kit-dev/server/openai:$CI_PIPELINE_ID -f ./Dockerfile .
-        - docker tag $CI_REGISTRY/easy-kit-dev/server/openai:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/openai:latest
-        - docker push $CI_REGISTRY/easy-kit-dev/server/openai:$CI_PIPELINE_ID
-        - docker push $CI_REGISTRY/easy-kit-dev/server/openai:latest
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/openai:$CI_PIPELINE_ID
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/openai:latest
+        - docker build -t $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID -f ./Dockerfile .
+        - docker tag $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/ai:latest
+        - docker push $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID
+        - docker push $CI_REGISTRY/easy-kit-dev/server/ai:latest
+        - docker rmi $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID
+        - docker rmi $CI_REGISTRY/easy-kit-dev/server/ai:latest
 
 package-assets:
     stage: package
@@ -102,14 +102,14 @@ deploy-mail:
         - docker compose down
         - docker compose up -d
 
-deploy-openai:
+deploy-ai:
     stage: deploy
     only:
         - main
     tags:
         - dev
     script:
-        - cd ~/server/clover/server-openai
+        - cd ~/server/clover/server-ai
         - docker compose down
         - docker compose up -d
 
