@@ -1,16 +1,6 @@
 stages:
-    - maven
     - package
     - deploy
-
-maven-deploy:
-    stage: maven
-    only:
-        - main
-    tags:
-        - dev
-    script:
-        - mvn clean deploy -U -s settings.xml -Dmaven.test.skip=true
 
 package-account:
     stage: package
@@ -20,7 +10,7 @@ package-account:
         - dev
     script:
         - cd server-account/server-account-service
-        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
+        - mvn clean package deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/account:latest
@@ -37,7 +27,7 @@ package-mail:
         - dev
     script:
         - cd server-mail/server-mail-service
-        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
+        - mvn clean package deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/mail:latest
@@ -54,7 +44,7 @@ package-ai:
         - dev
     script:
         - cd server-ai/server-ai-service
-        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
+        - mvn clean package deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/ai:latest
@@ -71,7 +61,7 @@ package-assets:
         - dev
     script:
         - cd server-assets/server-assets-service
-        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
+        - mvn clean package deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/assets:latest
