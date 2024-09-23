@@ -9,6 +9,8 @@ package-account:
     tags:
         - dev
     script:
+        - java -version
+        - mvn -v
         - cd server-account/server-account-api
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - cd ../../server-account/server-account-service
@@ -28,6 +30,8 @@ package-mail:
     tags:
         - dev
     script:
+        - java -version
+        - mvn -v
         - cd server-mail/server-mail-api
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - cd ../../server-mail/server-mail-service
@@ -47,6 +51,8 @@ package-ai:
     tags:
         - dev
     script:
+        - java -version
+        - mvn -v
         - cd server-ai/server-ai-api
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - cd ../../server-ai/server-ai-service
@@ -66,6 +72,8 @@ package-assets:
     tags:
         - dev
     script:
+        - java -version
+        - mvn -v
         - cd server-assets/server-assets-api
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - cd ../../server-assets/server-assets-service
