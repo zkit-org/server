@@ -1,6 +1,6 @@
 FROM azul/zulu-openjdk-alpine:21-latest
 WORKDIR /app
-RUN wget https://dlcdn.apache.org/skywalking/java-agent/9.3.0/apache-skywalking-java-agent-9.3.0.tgz
+RUN wget https://mirrors.aliyun.com/apache/skywalking/java-agent/9.3.0/apache-skywalking-java-agent-9.3.0.tgz
 RUN tar -xvf apache-skywalking-java-agent-9.3.0.tgz
 RUN mv skywalking-agent agent
 RUN rm apache-skywalking-java-agent-9.3.0.tgz
