@@ -73,7 +73,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @Resource
     private AccessRoleService accessRoleService;
 
-    @Cacheable(value = "auth:account", key = "#username")
+    @Cacheable(value = "auth:account#1d", key = "#username")
     @Override
     public AuthAccount findByUsername(String username) {
         return baseMapper.findOneByUsername(username);
