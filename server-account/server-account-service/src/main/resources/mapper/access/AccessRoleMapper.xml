@@ -15,4 +15,18 @@
         id, name, description, enable
     </sql>
 
+    <select id="query" resultType="org.zkit.support.server.account.access.entity.dto.AccessRole">
+        select
+        <include refid="Base_Column_List" />
+        from access_role
+        <where>
+            <if test="query.keyword != null">
+                and (name like concat('%', #{query.keyword}, '%')  or description like concat('%', #{query.keyword}, '%'))
+            </if>
+            <if test="query.enableBool != null">
+                and enable = #{query.enableBool}
+            </if>
+        </where>
+    </select>
+
 </mapper>
