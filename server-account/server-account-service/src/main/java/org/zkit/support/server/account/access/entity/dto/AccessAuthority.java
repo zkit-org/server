@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.Date;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.Data;
@@ -14,7 +15,7 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-07-13
+ * @since 2024-11-18
  */
 @Data
 @TableName("access_authority")
@@ -37,4 +38,16 @@ public class AccessAuthority implements Serializable {
 
     @Schema(description = "排序")
     private Integer sort;
+
+    @Schema(description = "创建人")
+    private Long createUser;
+
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    @Schema(description = "更新人")
+    private Long updateUser;
+
+    @Schema(description = "更新时间")
+    private Date updateTime;
 }

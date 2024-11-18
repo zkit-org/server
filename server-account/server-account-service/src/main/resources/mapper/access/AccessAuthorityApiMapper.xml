@@ -13,5 +13,12 @@
     <sql id="Base_Column_List">
         id, authority_id, api_id
     </sql>
+    <select id="findByAuthorityId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from access_authority_api
+        where
+        authority_id = #{authorityId,jdbcType=NUMERIC}
+    </select>
 
 </mapper>

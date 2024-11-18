@@ -9,11 +9,16 @@
         <result column="name" property="name" />
         <result column="value" property="value" />
         <result column="sort" property="sort" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, parent_id, name, value, sort
+        id, parent_id, name, value, sort,
+          create_user, create_time, update_user, update_time
     </sql>
 
     <select id="findAuthoritiesByAccountId" resultMap="BaseResultMap">
@@ -24,6 +29,12 @@
         JOIN access_role_authority AS ara ON ara.role_id = role.id
         JOIN access_authority AS aa ON aa.id = ara.authority_id
         WHERE account.id = #{accountId} AND aa.id IS NOT NULL
+    </select>
+
+    <select id="countByValue" resultType="int">
+        select count(*)
+        from access_authority
+        where value = #{value,jdbcType=VARCHAR}
     </select>
 
 </mapper>
