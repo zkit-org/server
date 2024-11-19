@@ -21,4 +21,18 @@
         authority_id = #{authorityId,jdbcType=NUMERIC}
     </select>
 
+    <delete id="deleteByAuthorityId">
+        delete
+        from access_authority_api
+        where authority_id = #{authorityId,jdbcType=NUMERIC}
+    </delete>
+    <delete id="deleteByAuthorityIdIn">
+        delete from access_authority_api
+        where
+        authority_id in
+        <foreach collection="authorityIdList" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=NUMERIC}
+        </foreach>
+    </delete>
+
 </mapper>

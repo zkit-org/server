@@ -13,5 +13,18 @@
     <sql id="Base_Column_List">
         id, role_id, authority_id
     </sql>
+    <delete id="deleteByAuthorityId">
+        delete
+        from access_role_authority
+        where authority_id = #{authorityId,jdbcType=NUMERIC}
+    </delete>
+    <delete id="deleteByAuthorityIdIn">
+        delete from access_role_authority
+        where
+        authority_id in
+        <foreach collection="authorityIdList" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=NUMERIC}
+        </foreach>
+    </delete>
 
 </mapper>

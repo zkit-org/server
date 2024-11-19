@@ -36,5 +36,12 @@
         from access_authority
         where value = #{value,jdbcType=VARCHAR}
     </select>
+    <select id="findOneByValue" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from access_authority
+        where
+        value = #{value,jdbcType=VARCHAR}
+    </select>
 
 </mapper>

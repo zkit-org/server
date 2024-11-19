@@ -4,6 +4,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
@@ -46,7 +47,7 @@ public class AccessAuthorityController {
     @PostMapping("/add")
     @Operation(summary = "添加权限")
     public void add(
-            @RequestBody AccessAuthorityRequest request,
+            @Valid @RequestBody AccessAuthorityRequest request,
             @CurrentUser @Parameter(hidden = true) SessionUser user
     ) {
         request.setActionUser(user.getId());
@@ -57,6 +58,27 @@ public class AccessAuthorityController {
     @Operation(summary = "权限详情")
     public AccessAuthorityResponse detail(@Parameter(description = "权限ID") @PathVariable Long id) {
         return accessAuthorityService.detail(id);
+    }
+
+    @PutMapping("/{id}")
+    @Operation(summary = "更新权限")
+    public void update(
+            @Valid @RequestBody AccessAuthorityRequest request,
+            @Parameter(description = "权限ID") @PathVariable Long id,
+            @CurrentUser @Parameter(hidden = true) SessionUser user
+    ) {
+        request.setActionUser(user.getId());
+        request.setId(id);
+        accessAuthorityService.update(request);
+    }
+
+    @DeleteMapping("/{id}")
+    @Operation(summary = "删除权限")
+    public void delete(
+            @Parameter(description = "权限ID") @PathVariable Long id,
+            @CurrentUser @Parameter(hidden = true) SessionUser user
+    ) {
+        accessAuthorityService.deleteById(id);
     }
 
 }

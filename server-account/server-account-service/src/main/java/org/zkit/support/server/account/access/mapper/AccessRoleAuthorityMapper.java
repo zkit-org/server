@@ -1,4 +1,6 @@
 package org.zkit.support.server.account.access.mapper;
+import java.util.Collection;
+import org.apache.ibatis.annotations.Param;
 
 import org.zkit.support.server.account.access.entity.dto.AccessRoleAuthority;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
@@ -12,5 +14,8 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2024-05-11
  */
 public interface AccessRoleAuthorityMapper extends BaseMapper<AccessRoleAuthority> {
+
+    int deleteByAuthorityId(@Param("authorityId") Long authorityId);
+    int deleteByAuthorityIdIn(@Param("authorityIdList") Collection<Long> authorityIdList);
 
 }

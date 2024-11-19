@@ -1,4 +1,5 @@
 package org.zkit.support.server.account.access.mapper;
+import java.util.Collection;
 import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
@@ -16,5 +17,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 public interface AccessAuthorityApiMapper extends BaseMapper<AccessAuthorityApi> {
 
     List<AccessAuthorityApi> findByAuthorityId(@Param("authorityId") Long authorityId);
-
+    int deleteByAuthorityId(@Param("authorityId") Long authorityId);
+    int deleteByAuthorityIdIn(@Param("authorityIdList") Collection<Long> authorityIdList);
 }

@@ -30,6 +30,7 @@ public class AccessAuthorityApiServiceImpl extends ServiceImpl<AccessAuthorityAp
     @Override
     @Transactional
     public void saveApis(Long authorityId, List<Long> apiIds) {
+        baseMapper.deleteByAuthorityId(authorityId);
         if(apiIds != null && !apiIds.isEmpty()){
             Stream<AccessAuthorityApi> stream = apiIds.stream().map(apiId -> {
                 AccessAuthorityApi accessAuthorityApi = new AccessAuthorityApi();
@@ -40,5 +41,15 @@ public class AccessAuthorityApiServiceImpl extends ServiceImpl<AccessAuthorityAp
             AccessAuthorityApiService self = (AccessAuthorityApiService)AopContext.currentProxy();
             self.saveBatch(stream.toList());
         }
+    }
+
+    @Override
+    public void deleteByAuthorityId(Long authorityId) {
+        baseMapper.deleteByAuthorityId(authorityId);
+    }
+
+    @Override
+    public void deleteByAuthorityIds(List<Long> authorityIds) {
+        baseMapper.deleteByAuthorityIdIn(authorityIds);
     }
 }

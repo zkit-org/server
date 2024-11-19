@@ -1,6 +1,10 @@
 package org.zkit.support.server.account.access.entity.request;
 
 import io.swagger.v3.oas.annotations.media.Schema;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
 import lombok.Data;
 
 import java.util.List;
@@ -15,12 +19,18 @@ public class AccessAuthorityRequest {
     @Schema(description = "上级ID")
     private Long parentId;
 
+    @NotNull
     @Schema(description = "名称")
     private String name;
 
+    @NotNull
     @Schema(description = "权限码")
+    @Pattern(regexp = "^[a-z0-9]+(?::[a-z0-9]+)*$", message = "{access.authority.value.pattern}")
     private String value;
 
+    @NotNull
+    @Min(0)
+    @Max(999)
     @Schema(description = "排序")
     private Integer sort;
 

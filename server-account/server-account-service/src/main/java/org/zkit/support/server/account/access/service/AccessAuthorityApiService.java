@@ -17,5 +17,7 @@ public interface AccessAuthorityApiService extends IService<AccessAuthorityApi> 
 
     List<AccessAuthorityApi> findByAuthorityId(Long authorityId);
     void saveApis(Long authorityId, List<Long> apiIds);
+    void deleteByAuthorityId(Long authorityId);
+    void deleteByAuthorityIds(List<Long> authorityIds);
 
 }

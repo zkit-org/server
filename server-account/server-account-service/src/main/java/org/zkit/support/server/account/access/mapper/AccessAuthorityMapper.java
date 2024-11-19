@@ -17,5 +17,6 @@ public interface AccessAuthorityMapper extends BaseMapper<AccessAuthority> {
 
     List<AccessAuthority> findAuthoritiesByAccountId(@Param("accountId") Long accountId);
     int countByValue(@Param("value") String value);
+    AccessAuthority findOneByValue(@Param("value") String value);
 
 }

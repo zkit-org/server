@@ -21,5 +21,7 @@ public interface AccessAuthorityService extends IService<AccessAuthority> {
     List<AccessAuthorityTreeResponse> tree();
     void add(AccessAuthorityRequest request);
     AccessAuthorityResponse detail(Long id);
+    void update(AccessAuthorityRequest request);
+    void deleteById(Long id);
 
 }
