@@ -1,4 +1,5 @@
 package org.zkit.support.server.account.access.mapper;
+import java.util.List;
 import java.util.Collection;
 import org.apache.ibatis.annotations.Param;
 
@@ -17,5 +18,7 @@ public interface AccessRoleAuthorityMapper extends BaseMapper<AccessRoleAuthorit
 
     int deleteByAuthorityId(@Param("authorityId") Long authorityId);
     int deleteByAuthorityIdIn(@Param("authorityIdList") Collection<Long> authorityIdList);
+    int deleteByRoleId(@Param("roleId") Long roleId);
+    List<AccessRoleAuthority> findByRoleId(@Param("roleId") Long roleId);
 
 }

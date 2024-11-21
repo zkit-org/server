@@ -8,11 +8,16 @@
         <result column="name" property="name" />
         <result column="description" property="description" />
         <result column="enable" property="enable" />
+        <result column="create_user" property="createUser" />
+        <result column="create_time" property="createTime" />
+        <result column="update_user" property="updateUser" />
+        <result column="update_time" property="updateTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, name, description, enable
+        id, name, description, enable,
+          create_user, create_time, update_user, update_time
     </sql>
 
     <select id="query" resultType="org.zkit.support.server.account.access.entity.dto.AccessRole">
@@ -27,6 +32,32 @@
                 and enable = #{query.enableBool}
             </if>
         </where>
+    </select>
+
+    <select id="findByNameIn" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from access_role
+        where
+        name in
+        <foreach collection="nameList" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=VARCHAR}
+        </foreach>
+        and enable = 1
+    </select>
+    <select id="countByNameAndEnable" resultType="int">
+        select count(*)
+        from access_role
+        where name = #{name,jdbcType=VARCHAR}
+          AND enable = #{enable,jdbcType=BOOLEAN}
+    </select>
+    <select id="findOneByNameAndEnable" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from access_role
+        where
+        name = #{name,jdbcType=VARCHAR}
+        AND enable = #{enable,jdbcType=BOOLEAN}
     </select>
 
 </mapper>

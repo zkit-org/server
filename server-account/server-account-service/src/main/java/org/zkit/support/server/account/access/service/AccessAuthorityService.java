@@ -19,9 +19,11 @@ import java.util.List;
 public interface AccessAuthorityService extends IService<AccessAuthority> {
 
     List<AccessAuthorityTreeResponse> tree();
+    List<AccessAuthorityTreeResponse> tree(List<AccessAuthority> all);
     void add(AccessAuthorityRequest request);
     AccessAuthorityResponse detail(Long id);
     void update(AccessAuthorityRequest request);
     void deleteById(Long id);
+    List<AccessAuthority> findByIdIn(List<Long> ids);
 
 }

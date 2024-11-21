@@ -2,6 +2,7 @@ package org.zkit.support.server.account.access.service;
 
 import org.zkit.support.server.account.access.entity.dto.AccessRoleAuthority;
 import com.baomidou.mybatisplus.extension.service.IService;
+import org.zkit.support.server.account.access.entity.response.AccessAuthorityTreeResponse;
 
 import java.util.List;
 
@@ -17,5 +18,9 @@ public interface AccessRoleAuthorityService extends IService<AccessRoleAuthority
 
     void deleteByAuthorityId(Long authorityId);
     void deleteByAuthorityIds(List<Long> authorityIds);
+    void saveAuthorities(Long roleId, List<Long> authorityIds);
+    List<AccessAuthorityTreeResponse> tree(Long roleId);
+    List<Long> authorityIds(Long roleId);
+    void deleteByRoleId(Long roleId);
 
 }

@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler;
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
+import java.util.Date;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.Data;
@@ -14,7 +15,7 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-11-18
+ * @since 2024-11-21
  */
 @Data
 @TableName("access_role")
@@ -34,4 +35,16 @@ public class AccessRole implements Serializable {
 
     @Schema(description = "是否启用")
     private Boolean enable;
+
+    @Schema(description = "创建人")
+    private Long createUser;
+
+    @Schema(description = "创建时间")
+    private Date createTime;
+
+    @Schema(description = "更新人")
+    private Long updateUser;
+
+    @Schema(description = "更新时间")
+    private Date updateTime;
 }

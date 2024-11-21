@@ -48,6 +48,10 @@ public class AccessAuthorityServiceImpl extends ServiceImpl<AccessAuthorityMappe
     @Cacheable(value = "access:authority", key = "'tree'")
     public List<AccessAuthorityTreeResponse> tree() {
         List<AccessAuthority> all = list();
+        return tree(all);
+    }
+
+    public List<AccessAuthorityTreeResponse> tree(List<AccessAuthority> all) {
         return all.stream()
                 .filter(accessAuthority -> accessAuthority.getParentId() == null)
                 .map(accessAuthority -> {
@@ -149,4 +153,8 @@ public class AccessAuthorityServiceImpl extends ServiceImpl<AccessAuthorityMappe
         return ids;
     }
 
+    @Override
+    public List<AccessAuthority> findByIdIn(List<Long> ids) {
+        return baseMapper.findByIdIn(ids);
+    }
 }

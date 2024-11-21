@@ -6,16 +6,11 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
-import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.web.bind.annotation.*;
-import org.zkit.support.server.account.access.entity.dto.AccessRole;
 import org.zkit.support.server.account.access.entity.request.AccessAuthorityRequest;
-import org.zkit.support.server.account.access.entity.request.AccessRoleQueryRequest;
 import org.zkit.support.server.account.access.entity.response.AccessAuthorityResponse;
 import org.zkit.support.server.account.access.entity.response.AccessAuthorityTreeResponse;
 import org.zkit.support.server.account.access.service.AccessAuthorityService;
-import org.zkit.support.starter.mybatis.entity.PageQueryRequest;
-import org.zkit.support.starter.mybatis.entity.PageResult;
 import org.zkit.support.starter.security.annotation.CurrentUser;
 import org.zkit.support.starter.security.entity.SessionUser;
 

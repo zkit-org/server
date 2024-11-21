@@ -13,5 +13,15 @@
     <sql id="Base_Column_List">
         id, account_id, role_id
     </sql>
+    <delete id="deleteByAccountId">
+        delete
+        from auth_account_role
+        where account_id = #{accountId,jdbcType=NUMERIC}
+    </delete>
+    <delete id="deleteByRoleId">
+        delete
+        from auth_account_role
+        where role_id = #{roleId,jdbcType=NUMERIC}
+    </delete>
 
 </mapper>

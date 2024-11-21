@@ -26,5 +26,17 @@
             #{item,jdbcType=NUMERIC}
         </foreach>
     </delete>
+    <delete id="deleteByRoleId">
+        delete
+        from access_role_authority
+        where role_id = #{roleId,jdbcType=NUMERIC}
+    </delete>
+    <select id="findByRoleId" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from access_role_authority
+        where
+        role_id = #{roleId,jdbcType=NUMERIC}
+    </select>
 
 </mapper>

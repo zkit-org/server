@@ -36,12 +36,24 @@
         from access_authority
         where value = #{value,jdbcType=VARCHAR}
     </select>
+
     <select id="findOneByValue" resultMap="BaseResultMap">
         select
         <include refid="Base_Column_List"/>
         from access_authority
         where
         value = #{value,jdbcType=VARCHAR}
+    </select>
+
+    <select id="findByIdIn" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from access_authority
+        where
+        id in
+        <foreach collection="idList" item="item" open="(" close=")" separator=",">
+            #{item,jdbcType=NUMERIC}
+        </foreach>
     </select>
 
 </mapper>

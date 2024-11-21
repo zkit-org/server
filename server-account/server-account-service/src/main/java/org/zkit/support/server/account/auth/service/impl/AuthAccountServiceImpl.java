@@ -10,6 +10,7 @@ import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
 import org.zkit.support.server.account.api.entity.request.ResetPasswordRequest;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.enums.AuthAccountEnum;
+import org.zkit.support.server.account.auth.service.AuthAccountRoleService;
 import org.zkit.support.starter.boot.exception.ResultException;
 import org.zkit.support.starter.boot.utils.AESUtils;
 import org.zkit.support.starter.boot.utils.RSAUtils;
@@ -71,7 +72,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @Resource
     private OTPService otpService;
     @Resource
-    private AccessRoleService accessRoleService;
+    private AuthAccountRoleService authAccountRoleService;
 
     @Cacheable(value = "auth:account#1d", key = "#username")
     @Override
@@ -116,7 +117,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         // 保存角色
         String defaultRole = authConfiguration.getDefaultRole();
         if(defaultRole != null) {
-            accessRoleService.addRoles(account.getId(), List.of(defaultRole));
+            authAccountRoleService.addRoles(account.getId(), List.of(defaultRole));
         }
 
         // 生成token

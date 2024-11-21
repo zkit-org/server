@@ -1,4 +1,5 @@
 package org.zkit.support.server.account.access.mapper;
+import java.util.Collection;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -18,5 +19,6 @@ public interface AccessAuthorityMapper extends BaseMapper<AccessAuthority> {
     List<AccessAuthority> findAuthoritiesByAccountId(@Param("accountId") Long accountId);
     int countByValue(@Param("value") String value);
     AccessAuthority findOneByValue(@Param("value") String value);
+    List<AccessAuthority> findByIdIn(@Param("idList") Collection<Long> idList);
 
 }
