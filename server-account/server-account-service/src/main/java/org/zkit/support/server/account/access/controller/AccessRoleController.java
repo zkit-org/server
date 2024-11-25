@@ -13,7 +13,7 @@ import org.zkit.support.server.account.access.entity.request.AccessRoleRequest;
 import org.zkit.support.server.account.access.entity.request.AccessRoleQueryRequest;
 import org.zkit.support.server.account.access.entity.response.AccessRoleResponse;
 import org.zkit.support.server.account.access.service.AccessRoleService;
-import org.zkit.support.starter.mybatis.entity.PageQueryRequest;
+import org.zkit.support.starter.mybatis.entity.PageRequest;
 import org.zkit.support.starter.mybatis.entity.PageResult;
 import org.zkit.support.starter.security.annotation.CurrentUser;
 import org.zkit.support.starter.security.entity.SessionUser;
@@ -38,7 +38,7 @@ public class AccessRoleController {
     @GetMapping("/list")
     @Operation(summary = "列表")
     public PageResult<AccessRole> list(
-            @ParameterObject @ModelAttribute PageQueryRequest page,
+            @ParameterObject @ModelAttribute PageRequest page,
             @ParameterObject @ModelAttribute AccessRoleQueryRequest query,
             @CurrentUser @Parameter(hidden = true) SessionUser user
     ) {

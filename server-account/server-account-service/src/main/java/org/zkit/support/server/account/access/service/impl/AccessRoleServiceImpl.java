@@ -1,7 +1,7 @@
 package org.zkit.support.server.account.access.service.impl;
 
 import com.baomidou.mybatisplus.core.toolkit.Wrappers;
-import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.pagehelper.Page;
 import jakarta.annotation.Resource;
 import jakarta.transaction.Transactional;
 import lombok.extern.slf4j.Slf4j;
@@ -23,7 +23,7 @@ import org.zkit.support.server.account.auth.service.AuthAccountRoleService;
 import org.zkit.support.server.account.enums.AccountCode;
 import org.zkit.support.starter.boot.exception.ResultException;
 import org.zkit.support.starter.boot.utils.MessageUtils;
-import org.zkit.support.starter.mybatis.entity.PageQueryRequest;
+import org.zkit.support.starter.mybatis.entity.PageRequest;
 import org.zkit.support.starter.mybatis.entity.PageResult;
 import org.zkit.support.starter.redisson.DistributedLock;
 
@@ -50,7 +50,7 @@ public class AccessRoleServiceImpl extends ServiceImpl<AccessRoleMapper, AccessR
     private AuthAccountRoleService authAccountRoleService;
 
     @Override
-    public PageResult<AccessRole> query(PageQueryRequest pq, AccessRoleQueryRequest query) {
+    public PageResult<AccessRole> query(PageRequest pq, AccessRoleQueryRequest query) {
         Boolean enable = null;
         switch (query.getEnable()) {
             case "0" -> enable = false;
@@ -58,9 +58,9 @@ public class AccessRoleServiceImpl extends ServiceImpl<AccessRoleMapper, AccessR
         }
         query.setEnableBool(enable);
         query.setKeyword(pq.getKeyword());
-        Page<Module> page = pq.toPage();
-        List<AccessRole> roles = baseMapper.query(page, query);
-        return PageResult.of(page.getTotal(), roles);
+        Page<AccessRole> page = pq.start();
+        baseMapper.query(query);
+        return PageResult.of(page);
     }
 
     @Override

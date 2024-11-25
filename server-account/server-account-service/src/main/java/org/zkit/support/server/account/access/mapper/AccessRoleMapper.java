@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface AccessRoleMapper extends BaseMapper<AccessRole> {
 
-    List<AccessRole> query(IPage<Module> page, @Param("query") AccessRoleQueryRequest query);
+    List<AccessRole> query(@Param("query") AccessRoleQueryRequest query);
     List<AccessRole> findByNameIn(@Param("nameList") Collection<String> nameList);
     int countByNameAndEnable(@Param("name") String name, @Param("enable") Boolean enable);
     AccessRole findOneByNameAndEnable(@Param("name") String name, @Param("enable") Boolean enable);

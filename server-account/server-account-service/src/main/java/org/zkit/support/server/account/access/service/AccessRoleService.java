@@ -5,7 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import org.zkit.support.server.account.access.entity.request.AccessRoleRequest;
 import org.zkit.support.server.account.access.entity.request.AccessRoleQueryRequest;
 import org.zkit.support.server.account.access.entity.response.AccessRoleResponse;
-import org.zkit.support.starter.mybatis.entity.PageQueryRequest;
+import org.zkit.support.starter.mybatis.entity.PageRequest;
 import org.zkit.support.starter.mybatis.entity.PageResult;
 
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.List;
  */
 public interface AccessRoleService extends IService<AccessRole> {
 
-    PageResult<AccessRole> query(PageQueryRequest page, AccessRoleQueryRequest query);
+    PageResult<AccessRole> query(PageRequest page, AccessRoleQueryRequest query);
     void create(AccessRoleRequest request);
     List<AccessRole> findByNameIn(List<String> names);
     AccessRoleResponse detail(Long id);
