@@ -61,12 +61,12 @@ public class TranslatorService {
             ChatResponse response = JSON.parseObject(restResult, ChatResponse.class);
             log.info("origin: {}", response);
             if (response != null) {
-                result = response.getChoices().get(0).getMessage().getContent();
+                result = response.getChoices().getFirst().getMessage().getContent();
                 redisTemplate.opsForValue().set(cacheKey, result, translatorConfiguration.getExpiration(), TimeUnit.SECONDS);
             }else{
                 result = "";
             }
         }
-        return Stream.of(result.split(",")).map(String::trim).distinct().toList();
+        return Stream.of(result.split("\\[-]")).map(String::trim).distinct().toList();
     }
 }
