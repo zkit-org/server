@@ -1,6 +1,7 @@
 package org.zkit.support.server.ai.service;
 
 import com.alibaba.fastjson2.JSON;
+import com.alibaba.fastjson2.JSONArray;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -64,9 +65,9 @@ public class TranslatorService {
                 result = response.getChoices().getFirst().getMessage().getContent();
                 redisTemplate.opsForValue().set(cacheKey, result, translatorConfiguration.getExpiration(), TimeUnit.SECONDS);
             }else{
-                result = "";
+                result = "[]";
             }
         }
-        return Stream.of(result.split("\\[-]")).map(String::trim).distinct().toList();
+        return JSONArray.parseArray(result, String.class).stream().map(String::trim).distinct().toList();
     }
 }
