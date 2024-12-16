@@ -11,6 +11,8 @@ import org.zkit.support.server.account.api.entity.request.ResetPasswordRequest;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.enums.AuthAccountEnum;
 import org.zkit.support.server.account.auth.service.AuthAccountRoleService;
+import org.zkit.support.server.account.auth.service.AuthOTPService;
+import org.zkit.support.server.account.configuration.AccountConfiguration;
 import org.zkit.support.starter.boot.exception.ResultException;
 import org.zkit.support.starter.boot.utils.AESUtils;
 import org.zkit.support.starter.boot.utils.RSAUtils;
@@ -22,7 +24,6 @@ import org.zkit.support.server.account.access.entity.dto.AccessAuthority;
 import org.zkit.support.server.account.access.entity.mapstruct.AccessApiMapStruct;
 import org.zkit.support.server.account.access.mapper.AccessApiMapper;
 import org.zkit.support.server.account.access.mapper.AccessAuthorityMapper;
-import org.zkit.support.server.account.access.service.AccessRoleService;
 import org.zkit.support.server.account.api.entity.code.AccountCode;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
 import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
@@ -33,7 +34,6 @@ import org.zkit.support.server.account.auth.mapper.AuthAccountMapper;
 import org.zkit.support.server.account.auth.service.AuthAccountService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
-import org.zkit.support.starter.security.configuration.AuthConfiguration;
 import org.zkit.support.starter.security.entity.CreateTokenData;
 import org.zkit.support.starter.security.entity.SessionUser;
 import org.zkit.support.starter.security.otp.OTPService;
@@ -62,17 +62,19 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @Resource
     private SessionService sessionService;
     @Resource
-    private AuthConfiguration authConfiguration;
-    @Resource
     private AccessAuthorityMapper accessAuthorityMapper;
     @Resource
     private AccessApiMapper accessApiMapper;
     @Resource
     private AccessApiMapStruct accessApiMapStruct;
     @Resource
-    private OTPService otpService;
+    private AuthOTPService authOTPService;
     @Resource
     private AuthAccountRoleService authAccountRoleService;
+    @Resource
+    private OTPService otpService;
+    @Resource
+    private AccountConfiguration configuration;
 
     @Cacheable(value = "auth:account#1d", key = "#username")
     @Override
@@ -97,13 +99,13 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         if(account.getOtpStatus() == 1) {
             throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
         }
-        boolean verified = otpService.check(account.getOtpSecret(), request.getCode());
+        boolean verified = authOTPService.check(account.getOtpSecret(), request.getCode());
         if(!verified) {
             throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
         }
-        String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
+        String password = RSAUtils.decrypt(request.getPassword(), configuration.getTransportPrivateKey());
         log.info("password: {}", password);
-        password = AESUtils.encrypt(password, authConfiguration.getAesKey());
+        password = AESUtils.encrypt(password, configuration.getAesKey());
 
         // 更新账号信息
         UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
@@ -115,13 +117,13 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         getBaseMapper().update(update);
 
         // 保存角色
-        String defaultRole = authConfiguration.getDefaultRole();
+        String defaultRole = configuration.getDefaultRole();
         if(defaultRole != null) {
             authAccountRoleService.addRoles(account.getId(), List.of(defaultRole));
         }
 
         // 生成token
-        CreateTokenRequest tokenRequest = new CreateTokenRequest(request.getId(), authConfiguration.getExpiresIn());
+        CreateTokenRequest tokenRequest = new CreateTokenRequest(request.getId(), configuration.getExpiresIn());
         TokenResponse response = this.createToken(tokenRequest);
         response.setUsername(account.getUsername());
         return response;
@@ -174,7 +176,7 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     public AuthAccountAccessData getAccessData(AuthAccount account) {
         List<String> authorityNames = Collections.emptyList();
         List<Long> authorityIds = Collections.emptyList();
-        if (authConfiguration.getSu().equals(account.getUsername())) { // 超管
+        if (configuration.getSu().equals(account.getUsername())) { // 超管
             List<AccessAuthority> all = accessAuthorityMapper.selectList(null);
             authorityNames = all.stream().map(AccessAuthority::getValue).toList();
             authorityIds = all.stream().map(AccessAuthority::getId).toList();
@@ -221,29 +223,29 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @Override
     public TokenResponse login(AccountLoginRequest request) {
         String code = request.getCode();
-        String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
+        String password = RSAUtils.decrypt(request.getPassword(), configuration.getTransportPrivateKey());
         AuthAccount account = baseMapper.findOneByUsername(request.getUsername());
         if(account == null) {
             throw new ResultException(AccountCode.LOGIN_ERROR.code, MessageUtils.get(AccountCode.LOGIN_ERROR.key));
         }
-        if(!password.equals(AESUtils.decrypt(account.getPassword(), authConfiguration.getAesKey()))) {
+        if(!password.equals(AESUtils.decrypt(account.getPassword(), configuration.getAesKey()))) {
             throw new ResultException(AccountCode.LOGIN_ERROR.code, MessageUtils.get(AccountCode.LOGIN_ERROR.key));
         }
         if(code != null) {
-            if(authConfiguration.getResetOtpCode().equals(code)) { // 重置OTP
+            if(configuration.getResetOtpCode().equals(code)) { // 重置OTP
                 if(account.getOtpStatus() == 0) {
                     return this.createToken(new CreateTokenRequest(account.getId(), 5 * 60 * 1000L));
                 }else{
                     throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
                 }
             }else{
-                boolean verified = otpService.check(account.getOtpSecret(), code);
+                boolean verified = authOTPService.check(account.getOtpSecret(), code);
                 if(!verified) {
                     throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
                 }
             }
         }
-        return this.createToken(new CreateTokenRequest(account.getId(), authConfiguration.getExpiresIn()));
+        return this.createToken(new CreateTokenRequest(account.getId(), configuration.getExpiresIn()));
     }
 
     @Override
@@ -252,12 +254,12 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         if(account.getStatus() != AuthAccountEnum.STATUS_NORMAL.code) {
             throw new ResultException(AccountCode.NOTFOUND.code, MessageUtils.get(AccountCode.NOTFOUND.key));
         }
-        String password = RSAUtils.decrypt(request.getPassword(), authConfiguration.getTransportPrivateKey());
-        password = AESUtils.encrypt(password, authConfiguration.getAesKey());
+        String password = RSAUtils.decrypt(request.getPassword(), configuration.getTransportPrivateKey());
+        password = AESUtils.encrypt(password, configuration.getAesKey());
         UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
         update.eq("id",account.getId());
         update.set("password", password);
         getBaseMapper().update(update);
-        return this.createToken(new CreateTokenRequest(account.getId(), authConfiguration.getExpiresIn()));
+        return this.createToken(new CreateTokenRequest(account.getId(), configuration.getExpiresIn()));
     }
 }
