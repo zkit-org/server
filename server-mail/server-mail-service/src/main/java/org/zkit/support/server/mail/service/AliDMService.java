@@ -9,8 +9,8 @@ import com.aliyuncs.profile.IClientProfile;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.zkit.support.server.mail.api.entity.MailSendRequest;
 import org.zkit.support.server.mail.configuration.AliDMConfiguration;
+import org.zkit.support.server.mail.entity.MailSendRequest;
 import org.zkit.support.server.mail.template.entity.dto.Template;
 import org.zkit.support.server.mail.template.service.TemplateService;
 

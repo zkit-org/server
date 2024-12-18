@@ -1,13 +1,13 @@
-package org.zkit.support.server.mail.api;
+package org.zkit.support.server.mail.service;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
-import org.zkit.support.server.mail.api.entity.EmailCode;
-import org.zkit.support.server.mail.api.entity.MailSendRequest;
+import org.zkit.support.server.mail.configuration.EmailConfiguration;
+import org.zkit.support.server.mail.entity.EmailCode;
+import org.zkit.support.server.mail.entity.MailSendRequest;
 import org.zkit.support.starter.boot.code.PublicCode;
-import org.zkit.support.server.mail.api.configuration.EmailConfiguration;
 import org.zkit.support.starter.boot.exception.ResultException;
 import org.zkit.support.starter.boot.utils.MessageUtils;
 
@@ -37,6 +37,7 @@ public class EmailCodeService {
     }
 
     public void send(String email, String action) {
+        if(configuration.getDebug()) return;
         String codeKey = "email:code:" + action + ":" + email;
         String timeKey = "email:code:" + action + ":" + email + ":send:time";
         EmailCode code = (EmailCode) redisTemplate.opsForValue().get(codeKey);
@@ -67,6 +68,12 @@ public class EmailCodeService {
     }
 
     public boolean check(String email, String code, String action) {
+        log.info("check email code: email={}, code={}, action={}", email, code, action);
+        log.info("debug: {}", configuration.getDebug());
+        log.info("config code: {}", configuration.getCode());
+        if(configuration.getDebug()) {
+            return code.equals(configuration.getCode());
+        }
         String codeKey = "email:code:" + action + ":" + email;
         EmailCode emailCode = (EmailCode) redisTemplate.opsForValue().get(codeKey);
         return !(emailCode == null || !emailCode.getCode().equals(code));

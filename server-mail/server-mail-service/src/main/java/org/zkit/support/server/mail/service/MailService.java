@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.zkit.support.server.mail.api.entity.MailSendRequest;
+import org.zkit.support.server.mail.entity.MailSendRequest;
 
 @Service
 @Slf4j

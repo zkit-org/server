@@ -1,4 +1,4 @@
-package org.zkit.support.server.mail.api.entity;
+package org.zkit.support.server.mail.entity;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;

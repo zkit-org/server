@@ -1,11 +1,11 @@
-package org.zkit.support.server.mail.api;
+package org.zkit.support.server.mail.service;
 
 import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
-import org.zkit.support.server.mail.api.configuration.EmailConfiguration;
-import org.zkit.support.server.mail.api.entity.MailSendRequest;
+import org.zkit.support.server.mail.configuration.EmailConfiguration;
+import org.zkit.support.server.mail.entity.MailSendRequest;
 
 @Component
 public class ServerMailApi {
