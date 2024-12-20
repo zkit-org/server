@@ -5,7 +5,7 @@ import jakarta.annotation.Resource;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.zkit.support.server.mail.configuration.EmailConfiguration;
-import org.zkit.support.server.mail.entity.MailSendRequest;
+import org.zkit.support.server.mail.api.entity.request.SendMailRequest;
 
 @Component
 public class ServerMailApi {
@@ -15,7 +15,7 @@ public class ServerMailApi {
     @Resource
     private EmailConfiguration configuration;
 
-    public void send(MailSendRequest request) {
+    public void send(SendMailRequest request) {
         kafkaTemplate.send(configuration.getTopic(), JSONObject.toJSONString(request));
     }
 

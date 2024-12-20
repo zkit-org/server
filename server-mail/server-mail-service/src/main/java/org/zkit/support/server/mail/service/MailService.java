@@ -4,7 +4,7 @@ import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.zkit.support.server.mail.entity.MailSendRequest;
+import org.zkit.support.server.mail.api.entity.request.SendMailRequest;
 
 @Service
 @Slf4j
@@ -14,7 +14,7 @@ public class MailService {
     private AliDMService aliDMService;
 
     public void sendMail(String jsonData) {
-        MailSendRequest request = JSONObject.parseObject(jsonData, MailSendRequest.class);
+        SendMailRequest request = JSONObject.parseObject(jsonData, SendMailRequest.class);
         log.info("send mail: {}", request);
         aliDMService.singleSendMail(request);
     }

@@ -10,7 +10,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.zkit.support.server.mail.configuration.AliDMConfiguration;
-import org.zkit.support.server.mail.entity.MailSendRequest;
+import org.zkit.support.server.mail.api.entity.request.SendMailRequest;
 import org.zkit.support.server.mail.template.entity.dto.Template;
 import org.zkit.support.server.mail.template.service.TemplateService;
 
@@ -27,7 +27,7 @@ public class AliDMService {
     @Resource
     private TemplateService templateService;
 
-    public void singleSendMail(MailSendRequest sendRequest){
+    public void singleSendMail(SendMailRequest sendRequest){
         Template template = templateService.findByLanguageAndPath(sendRequest.getLanguage(), sendRequest.getTemplate());
 
         // 如果是除杭州region外的其它region（如新加坡、澳洲Region），需要将下面的"cn-hangzhou"替换为"ap-southeast-1"、或"ap-southeast-2"。

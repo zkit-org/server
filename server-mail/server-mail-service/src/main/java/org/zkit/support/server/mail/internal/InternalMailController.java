@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.zkit.support.server.mail.api.constant.MailApiRoute;
 import org.zkit.support.server.mail.api.entity.request.CheckCodeRequest;
 import org.zkit.support.server.mail.api.entity.request.SendCodeRequest;
+import org.zkit.support.server.mail.api.entity.request.SendMailRequest;
 import org.zkit.support.server.mail.service.EmailCodeService;
+import org.zkit.support.server.mail.service.ServerMailApi;
 
 @RestController
 @Slf4j
@@ -19,10 +21,18 @@ public class InternalMailController {
 
     @Resource
     private EmailCodeService emailCodeService;
+    @Resource
+    private ServerMailApi serverMailApi;
 
     @Operation(summary = "发送邮件")
     @PostMapping(MailApiRoute.SEND)
-    public void send(@RequestBody SendCodeRequest request) {
+    public void send(@RequestBody SendMailRequest request) {
+        serverMailApi.send(request);
+    }
+
+    @Operation(summary = "发送邮件验证码")
+    @PostMapping(MailApiRoute.SEND_CODE)
+    public void sendCode(@RequestBody SendCodeRequest request) {
         emailCodeService.send(request.getEmail(), request.getAction());
     }
 

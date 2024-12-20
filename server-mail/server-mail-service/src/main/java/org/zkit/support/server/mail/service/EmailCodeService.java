@@ -6,7 +6,7 @@ import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Component;
 import org.zkit.support.server.mail.configuration.EmailConfiguration;
 import org.zkit.support.server.mail.entity.EmailCode;
-import org.zkit.support.server.mail.entity.MailSendRequest;
+import org.zkit.support.server.mail.api.entity.request.SendMailRequest;
 import org.zkit.support.starter.boot.code.PublicCode;
 import org.zkit.support.starter.boot.exception.ResultException;
 import org.zkit.support.starter.boot.utils.MessageUtils;
@@ -56,7 +56,7 @@ public class EmailCodeService {
         if(configuration.getDebug()) {
             return;
         }
-        MailSendRequest request = new MailSendRequest();
+        SendMailRequest request = new SendMailRequest();
         request.setTo(email);
         request.setTemplate("email/code");
         request.setLanguage(MessageUtils.getLocale());
