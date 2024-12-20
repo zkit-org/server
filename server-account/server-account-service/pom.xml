@@ -6,6 +6,7 @@
         <groupId>org.zkit.support</groupId>
         <artifactId>server-account</artifactId>
         <version>0.0.1-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
     </parent>
     <artifactId>server-account-service</artifactId>
     <version>0.0.1-SNAPSHOT</version>

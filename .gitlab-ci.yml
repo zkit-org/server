@@ -11,6 +11,7 @@ package-account:
     script:
         - java -version
         - mvn -v
+        - mvn install -Dmaven.test.skip=true
         - cd server-account/server-account-api
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - cd ../../server-account/server-account-service
@@ -54,6 +55,7 @@ package-ai:
     script:
         - java -version
         - mvn -v
+        - mvn install -Dmaven.test.skip=true
         - cd server-ai/server-ai-api
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - cd ../../server-ai/server-ai-service
@@ -75,6 +77,7 @@ package-assets:
     script:
         - java -version
         - mvn -v
+        - mvn install -Dmaven.test.skip=true
         - cd server-assets/server-assets-api
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - cd ../../server-assets/server-assets-service
