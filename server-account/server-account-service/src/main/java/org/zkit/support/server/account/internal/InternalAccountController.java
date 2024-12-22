@@ -11,6 +11,7 @@ import org.zkit.support.server.account.api.entity.request.*;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
+import org.zkit.support.server.account.api.entity.response.TokenWithAccountResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.mapstruct.AuthAccountMapStruct;
 import org.zkit.support.server.account.auth.service.AuthAccountService;
@@ -57,14 +58,14 @@ public class InternalAccountController {
 
     @PostMapping(AccountApiRoute.AUTH_ACCOUNT_OTP_SECRET)
     @Operation(summary = "获取OTP密钥")
-    public OTPResponse otpSecret(@RequestParam("id") Long id) {
-        return authAccountService.otpSecret(id);
+    public OTPResponse otpSecret(@RequestParam("username") String username) {
+        return authAccountService.otpSecret(username);
     }
 
-    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_SET_PASSWORD)
-    @Operation(summary = "设置密码")
-    public TokenResponse setPassword(@RequestBody() SetPasswordRequest request) {
-        return authAccountService.setPassword(request);
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_REGISTER)
+    @Operation(summary = "注册")
+    public TokenWithAccountResponse register(@RequestBody() AccountRegisterRequest request) {
+        return authAccountService.register(request);
     }
 
     @PostMapping(AccountApiRoute.AUTH_ACCOUNT_LOGIN)

@@ -34,6 +34,9 @@ public class AuthAccountRoleServiceImpl extends ServiceImpl<AuthAccountRoleMappe
             return;
         }
         List<AccessRole> accessRoles = accessRoleService.findByNameIn(roles);
+        if(accessRoles.isEmpty()) {
+            return;
+        }
         List<AuthAccountRole> accountRoles = roles.stream().map(role -> {
             AuthAccountRole accountRole = new AuthAccountRole();
             accountRole.setAccountId(accountId);

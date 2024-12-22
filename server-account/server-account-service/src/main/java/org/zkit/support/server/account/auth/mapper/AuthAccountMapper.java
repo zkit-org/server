@@ -15,5 +15,6 @@ import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 public interface AuthAccountMapper extends BaseMapper<AuthAccount> {
 
     AuthAccount findOneByUsername(@Param("username") String username);
+    int countByUsernameAndDeleted(@Param("username") String username, @Param("deleted") Boolean deleted);
 
 }

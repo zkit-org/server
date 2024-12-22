@@ -3,13 +3,13 @@ package org.zkit.support.server.account.auth.service.impl;
 import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.transaction.annotation.Transactional;
-import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
-import org.zkit.support.server.account.api.entity.request.ResetPasswordRequest;
+import org.zkit.support.server.account.api.entity.request.*;
+import org.zkit.support.server.account.api.entity.response.TokenWithAccountResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.enums.AuthAccountEnum;
+import org.zkit.support.server.account.auth.entity.mapstruct.AuthAccountMapStruct;
 import org.zkit.support.server.account.auth.service.AuthAccountRoleService;
 import org.zkit.support.server.account.auth.service.AuthOTPService;
 import org.zkit.support.server.account.configuration.AccountConfiguration;
@@ -25,8 +25,6 @@ import org.zkit.support.server.account.access.entity.mapstruct.AccessApiMapStruc
 import org.zkit.support.server.account.access.mapper.AccessApiMapper;
 import org.zkit.support.server.account.access.mapper.AccessAuthorityMapper;
 import org.zkit.support.server.account.api.entity.code.AccountCode;
-import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
-import org.zkit.support.server.account.api.entity.request.SetPasswordRequest;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.response.AuthAccountAccessData;
@@ -75,6 +73,8 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     private OTPService otpService;
     @Resource
     private AccountConfiguration configuration;
+    @Resource
+    private AuthAccountMapStruct authAccountMapStruct;
 
     @Cacheable(value = "auth:account#1d", key = "#username")
     @Override
@@ -91,15 +91,10 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @CacheEvict(value = "auth:account", key = "#result.username")
-    @DistributedLock("'auth:account:'+#request.id")
+    @DistributedLock(value = "auth:account", el = false)
     @Transactional
-    public TokenResponse setPassword(SetPasswordRequest request) {
-        AuthAccount account = getById(request.getId());
-        if(account.getOtpStatus() == 1) {
-            throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
-        }
-        boolean verified = authOTPService.check(account.getOtpSecret(), request.getCode());
+    public TokenWithAccountResponse register(AccountRegisterRequest request) {
+        boolean verified = authOTPService.check(request.getSecret(), request.getCode());
         if(!verified) {
             throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
         }
@@ -107,14 +102,15 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         log.info("password: {}", password);
         password = AESUtils.encrypt(password, configuration.getAesKey());
 
-        // 更新账号信息
-        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
-        update.eq("id",account.getId());
-        update
-                .set("password", password)
-                .set("otp_status", 1)
-                .set("status", 1);
-        getBaseMapper().update(update);
+        int size = baseMapper.countByUsernameAndDeleted(request.getUsername(), false);
+        if(size > 0) {
+            throw new ResultException(AccountCode.REGISTER_HAS.code, MessageUtils.get(AccountCode.REGISTER_HAS.key));
+        }
+        AuthAccount account = authAccountMapStruct.toAuthAccountFromRegister(request);
+        account.setCreateTime(new Date());
+        account.setPassword(password);
+        account.setOtpStatus(1);
+        this.save(account);
 
         // 保存角色
         String defaultRole = configuration.getDefaultRole();
@@ -123,10 +119,13 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         }
 
         // 生成token
-        CreateTokenRequest tokenRequest = new CreateTokenRequest(request.getId(), configuration.getExpiresIn());
+        CreateTokenRequest tokenRequest = new CreateTokenRequest(account.getId(), configuration.getExpiresIn());
         TokenResponse response = this.createToken(tokenRequest);
         response.setUsername(account.getUsername());
-        return response;
+        TokenWithAccountResponse tokenWithAccountResponse = authAccountMapStruct.toTokenWithAccountResponse(response);
+        tokenWithAccountResponse.setAccountId(account.getId());
+        tokenWithAccountResponse.setUsername(account.getUsername());
+        return tokenWithAccountResponse;
     }
 
     @Override
@@ -197,26 +196,14 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    @CacheEvict(value = "auth:account", key = "#result.username")
-    @DistributedLock("'auth:account'+#id")
-    public OTPResponse otpSecret(Long id) {
-        AuthAccount account = getById(id);
-        if(account.getOtpStatus() == 1) {
-            throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
-        }
+    public OTPResponse otpSecret(String username) {
         String key = otpService.generateSecretKey();
-        String qrCode = otpService.getQRCode(account.getUsername(), key);
-
-        // 更新otp信息
-        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
-        update.eq("id",account.getId());
-        update.set("otp_secret", key);
-        getBaseMapper().update(update);
+        String qrCode = otpService.getQRCode(username, key);
 
         OTPResponse response = new OTPResponse();
         response.setSecret(key);
         response.setQrcode(qrCode);
-        response.setUsername(account.getUsername());
+        response.setUsername(username);
         return response;
     }
 

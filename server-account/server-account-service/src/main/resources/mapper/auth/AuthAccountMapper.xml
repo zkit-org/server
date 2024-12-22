@@ -27,4 +27,11 @@
         username = #{username,jdbcType=VARCHAR}
     </select>
 
+    <select id="countByUsernameAndDeleted" resultType="int">
+        select count(*)
+        from auth_account
+        where username = #{username,jdbcType=VARCHAR}
+          AND deleted = #{deleted,jdbcType=BOOLEAN}
+    </select>
+
 </mapper>

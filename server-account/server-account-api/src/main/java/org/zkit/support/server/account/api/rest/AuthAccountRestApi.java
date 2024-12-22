@@ -12,6 +12,7 @@ import org.zkit.support.server.account.api.entity.request.*;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
+import org.zkit.support.server.account.api.entity.response.TokenWithAccountResponse;
 import org.zkit.support.starter.boot.entity.Result;
 
 @FeignClient(value = AccountApi.APP_NAME)
@@ -31,10 +32,10 @@ public interface AuthAccountRestApi {
     Result<TokenResponse> createToken(@RequestBody() CreateTokenRequest request);
 
     @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_OTP_SECRET)
-    Result<OTPResponse> otpSecret(@RequestParam("id") Long id);
+    Result<OTPResponse> otpSecret(@RequestParam("username") String username);
 
-    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_SET_PASSWORD)
-    Result<TokenResponse> setPassword(@RequestBody() SetPasswordRequest request);
+    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_REGISTER)
+    Result<TokenWithAccountResponse> register(@RequestBody() AccountRegisterRequest request);
 
     @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_LOGIN)
     Result<TokenResponse> login(@RequestBody() AccountLoginRequest request);
