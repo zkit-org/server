@@ -25,6 +25,7 @@
         from auth_account
         where
         username = #{username,jdbcType=VARCHAR}
+        and deleted = false
     </select>
 
     <select id="countByUsernameAndDeleted" resultType="int">
