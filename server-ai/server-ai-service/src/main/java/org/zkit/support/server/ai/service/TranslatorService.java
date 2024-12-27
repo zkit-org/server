@@ -49,6 +49,7 @@ public class TranslatorService {
 
             ChatRequest chatRequest = new ChatRequest();
             chatRequest.setModel(aiConfiguration.getModel());
+            chatRequest.setModel_id(aiConfiguration.getModelId());
             chatRequest.setMessages(messages);
             chatRequest.setTemperature(0.3);
 

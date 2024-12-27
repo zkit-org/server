@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 public class AIConfiguration {
 
     private String model;
+    private String modelId;
     private String host;
     private String apiKey;
     private String chatApi;
