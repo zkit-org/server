@@ -16,6 +16,7 @@ import org.zkit.support.server.ai.api.entity.InvokeRequest;
 import org.zkit.support.server.ai.api.entity.Message;
 import org.zkit.support.starter.boot.entity.Result;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -30,7 +31,7 @@ public class AIAPIService {
     public Result<String> invoke(InvokeRequest request){
         InvokeHttpEntity httpEntity = new InvokeHttpEntity();
         httpEntity.setContent(request.getContent());
-        List<Message> messages = configuration.getPrompts();
+        List<Message> messages = new ArrayList<>(configuration.getPrompts());
         request.getMessages().forEach(m -> {
             Message message = new Message();
             message.setRole("user");
