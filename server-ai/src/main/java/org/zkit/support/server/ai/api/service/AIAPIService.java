@@ -3,6 +3,14 @@ package org.zkit.support.server.ai.api.service;
 import com.alibaba.fastjson2.JSON;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
+import okhttp3.sse.EventSource;
+import okhttp3.sse.EventSourceListener;
+import okhttp3.sse.EventSources;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -18,6 +26,7 @@ import org.zkit.support.starter.boot.entity.Result;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 @Slf4j
 @Service
@@ -28,7 +37,53 @@ public class AIAPIService {
     @Resource
     private RestTemplate restTemplate;
 
-    public Result<String> invoke(InvokeRequest request){
+    public void stream(InvokeRequest invokeRequest) throws InterruptedException {
+        InvokeHttpEntity httpEntity = getInvokeHttpEntity(invokeRequest);
+        log.info("stream request: {}", JSON.toJSONString(invokeRequest));
+        // 创建请求体
+        okhttp3.MediaType json = okhttp3.MediaType.parse("application/json; charset=utf-8");
+        RequestBody requestBody = RequestBody.create(JSON.toJSONString(httpEntity), json);
+
+        // 创建请求对象
+        Request request = new Request.Builder()
+                .url(configuration.getBaseUrl() + "/chain/stream")
+                .post(requestBody) // 请求体
+                .addHeader("Accept", "text/event-stream")
+                .build();
+
+        // 开启 Http 客户端
+        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)   // 建立连接的超时时间
+                .readTimeout(10, TimeUnit.MINUTES)  // 建立连接后读取数据的超时时间
+                .build();
+
+        EventSource.Factory factory = EventSources.createFactory(okHttpClient);
+        EventSourceListener eventSourceListener = new EventSourceListener() {
+            @Override
+            public void onOpen(@NotNull final EventSource eventSource, @NotNull final Response response) {
+                log.info("建立sse连接...");
+            }
+
+            @Override
+            public void onEvent(@NotNull final EventSource eventSource, final String id, final String type, @NotNull final String data) {
+                log.info("{}: {}", id, data);
+            }
+
+            @Override
+            public void onClosed(@NotNull final EventSource eventSource) {
+                log.info("sse连接关闭...");
+            }
+
+            @Override
+            public void onFailure(@NotNull final EventSource eventSource, final Throwable t, final Response response) {
+                log.error("使用事件源时出现异常... [响应：{}]...", response, t);
+            }
+        };
+        //创建事件
+        factory.newEventSource(request, eventSourceListener);
+    }
+
+    private InvokeHttpEntity getInvokeHttpEntity(InvokeRequest request){
         InvokeHttpEntity httpEntity = new InvokeHttpEntity();
         httpEntity.setContent(request.getContent());
         List<Message> messages = new ArrayList<>(configuration.getPrompts());
@@ -41,6 +96,11 @@ public class AIAPIService {
         httpEntity.setMessages(messages);
         httpEntity.setLimit(configuration.getLimit());
         httpEntity.setFilter(request.getFilter());
+        return httpEntity;
+    }
+
+    public Result<String> invoke(InvokeRequest request){
+        InvokeHttpEntity httpEntity = getInvokeHttpEntity(request);
 
         log.info("invoke request: {}", JSON.toJSONString(httpEntity));
 
