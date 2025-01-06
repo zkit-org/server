@@ -14,6 +14,7 @@ import org.jetbrains.annotations.NotNull;
 import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 import org.zkit.support.server.ai.api.configuration.AIConfiguration;
 import org.zkit.support.server.ai.api.entity.Document;
 import org.zkit.support.server.ai.api.entity.InvokeHttpEntity;
@@ -24,8 +25,11 @@ import org.zkit.support.server.ai.api.entity.InvokeRequest;
 import org.zkit.support.server.ai.api.entity.Message;
 import org.zkit.support.starter.boot.entity.Result;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -37,7 +41,8 @@ public class AIAPIService {
     @Resource
     private RestTemplate restTemplate;
 
-    public void stream(InvokeRequest invokeRequest) throws InterruptedException {
+    public SseEmitter stream(InvokeRequest invokeRequest) {
+        SseEmitter emitter = new SseEmitter();
         InvokeHttpEntity httpEntity = getInvokeHttpEntity(invokeRequest);
         log.info("stream request: {}", JSON.toJSONString(invokeRequest));
         // 创建请求体
@@ -61,26 +66,37 @@ public class AIAPIService {
         EventSourceListener eventSourceListener = new EventSourceListener() {
             @Override
             public void onOpen(@NotNull final EventSource eventSource, @NotNull final Response response) {
-                log.info("建立sse连接...");
+                log.info("EventSourceListener onOpen");
             }
 
             @Override
             public void onEvent(@NotNull final EventSource eventSource, final String id, final String type, @NotNull final String data) {
-                log.info("{}: {}", id, data);
+                log.info("EventSourceListener onEvent {}: {}", id, data);
+//                try {
+//                    Map<String, Object> event = new HashMap<>();
+//                    event.put("data", data);
+//                    emitter.send(event);
+//                } catch (IOException e) {
+//                    emitter.completeWithError(e); // 发送错误
+//                }
             }
 
             @Override
             public void onClosed(@NotNull final EventSource eventSource) {
-                log.info("sse连接关闭...");
+                log.info("EventSourceListener onClosed");
+                // emitter.complete(); // 关闭连接
             }
 
             @Override
             public void onFailure(@NotNull final EventSource eventSource, final Throwable t, final Response response) {
-                log.error("使用事件源时出现异常... [响应：{}]...", response, t);
+                log.error("Error... [Response：{}]...", response, t);
+                // emitter.completeWithError(t); // 发送错误
             }
         };
         //创建事件
         factory.newEventSource(request, eventSourceListener);
+
+        return emitter;
     }
 
     private InvokeHttpEntity getInvokeHttpEntity(InvokeRequest request){
