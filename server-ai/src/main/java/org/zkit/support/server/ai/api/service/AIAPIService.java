@@ -57,12 +57,12 @@ public class AIAPIService {
                 .build();
 
         // 开启 Http 客户端
-        OkHttpClient okHttpClient = new OkHttpClient.Builder()
+        OkHttpClient client = new OkHttpClient.Builder()
                 .connectTimeout(10, TimeUnit.SECONDS)   // 建立连接的超时时间
                 .readTimeout(10, TimeUnit.MINUTES)  // 建立连接后读取数据的超时时间
                 .build();
 
-        EventSource.Factory factory = EventSources.createFactory(okHttpClient);
+        EventSource.Factory factory = EventSources.createFactory(client);
         EventSourceListener eventSourceListener = new EventSourceListener() {
             @Override
             public void onOpen(@NotNull final EventSource eventSource, @NotNull final Response response) {
@@ -71,26 +71,24 @@ public class AIAPIService {
 
             @Override
             public void onEvent(@NotNull final EventSource eventSource, final String id, final String type, @NotNull final String data) {
-                log.info("EventSourceListener onEvent {}: {}", id, data);
-//                try {
-//                    Map<String, Object> event = new HashMap<>();
-//                    event.put("data", data);
-//                    emitter.send(event);
-//                } catch (IOException e) {
-//                    emitter.completeWithError(e); // 发送错误
-//                }
+                log.info("EventSourceListener onEvent {}", data);
+                try {
+                    emitter.send(data); // 发送数据
+                } catch (IOException e) {
+                    emitter.completeWithError(e); // 发送错误
+                }
             }
 
             @Override
             public void onClosed(@NotNull final EventSource eventSource) {
                 log.info("EventSourceListener onClosed");
-                // emitter.complete(); // 关闭连接
+                emitter.complete(); // 关闭连接
             }
 
             @Override
             public void onFailure(@NotNull final EventSource eventSource, final Throwable t, final Response response) {
                 log.error("Error... [Response：{}]...", response, t);
-                // emitter.completeWithError(t); // 发送错误
+                emitter.completeWithError(t); // 发送错误
             }
         };
         //创建事件
