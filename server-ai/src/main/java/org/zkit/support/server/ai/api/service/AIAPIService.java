@@ -27,9 +27,7 @@ import org.zkit.support.starter.boot.entity.Result;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 @Slf4j
@@ -49,9 +47,11 @@ public class AIAPIService {
         okhttp3.MediaType json = okhttp3.MediaType.parse("application/json; charset=utf-8");
         RequestBody requestBody = RequestBody.create(JSON.toJSONString(httpEntity), json);
 
+        String url = configuration.getBaseUrl() + configuration.getStreamUrl();
+        log.info("stream url: {}", url);
         // 创建请求对象
         Request request = new Request.Builder()
-                .url(configuration.getBaseUrl() + "/chain/stream")
+                .url(url)
                 .post(requestBody) // 请求体
                 .addHeader("Accept", "text/event-stream")
                 .build();
@@ -71,7 +71,6 @@ public class AIAPIService {
 
             @Override
             public void onEvent(@NotNull final EventSource eventSource, final String id, final String type, @NotNull final String data) {
-                log.info("EventSourceListener onEvent {}", data);
                 try {
                     emitter.send(data); // 发送数据
                 } catch (IOException e) {
@@ -122,8 +121,10 @@ public class AIAPIService {
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
 
+        String url = configuration.getBaseUrl() + configuration.getInvokeUrl();
+        log.info("invoke url: {}", url);
         HttpEntity<String> entity = new HttpEntity<>(JSON.toJSONString(httpEntity), headers);
-        String r = restTemplate.exchange(configuration.getBaseUrl() + "/chain/invoke", HttpMethod.POST, entity, String.class).getBody();
+        String r = restTemplate.exchange(url, HttpMethod.POST, entity, String.class).getBody();
 
         log.info("invoke response: {}", r);
         return JSON.parseObject(r, new com.alibaba.fastjson2.TypeReference<Result<String>>(){});
@@ -136,8 +137,10 @@ public class AIAPIService {
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
 
+        String url = configuration.getBaseUrl() + "/vector/document/add";
+        log.info("addDocuments url: {}", url);
         HttpEntity<String> entity = new HttpEntity<>(JSON.toJSONString(documents), headers);
-        String r = restTemplate.exchange(configuration.getBaseUrl() + "/vector/document/add", HttpMethod.POST, entity, String.class).getBody();
+        String r = restTemplate.exchange(url, HttpMethod.POST, entity, String.class).getBody();
 
         log.info("addDocuments response: {}", r);
         return JSON.parseObject(r, new com.alibaba.fastjson2.TypeReference<Result<String>>(){});
@@ -150,8 +153,10 @@ public class AIAPIService {
         MediaType type = MediaType.parseMediaType("application/json; charset=UTF-8");
         headers.setContentType(type);
 
+        String url = configuration.getBaseUrl() + "/vector/document/remove";
+        log.info("removeDocuments url: {}", url);
         HttpEntity<String> entity = new HttpEntity<>(JSON.toJSONString(ids), headers);
-        String r = restTemplate.exchange(configuration.getBaseUrl() + "/vector/document/remove", HttpMethod.DELETE, entity, String.class).getBody();
+        String r = restTemplate.exchange(url, HttpMethod.DELETE, entity, String.class).getBody();
 
         log.info("removeDocuments response: {}", r);
         return JSON.parseObject(r, new com.alibaba.fastjson2.TypeReference<Result<String>>(){});

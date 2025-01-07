@@ -15,5 +15,7 @@ public class AIConfiguration {
     private String baseUrl;
     private List<Message> prompts;
     private Integer limit;
+    private String invokeUrl = "/chain/invoke";
+    private String streamUrl = "/chain/stream";
 
 }
