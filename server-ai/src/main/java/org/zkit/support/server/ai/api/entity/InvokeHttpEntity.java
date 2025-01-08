@@ -12,5 +12,6 @@ public class InvokeHttpEntity {
     private List<Message> messages;
     private Integer limit;
     private JSONObject filter;
+    private Boolean use_vector = false;
 
 }

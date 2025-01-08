@@ -9,7 +9,8 @@ import java.util.List;
 public class InvokeRequest {
 
     private String content;
-    private List<String> messages;
+    private List<Message> messages;
     private JSONObject filter;
+    private Boolean useVector = false;
 
 }
