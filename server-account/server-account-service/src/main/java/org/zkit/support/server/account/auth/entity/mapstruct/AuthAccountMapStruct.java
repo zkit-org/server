@@ -15,7 +15,6 @@ public interface AuthAccountMapStruct {
 
     AccountResponse toAccountResponse(AuthAccount request);
     AuthAccount toAuthAccount(AccountAddRequest request);
-    @Mapping(target = "otpSecret", source = "secret")
     AuthAccount toAuthAccountFromRegister(AccountRegisterRequest request);
     TokenWithAccountResponse toTokenWithAccountResponse(TokenResponse response);
 

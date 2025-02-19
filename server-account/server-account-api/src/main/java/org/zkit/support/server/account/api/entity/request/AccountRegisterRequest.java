@@ -13,10 +13,4 @@ public class AccountRegisterRequest {
     @Schema(description = "密码")
     private String password;
 
-    @Schema(description = "验证码")
-    private String code;
-
-    @Schema(description = "秘钥")
-    private String secret;
-
 }
