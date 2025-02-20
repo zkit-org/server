@@ -94,10 +94,6 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     @DistributedLock(value = "auth:account", el = false)
     @Transactional
     public TokenWithAccountResponse register(AccountRegisterRequest request) {
-//        boolean verified = authOTPService.check(request.getSecret(), request.getCode());
-//        if(!verified) {
-//            throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
-//        }
         String password = RSAUtils.decrypt(request.getPassword(), configuration.getTransportPrivateKey());
         password = AESUtils.encrypt(password, configuration.getAesKey());
 
@@ -161,6 +157,8 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         user.setJwtToken(jwtToken);
         user.setApis(accessData.getApis());
         user.setAuthorities(accessData.getAuthorities());
+        user.setOtpBind(account.getOtpStatus() == 1);
+        user.setRequireOtp(configuration.getRequireOtp());
         sessionService.login(user);
 
         // 客户端 token
