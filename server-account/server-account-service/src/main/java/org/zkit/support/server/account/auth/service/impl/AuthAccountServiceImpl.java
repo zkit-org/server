@@ -157,8 +157,6 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         user.setJwtToken(jwtToken);
         user.setApis(accessData.getApis());
         user.setAuthorities(accessData.getAuthorities());
-        user.setOtpBind(account.getOtpStatus() == 1);
-        user.setRequireOtp(configuration.getRequireOtp());
         sessionService.login(user);
 
         // 客户端 token

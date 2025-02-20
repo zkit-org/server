@@ -19,6 +19,5 @@ public class AccountConfiguration {
     private String otpCode;
     private String resetOtpCode;
     private Long expiresIn;
-    private Boolean requireOtp = true;
 
 }
