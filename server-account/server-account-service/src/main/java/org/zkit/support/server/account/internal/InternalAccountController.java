@@ -85,4 +85,10 @@ public class InternalAccountController {
     public TokenResponse setPassword(@RequestBody() ResetPasswordRequest request) {
         return authAccountService.resetPassword(request);
     }
+
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_CHANGE_PASSWORD)
+    @Operation(summary = "修改密码")
+    public void changePassword(@RequestBody() ChangePasswordRequest request) {
+        authAccountService.changePassword(request);
+    }
 }

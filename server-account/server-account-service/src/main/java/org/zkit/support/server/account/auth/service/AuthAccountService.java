@@ -25,5 +25,6 @@ public interface AuthAccountService extends IService<AuthAccount> {
     TokenWithAccountResponse register(AccountRegisterRequest request);
     TokenResponse login(AccountLoginRequest request);
     TokenResponse resetPassword(ResetPasswordRequest request);
+    void changePassword(ChangePasswordRequest request);
 
 }

@@ -243,4 +243,22 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         getBaseMapper().update(update);
         return this.createToken(new CreateTokenRequest(account.getId(), configuration.getExpiresIn()));
     }
+
+    @Override
+    public void changePassword(ChangePasswordRequest request) {
+        AuthAccount account = getById(request.getId());
+        if(account.getStatus() != AuthAccountEnum.STATUS_NORMAL.code) {
+            throw new ResultException(AccountCode.NOTFOUND.code, MessageUtils.get(AccountCode.NOTFOUND.key));
+        }
+        String originPasswordRequest = RSAUtils.decrypt(request.getOriginPassword(), configuration.getTransportPrivateKey());
+        String originPassword = AESUtils.decrypt(account.getPassword(), configuration.getAesKey());
+        if(!originPassword.equals(originPasswordRequest)) {
+            throw new ResultException(AccountCode.PASSWORD_ERROR.code, MessageUtils.get(AccountCode.PASSWORD_ERROR.key));
+        }
+        String newPassword = AESUtils.encrypt(RSAUtils.decrypt(request.getPassword(), configuration.getTransportPrivateKey()), configuration.getAesKey());
+        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
+        update.eq("id",account.getId());
+        update.set("password", newPassword);
+        getBaseMapper().update(update);
+    }
 }

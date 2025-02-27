@@ -46,4 +46,7 @@ public interface AuthAccountRestApi {
     @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_RESET_PASSWORD)
     Result<TokenResponse> resetPassword(@RequestBody() ResetPasswordRequest request);
 
+    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_CHANGE_PASSWORD)
+    Result<?> changePassword(@RequestBody() ChangePasswordRequest request);
+
 }
