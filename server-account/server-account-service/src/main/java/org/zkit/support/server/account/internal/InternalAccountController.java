@@ -19,7 +19,7 @@ import org.zkit.support.starter.security.service.SessionService;
 
 @RestController
 @Slf4j
-@Tag(name = "internal-account", description = "[内部接口]用户账户")
+@Tag(name = "InternalAccountController", description = "[内部接口]用户账户")
 public class InternalAccountController {
 
     @Resource
@@ -54,12 +54,6 @@ public class InternalAccountController {
     @Operation(summary = "创建Token")
     public TokenResponse createToken(@RequestBody() CreateTokenRequest request) {
         return authAccountService.createToken(request);
-    }
-
-    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_OTP_SECRET)
-    @Operation(summary = "获取OTP密钥")
-    public OTPResponse otpSecret(@RequestParam("username") String username) {
-        return authAccountService.otpSecret(username);
     }
 
     @PostMapping(AccountApiRoute.AUTH_ACCOUNT_REGISTER)

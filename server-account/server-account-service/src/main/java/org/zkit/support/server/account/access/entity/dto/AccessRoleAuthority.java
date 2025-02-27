@@ -7,6 +7,7 @@ import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -14,9 +15,10 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-11-21
+ * @since 2025-02-27
  */
 @Data
+@Accessors(chain = true)
 @TableName("access_role_authority")
 @Schema(name = "AccessRoleAuthority", description = "角色包含的权限")
 public class AccessRoleAuthority implements Serializable {

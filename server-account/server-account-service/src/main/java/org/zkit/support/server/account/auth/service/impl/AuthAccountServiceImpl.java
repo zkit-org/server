@@ -4,8 +4,10 @@ import com.baomidou.mybatisplus.core.conditions.update.UpdateWrapper;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.transaction.annotation.Transactional;
 import org.zkit.support.server.account.api.entity.request.*;
+import org.zkit.support.server.account.api.entity.response.OTPStatusResponse;
 import org.zkit.support.server.account.api.entity.response.TokenWithAccountResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.enums.AuthAccountEnum;
@@ -41,6 +43,7 @@ import org.zkit.support.starter.security.service.TokenService;
 import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 import java.util.stream.Collectors;
 
 /**
@@ -75,6 +78,8 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     private AccountConfiguration configuration;
     @Resource
     private AuthAccountMapStruct authAccountMapStruct;
+    @Resource
+    private RedisTemplate<String, String> redisTemplate;
 
     @Cacheable(value = "auth:account#1d", key = "#username")
     @Override
@@ -190,14 +195,18 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
     }
 
     @Override
-    public OTPResponse otpSecret(String username) {
+    public OTPResponse otpSecret(Long accountId) {
+        AuthAccount account = getById(accountId);
         String key = otpService.generateSecretKey();
-        String qrCode = otpService.getQRCode(username, key);
+        String qrCode = otpService.getQRCode(account.getUsername(), key);
 
         OTPResponse response = new OTPResponse();
         response.setSecret(key);
         response.setQrcode(qrCode);
-        response.setUsername(username);
+        response.setUsername(account.getUsername());
+
+        // 缓存密码
+        redisTemplate.opsForValue().set("otp:secret:" + account.getUsername(), key, 5, TimeUnit.MINUTES);
         return response;
     }
 
@@ -260,5 +269,14 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         update.eq("id",account.getId());
         update.set("password", newPassword);
         getBaseMapper().update(update);
+    }
+
+    @Override
+    public OTPStatusResponse otpStatus(Long accountId) {
+        AuthAccount account = getById(accountId);
+        OTPStatusResponse response = new OTPStatusResponse();
+        response.setEnable(account.getOtpStatus() == 1);
+        response.setEnableTime(account.getOtpEnableTime());
+        return response;
     }
 }

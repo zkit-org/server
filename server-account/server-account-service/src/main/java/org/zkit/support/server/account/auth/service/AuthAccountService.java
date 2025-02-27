@@ -2,6 +2,7 @@ package org.zkit.support.server.account.auth.service;
 
 import org.zkit.support.server.account.api.entity.request.*;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
+import org.zkit.support.server.account.api.entity.response.OTPStatusResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import com.baomidou.mybatisplus.extension.service.IService;
 import org.zkit.support.server.account.api.entity.response.TokenWithAccountResponse;
@@ -21,10 +22,11 @@ public interface AuthAccountService extends IService<AuthAccount> {
     AuthAccount add(AuthAccount account);
     AuthAccount addOrGet(AuthAccount account);
     TokenResponse createToken(CreateTokenRequest request);
-    OTPResponse otpSecret(String username);
+    OTPResponse otpSecret(Long accountId);
     TokenWithAccountResponse register(AccountRegisterRequest request);
     TokenResponse login(AccountLoginRequest request);
     TokenResponse resetPassword(ResetPasswordRequest request);
     void changePassword(ChangePasswordRequest request);
+    OTPStatusResponse otpStatus(Long accountId);
 
 }

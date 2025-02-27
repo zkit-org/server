@@ -12,6 +12,7 @@
         <result column="create_time" property="createTime" />
         <result column="otp_secret" property="otpSecret" />
         <result column="otp_status" property="otpStatus" />
+        <result column="otp_enable_time" property="otpEnableTime" />
     </resultMap>
 
     <!-- 通用查询结果列 -->

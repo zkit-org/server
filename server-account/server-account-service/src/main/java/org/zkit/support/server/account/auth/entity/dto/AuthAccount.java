@@ -8,6 +8,7 @@ import java.util.Date;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -15,9 +16,10 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-11-21
+ * @since 2025-02-27
  */
 @Data
+@Accessors(chain = true)
 @TableName("auth_account")
 @Schema(name = "AuthAccount", description = "账号")
 public class AuthAccount implements Serializable {
@@ -47,4 +49,7 @@ public class AuthAccount implements Serializable {
 
     @Schema(description = "OTP绑定状态: 0 未绑定 1 已绑定")
     private Integer otpStatus;
+
+    @Schema(description = "OTP生效时间")
+    private Date otpEnableTime;
 }

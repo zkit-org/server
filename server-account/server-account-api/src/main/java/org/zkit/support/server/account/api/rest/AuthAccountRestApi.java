@@ -10,7 +10,6 @@ import org.zkit.support.server.account.api.constant.AccountApi;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
 import org.zkit.support.server.account.api.entity.request.*;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
-import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.api.entity.response.TokenWithAccountResponse;
 import org.zkit.support.starter.boot.entity.Result;
@@ -31,9 +30,6 @@ public interface AuthAccountRestApi {
     @PostMapping(value = AccountApiRoute.AUTH_CREATE_TOKEN)
     Result<TokenResponse> createToken(@RequestBody() CreateTokenRequest request);
 
-    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_OTP_SECRET)
-    Result<OTPResponse> otpSecret(@RequestParam("username") String username);
-
     @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_REGISTER)
     Result<TokenWithAccountResponse> register(@RequestBody() AccountRegisterRequest request);
 
@@ -48,5 +44,8 @@ public interface AuthAccountRestApi {
 
     @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_CHANGE_PASSWORD)
     Result<?> changePassword(@RequestBody() ChangePasswordRequest request);
+
+    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_CHANGE_PASSWORD)
+    Result<?> otpState(@RequestBody() ChangePasswordRequest request);
 
 }
