@@ -28,5 +28,7 @@ public interface AuthAccountService extends IService<AuthAccount> {
     TokenResponse resetPassword(ResetPasswordRequest request);
     void changePassword(ChangePasswordRequest request);
     OTPStatusResponse otpStatus(Long accountId);
+    void bindOTP(OTPBindRequest request);
+    void disableOTP(Long accountId);
 
 }

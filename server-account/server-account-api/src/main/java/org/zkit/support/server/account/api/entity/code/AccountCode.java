@@ -8,7 +8,8 @@ public enum AccountCode {
     LOGIN_ERROR(10004, "account.login.error"),
     NOTFOUND(10005, "account.notfound"),
     REGISTER_HAS(10006, "account.register.has"),
-    PASSWORD_ERROR(10007, "account.password.error"),;
+    PASSWORD_ERROR(10007, "account.password.error"),
+    OTP_SECRET_EXPIRED(10008, "account.otp.secret.expired"),;
 
     public final int code;
     public final String key;

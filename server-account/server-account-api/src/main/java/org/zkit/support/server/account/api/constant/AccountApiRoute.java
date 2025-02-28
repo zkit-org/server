@@ -13,5 +13,7 @@ public class AccountApiRoute {
     public static final String AUTH_ACCOUNT_RESET_PASSWORD = "/internal/auth/account/reset/password";
     public static final String AUTH_ACCOUNT_CHANGE_PASSWORD = "/internal/auth/account/change/password";
     public static final String AUTH_ACCOUNT_OTP_STATUS = "/internal/auth/account/otp/status";
+    public static final String AUTH_ACCOUNT_OTP_BIND = "/internal/auth/account/otp/bind";
+    public static final String AUTH_ACCOUNT_OTP_DISABLE = "/internal/auth/account/otp/disable";
 
 }

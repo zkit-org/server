@@ -2,10 +2,7 @@ package org.zkit.support.server.account.api.rest;
 
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.zkit.support.server.account.api.constant.AccountApi;
 import org.zkit.support.server.account.api.constant.AccountApiRoute;
 import org.zkit.support.server.account.api.entity.request.*;
@@ -21,5 +18,11 @@ public interface AuthAccountOTPRestApi {
 
     @GetMapping(value = AccountApiRoute.AUTH_ACCOUNT_OTP_STATUS)
     Result<OTPStatusResponse> otpState(@RequestParam("id") Long accountId);
+
+    @PostMapping(value = AccountApiRoute.AUTH_ACCOUNT_OTP_BIND)
+    Result<?> bind(@RequestBody OTPBindRequest request);
+
+    @PutMapping(value = AccountApiRoute.AUTH_ACCOUNT_OTP_DISABLE)
+    Result<?> disable(@RequestBody OTPDisableRequest request);
 
 }

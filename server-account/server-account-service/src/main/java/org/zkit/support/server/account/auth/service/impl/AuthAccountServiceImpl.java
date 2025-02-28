@@ -279,4 +279,35 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         response.setEnableTime(account.getOtpEnableTime());
         return response;
     }
+
+    @Override
+    public void bindOTP(OTPBindRequest request) {
+        AuthAccount account = getById(request.getId());
+        String key = "otp:secret:" + account.getUsername();
+        String secret = redisTemplate.opsForValue().get(key);
+        if(secret == null) {
+            throw new ResultException(AccountCode.OTP_SECRET_EXPIRED.code, MessageUtils.get(AccountCode.OTP_SECRET_EXPIRED.key));
+        }
+        boolean verified = authOTPService.check(secret, request.getCode());
+        if(!verified) {
+            throw new ResultException(AccountCode.OTP_ERROR.code, MessageUtils.get(AccountCode.OTP_ERROR.key));
+        }
+        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
+        update.eq("id",account.getId());
+        update.set("otp_status", 1);
+        update.set("otp_secret", secret);
+        update.set("otp_enable_time", new Date());
+        getBaseMapper().update(update);
+        redisTemplate.delete(key);
+    }
+
+    @Override
+    public void disableOTP(Long accountId) {
+        UpdateWrapper<AuthAccount> update = new UpdateWrapper<>();
+        update.eq("id", accountId);
+        update.set("otp_status", 0);
+        update.set("otp_secret", null);
+        update.set("otp_enable_time", null);
+        getBaseMapper().update(update);
+    }
 }

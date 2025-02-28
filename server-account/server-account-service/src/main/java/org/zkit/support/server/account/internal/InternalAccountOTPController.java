@@ -34,4 +34,16 @@ public class InternalAccountOTPController {
         return authAccountService.otpStatus(accountId);
     }
 
+    @PostMapping(AccountApiRoute.AUTH_ACCOUNT_OTP_BIND)
+    @Operation(summary = "绑定OTP")
+    public void bind(@RequestBody OTPBindRequest request) {
+        authAccountService.bindOTP(request);
+    }
+
+    @PutMapping(AccountApiRoute.AUTH_ACCOUNT_OTP_DISABLE)
+    @Operation(summary = "禁用OTP")
+    public void disable(@RequestBody OTPDisableRequest request) {
+        authAccountService.disableOTP(request.getId());
+    }
+
 }
