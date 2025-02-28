@@ -17,7 +17,6 @@ public class AccountConfiguration {
     private boolean debug;
     private String emailCode;
     private String otpCode;
-    private String resetOtpCode;
     private Long expiresIn;
 
 }

@@ -221,13 +221,9 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         if(!password.equals(AESUtils.decrypt(account.getPassword(), configuration.getAesKey()))) {
             throw new ResultException(AccountCode.LOGIN_ERROR.code, MessageUtils.get(AccountCode.LOGIN_ERROR.key));
         }
-        if(code != null) {
-            if(configuration.getResetOtpCode().equals(code)) { // 重置OTP
-                if(account.getOtpStatus() == 0) {
-                    return this.createToken(new CreateTokenRequest(account.getId(), 5 * 60 * 1000L));
-                }else{
-                    throw new ResultException(AccountCode.OTP_IS_BIND.code, MessageUtils.get(AccountCode.OTP_IS_BIND.key));
-                }
+        if(account.getOtpStatus() == 1) {
+            if(code == null) {
+                throw new ResultException(AccountCode.OTP_REQUIRED.code, MessageUtils.get(AccountCode.OTP_REQUIRED.key));
             }else{
                 boolean verified = authOTPService.check(account.getOtpSecret(), code);
                 if(!verified) {
