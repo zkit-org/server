@@ -24,7 +24,7 @@ import org.zkit.support.starter.security.entity.SessionUser;
  */
 @RestController
 @RequestMapping("/oss/file")
-@Tag(name = "oss-file", description = "OSS文件")
+@Tag(name = "OssFileController", description = "OSS文件")
 public class OssFileController {
 
     @Resource

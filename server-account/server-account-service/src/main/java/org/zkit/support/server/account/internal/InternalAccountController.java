@@ -19,7 +19,7 @@ import org.zkit.support.starter.security.service.SessionService;
 
 @RestController
 @Slf4j
-@Tag(name = "InternalAccountController", description = "[内部接口]用户账户")
+@Tag(name = "InternalAccountController", description = "用户账户")
 public class InternalAccountController {
 
     @Resource

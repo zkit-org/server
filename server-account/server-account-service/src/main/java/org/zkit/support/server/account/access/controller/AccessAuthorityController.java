@@ -26,7 +26,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/access/authority")
-@Tag(name = "authority", description = "权限管理")
+@Tag(name = "AccessAuthorityController", description = "权限管理")
 @Slf4j
 public class AccessAuthorityController {
 

@@ -16,7 +16,7 @@ import org.zkit.support.server.mail.service.ServerMailApi;
 
 @RestController
 @Slf4j
-@Tag(name = "internal-mail", description = "[内部接口]邮件服务")
+@Tag(name = "InternalMailController", description = "邮件服务")
 public class InternalMailController {
 
     @Resource

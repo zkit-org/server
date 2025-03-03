@@ -16,7 +16,7 @@ import org.zkit.support.starter.security.service.SessionService;
 
 @RestController
 @Slf4j
-@Tag(name = "InternalAccountOTPController", description = "[内部接口]用户OTP设置")
+@Tag(name = "InternalAccountOTPController", description = "用户OTP设置")
 public class InternalAccountOTPController {
 
     @Resource

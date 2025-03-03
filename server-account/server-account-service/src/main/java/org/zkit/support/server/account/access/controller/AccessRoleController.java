@@ -28,7 +28,7 @@ import org.zkit.support.starter.security.entity.SessionUser;
  */
 @RestController
 @RequestMapping("/access/role")
-@Tag(name = "role", description = "角色管理")
+@Tag(name = "AccessRoleController", description = "角色管理")
 @Slf4j
 public class AccessRoleController {
 

@@ -22,7 +22,7 @@ import java.util.List;
  */
 @RestController
 @RequestMapping("/access/api")
-@Tag(name = "api", description = "接口管理")
+@Tag(name = "AccessApiController", description = "接口管理")
 @Slf4j
 public class AccessApiController {
 

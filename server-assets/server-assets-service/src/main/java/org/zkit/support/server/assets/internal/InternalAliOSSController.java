@@ -13,7 +13,7 @@ import org.zkit.support.server.assets.alioss.service.AliOSSService;
 
 @RestController
 @Slf4j
-@Tag(name = "internal-oss", description = "[内部接口]阿里OSS")
+@Tag(name = "InternalAliOSSController", description = "阿里OSS")
 public class InternalAliOSSController {
 
     @Resource

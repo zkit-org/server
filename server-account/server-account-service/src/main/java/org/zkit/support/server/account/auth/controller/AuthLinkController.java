@@ -16,7 +16,7 @@ import java.io.IOException;
 
 @RestController
 @RequestMapping("/auth/link")
-@Tag(name = "auth-link", description = "链接外部账户")
+@Tag(name = "AuthLinkController", description = "链接外部账户")
 public class AuthLinkController {
 
     @Resource
