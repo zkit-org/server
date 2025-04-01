@@ -218,6 +218,8 @@ public class AuthAccountServiceImpl extends ServiceImpl<AuthAccountMapper, AuthA
         if(account == null) {
             throw new ResultException(AccountCode.LOGIN_ERROR.code, MessageUtils.get(AccountCode.LOGIN_ERROR.key));
         }
+        log.info("password {}", password);
+        log.info("account.getPassword() {}", AESUtils.decrypt(account.getPassword(), configuration.getAesKey()));
         if(!password.equals(AESUtils.decrypt(account.getPassword(), configuration.getAesKey()))) {
             throw new ResultException(AccountCode.LOGIN_ERROR.code, MessageUtils.get(AccountCode.LOGIN_ERROR.key));
         }
