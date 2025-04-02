@@ -6,11 +6,13 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.io.Serializable;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Schema(description = "创建令牌请求")
-public class CreateTokenRequest {
+public class CreateTokenRequest implements Serializable {
 
     @Schema(description = "用户ID")
     private Long id;

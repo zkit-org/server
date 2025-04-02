@@ -3,11 +3,12 @@ package org.zkit.support.server.account.api.entity.response;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Schema(description = "账户响应")
-public class AccountResponse {
+public class AccountResponse implements Serializable {
 
     @Schema(description = "ID")
     private Long id;
