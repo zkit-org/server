@@ -22,9 +22,13 @@ dubbo:
       - org.zkit.support.server
   application:
     qos-enable: false
+  protocol:
+    name: dubbo
+    port: 10800
   provider:
     filter: dubboExceptionFilter,-exception
   registry:
     address: nacos://${NACOS_SERVER}
     username: ${NACOS_USERNAME}
     password: ${NACOS_PASSWORD}
+    group: dubbo

@@ -3,9 +3,11 @@ package org.zkit.support.server.mail.api.entity.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serializable;
+
 @Data
 @Schema(description = "校验验证码")
-public class CheckCodeRequest {
+public class CheckCodeRequest implements Serializable {
 
     @Schema(description = "邮箱")
     private String email;

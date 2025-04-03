@@ -3,11 +3,12 @@ package org.zkit.support.server.mail.api.entity.request;
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Map;
 
 @Data
 @Schema(description = "邮件发送请求")
-public class SendMailRequest {
+public class SendMailRequest implements Serializable {
 
     @Schema(description = "收件人")
     private String to;
