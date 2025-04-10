@@ -27,6 +27,8 @@ dubbo:
     port: 10802
   provider:
     filter: dubboExceptionFilter,-exception
+  consumer:
+    check: false
   registry:
     address: nacos://${NACOS_SERVER}
     username: ${NACOS_USERNAME}
