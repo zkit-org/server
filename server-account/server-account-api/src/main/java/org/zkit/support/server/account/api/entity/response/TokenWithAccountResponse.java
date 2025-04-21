@@ -4,12 +4,10 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
-import java.io.Serializable;
-
 @EqualsAndHashCode(callSuper = true)
 @Data
 @Schema(description = "令牌响应")
-public class TokenWithAccountResponse extends TokenResponse implements Serializable {
+public class TokenWithAccountResponse extends TokenResponse {
 
     @Schema(description = "账号ID")
     private Long accountId;
