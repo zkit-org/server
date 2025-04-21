@@ -1,0 +1,14 @@
+{
+    "configurations": [
+        {
+            "type": "java",
+            "name": "account",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.zkit.support.server.account.Application",
+            "projectName": "server-account-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/server-account/.env"
+        }
+    ]
+}
