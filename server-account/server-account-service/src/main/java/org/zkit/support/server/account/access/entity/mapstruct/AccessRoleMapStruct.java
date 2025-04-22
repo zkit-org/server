@@ -6,7 +6,7 @@ import org.zkit.support.server.account.access.entity.dto.AccessRole;
 import org.zkit.support.server.account.access.entity.request.AccessRoleRequest;
 import org.zkit.support.server.account.access.entity.response.AccessRoleResponse;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
 public interface AccessRoleMapStruct {
 
     AccessRole toAccessRole(AccessRoleRequest request);

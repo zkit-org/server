@@ -7,7 +7,7 @@ import org.zkit.support.server.account.access.entity.request.AccessAuthorityRequ
 import org.zkit.support.server.account.access.entity.response.AccessAuthorityResponse;
 import org.zkit.support.server.account.access.entity.response.AccessAuthorityTreeResponse;
 
-@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)
+@Mapper(componentModel = MappingConstants.ComponentModel.SPRING, unmappedTargetPolicy = org.mapstruct.ReportingPolicy.IGNORE)
 public interface AccessAuthorityMapStruct {
 
     AccessAuthorityTreeResponse toAccessAuthorityTreeResponse(AccessAuthority accessAuthority);

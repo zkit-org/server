@@ -1,7 +1,6 @@
 package org.zkit.support.server.account.access.mapper;
 import java.util.Collection;
 
-import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.apache.ibatis.annotations.Param;
 import org.zkit.support.server.account.access.entity.dto.AccessRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
