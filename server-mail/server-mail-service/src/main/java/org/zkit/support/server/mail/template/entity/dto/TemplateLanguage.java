@@ -7,6 +7,7 @@ import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
 import java.io.Serial;
 import lombok.Data;
+import lombok.experimental.Accessors;
 
 /**
  * <p>
@@ -14,9 +15,11 @@ import lombok.Data;
  * </p>
  *
  * @author generator
- * @since 2024-07-13
+ * @since 2025-04-22
  */
+@SuppressWarnings("unused")
 @Data
+@Accessors(chain = true)
 @TableName("template_language")
 @Schema(name = "TemplateLanguage", description = "")
 public class TemplateLanguage implements Serializable {
