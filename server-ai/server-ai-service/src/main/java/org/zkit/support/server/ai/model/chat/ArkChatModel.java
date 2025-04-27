@@ -45,7 +45,7 @@ public class ArkChatModel implements ChatModel {
             .temperature(options.getTemperature())
             .build();
 
-        log.info("/api/v3/chat/completions request: " + request);
+        log.info("request: " + request);
         ArkChatModelResponse response = webClient.post()
                 .uri("/chat/completions")
                 .bodyValue(request)
