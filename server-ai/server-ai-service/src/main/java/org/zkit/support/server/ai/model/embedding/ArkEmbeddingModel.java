@@ -58,10 +58,8 @@ public class ArkEmbeddingModel extends AbstractEmbeddingModel {
 
     @Override
     public float[] embed(Document document) {
-        EmbeddingRequest request = EmbeddingRequest.builder()
-            .withInstructions(List.of(document.getText()))
-            .build();
+        EmbeddingRequest request = new EmbeddingRequest(List.of(document.getText()), null);
         EmbeddingResponse response = call(request);
-        return response.getEmbeddings().get(0).getOutput();
+        return response.getResults().get(0).getOutput();
     }
 }
