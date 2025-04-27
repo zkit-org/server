@@ -16,6 +16,11 @@ spring:
         server-addr: ${NACOS_SERVER}
         username: ${NACOS_USERNAME}
         password: ${NACOS_PASSWORD}
+  ai:
+    openai:
+      chat:
+        options:
+          model: ${SPRING_AI_OPENAI_CHAT_MODEL}
 dubbo:
   scan:
     base-packages:

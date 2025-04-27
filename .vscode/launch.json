@@ -9,6 +9,16 @@
             "projectName": "server-account-service",
             "args": "",
             "envFile": "${workspaceFolder}/server-account/.env"
+        },
+        {
+            "type": "java",
+            "name": "ai",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.zkit.support.server.ai.Application",
+            "projectName": "server-ai-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/server-ai/.env"
         }
     ]
 }
