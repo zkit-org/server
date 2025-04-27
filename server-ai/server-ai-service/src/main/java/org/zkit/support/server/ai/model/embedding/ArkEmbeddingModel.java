@@ -1,7 +1,6 @@
 package org.zkit.support.server.ai.model.embedding;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.ai.document.Document;
 import org.springframework.ai.embedding.AbstractEmbeddingModel;
