@@ -2,7 +2,7 @@ package org.zkit.support.server.ai.controller;
 
 import java.util.Map;
 
-import org.springframework.ai.openai.OpenAiChatModel;
+import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -16,7 +16,7 @@ import jakarta.annotation.Resource;
 public class TestController {
 
     @Resource
-    private OpenAiChatModel chatModel;
+    private ChatModel chatModel;
 
     @GetMapping("/generate")
     @PublicRequest
