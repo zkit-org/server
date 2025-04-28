@@ -3,10 +3,8 @@ package org.zkit.support.server.ai.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.checkerframework.checker.units.qual.m;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
-import org.springframework.ai.document.Document;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
