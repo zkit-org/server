@@ -10,4 +10,5 @@ import lombok.Data;
 public class ArkEmbeddingModelRequest {
     private String model;
     private List<String> input;
+    private String encoding_format;
 } 

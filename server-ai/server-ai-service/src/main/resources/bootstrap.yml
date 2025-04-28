@@ -21,6 +21,9 @@ spring:
       chat:
         options:
           model: ${SPRING_AI_OPENAI_CHAT_MODEL}
+      embedding:
+        options:
+          model: ${SPRING_AI_OPENAI_EMBEDDING_MODEL}
 dubbo:
   scan:
     base-packages:

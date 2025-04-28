@@ -1,5 +1,6 @@
 package org.zkit.support.server.ai.model.embedding;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.ai.document.Document;
@@ -45,14 +46,18 @@ public class ArkEmbeddingModel extends AbstractEmbeddingModel {
                 .bodyToMono(ArkEmbeddingModelResponse.class)
                 .block();
 
-        List<Double> embedding = response.getEmbedding();
-        float[] floatArray = new float[embedding.size()];
-        for (int i = 0; i < embedding.size(); i++) {
-            floatArray[i] = embedding.get(i).floatValue();
-        }
+        log.info("response: " + response);
 
-        Embedding embeddingObj = new Embedding(floatArray, 0);
-        return new EmbeddingResponse(List.of(embeddingObj), new EmbeddingResponseMetadata(options.getModel(), null));
+        List<Embedding> embeddings = new ArrayList<>();
+        response.getData().forEach(data -> {
+            float[] floatArray = new float[data.getEmbedding().size()];
+            for (int i = 0; i < data.getEmbedding().size(); i++) {
+                floatArray[i] = data.getEmbedding().get(i).floatValue();
+            }
+            embeddings.add(new Embedding(floatArray, data.getIndex()));
+        });
+
+        return new EmbeddingResponse(embeddings, new EmbeddingResponseMetadata(options.getModel(), null));
     }
 
     @Override
