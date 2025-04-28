@@ -46,8 +46,6 @@ public class ArkEmbeddingModel extends AbstractEmbeddingModel {
                 .bodyToMono(ArkEmbeddingModelResponse.class)
                 .block();
 
-        log.info("response: " + response);
-
         List<Embedding> embeddings = new ArrayList<>();
         response.getData().forEach(data -> {
             float[] floatArray = new float[data.getEmbedding().size()];
