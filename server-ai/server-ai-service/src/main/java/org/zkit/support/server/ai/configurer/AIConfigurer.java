@@ -1,8 +1,11 @@
 package org.zkit.support.server.ai.configurer;
 
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
+import org.springframework.ai.vectorstore.SearchRequest;
+import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -44,15 +47,8 @@ public class AIConfigurer {
             .model(chatModel)
             .temperature(temperature)
             .build();
-        log.info("options: " + options);
         return new ArkChatModel(options);
     }
-
-    @Bean
-    public ChatClient chatClient(ChatModel model) {
-        return ChatClient.builder(model).build();
-    }
-
 
     @Bean
     @Primary
@@ -63,6 +59,29 @@ public class AIConfigurer {
             .model(embeddingModel)
             .build();
         return new ArkEmbeddingModel(options);
+    }
+
+    @Bean
+    public ChatClient chatClient(
+        ChatModel model,
+        VectorStore vectorStore
+    ) {
+        var qaAdvisor = new QuestionAnswerAdvisor(
+            vectorStore, 
+            SearchRequest.builder().topK(10).build(),
+            """
+            Context information is below.
+            ---------------------
+            {question_answer_context}
+            ---------------------
+            """
+        );
+        return ChatClient
+            .builder(model)
+            .defaultAdvisors(
+                qaAdvisor
+            )
+            .build();
     }
 
 }

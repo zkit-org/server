@@ -3,9 +3,8 @@ package org.zkit.support.server.ai.controller;
 import java.util.List;
 import java.util.Map;
 
-import org.springframework.ai.chat.model.ChatModel;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -23,10 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 public class TestController {
 
     @Resource
-    private ChatModel chatModel;
-
-    @Resource
-    private EmbeddingModel embeddingModel;
+    private ChatClient chatClient;
 
     @Resource
     private VectorStore vectorStore;
@@ -34,8 +30,8 @@ public class TestController {
     @GetMapping("/generate")
     @PublicRequest
     public Map<String, String> generate(
-            @RequestParam(value = "message", defaultValue = "Tell me a joke") String message) {
-        return Map.of("generation", chatModel.call(message));
+            @RequestParam(value = "message", defaultValue = "Spring AI is?") String message) {
+        return Map.of("generation", chatClient.prompt(message).call().content());
     }
 
     @GetMapping("/vector")
