@@ -6,6 +6,7 @@ import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
 import org.springframework.context.annotation.Bean;
@@ -66,21 +67,18 @@ public class AIConfigurer {
         ChatModel model,
         VectorStore vectorStore
     ) {
-        var qaAdvisor = new QuestionAnswerAdvisor(
-            vectorStore, 
-            SearchRequest.builder().topK(10).build(),
-            """
-            Context information is below.
-            ---------------------
-            {question_answer_context}
-            ---------------------
-            """
-        );
+        var qaAdvisor = QuestionAnswerAdvisor.builder(vectorStore)
+            .searchRequest(SearchRequest.builder().topK(10).build())
+            .promptTemplate(new PromptTemplate("""
+                Context information is below.
+                ---------------------
+                {question_answer_context}
+                ---------------------
+                """))
+            .build();
         return ChatClient
             .builder(model)
-            .defaultAdvisors(
-                qaAdvisor
-            )
+            .defaultAdvisors(qaAdvisor)
             .build();
     }
 
