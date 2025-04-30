@@ -32,8 +32,6 @@ public class ArkChatModel implements ChatModel {
     @Override
     public ChatResponse call(Prompt prompt) {
         log.info("prompt: " + prompt);
-        log.info("options: " + options);
-        log.info("webClient: " + webClient);
         // 提取 Spring AI 的消息为 API 兼容格式
         List<ArkChatModelMessage> requestMessages = prompt.getInstructions().stream()
                 .map(m -> new ArkChatModelMessage(toRole(m), m.getText()))
@@ -45,7 +43,6 @@ public class ArkChatModel implements ChatModel {
             .temperature(options.getTemperature())
             .build();
 
-        log.info("request: " + request);
         ArkChatModelResponse response = webClient.post()
                 .uri("/chat/completions")
                 .bodyValue(request)

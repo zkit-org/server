@@ -30,15 +30,11 @@ public class ArkEmbeddingModel extends AbstractEmbeddingModel {
 
     @Override
     public EmbeddingResponse call(EmbeddingRequest request) {
-        log.info("request: " + request);
-        log.info("options: " + options);
-        
         ArkEmbeddingModelRequest modelRequest = ArkEmbeddingModelRequest.builder()
             .model(options.getModel())
             .input(request.getInstructions())
             .build();
 
-        log.info("request: " + modelRequest);
         ArkEmbeddingModelResponse response = webClient.post()
                 .uri("/embeddings")
                 .bodyValue(modelRequest)
