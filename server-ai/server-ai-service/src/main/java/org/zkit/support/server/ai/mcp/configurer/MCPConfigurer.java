@@ -6,7 +6,8 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.zkit.support.server.ai.mcp.service.WeatherService;
 
-import groovy.util.logging.Slf4j;
+import lombok.extern.slf4j.Slf4j;
+
 
 @Configuration
 @Slf4j

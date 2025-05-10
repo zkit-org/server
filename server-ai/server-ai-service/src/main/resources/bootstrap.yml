@@ -16,13 +16,6 @@ spring:
         server-addr: ${NACOS_SERVER}
         username: ${NACOS_USERNAME}
         password: ${NACOS_PASSWORD}
-  ai:
-    mcp:
-      server:
-        name: ai-mcp-server
-        version: 1.0.0
-        type: ASYNC
-        sse-message-endpoint: /mcp/messages
 dubbo:
   scan:
     base-packages:
