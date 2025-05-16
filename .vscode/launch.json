@@ -19,6 +19,16 @@
             "projectName": "server-ai-service",
             "args": "",
             "envFile": "${workspaceFolder}/server-ai/.env"
+        },
+        {
+            "type": "java",
+            "name": "assets",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.zkit.support.server.assets.Application",
+            "projectName": "server-assets-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/server-assets/.env"
         }
     ]
 }
