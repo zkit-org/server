@@ -16,7 +16,8 @@ package-account:
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
         - cd ../../server-account/server-account-service
         - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
-        - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
+        # - docker login -u $DOCKER_USER --password $DOCKER_TOKEN $CI_REGISTRY
+        - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/account:latest
         - docker push $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID
