@@ -46,6 +46,28 @@ package-mail:
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/mail:latest
 
+package-ai:
+    stage: package
+    only:
+        - /^ai-.*$/
+    tags:
+        - dev
+    script:
+        - java -version
+        - mvn -v
+        - mvn install -Dmaven.test.skip=true
+        - cd server-ai/server-ai-api
+        - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
+        - cd ../../server-ai/server-ai-service
+        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
+        - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
+        - docker build -t $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID -f ./Dockerfile .
+        - docker tag $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/ai:latest
+        - docker push $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID
+        - docker push $CI_REGISTRY/easy-kit-dev/server/ai:latest
+        - docker rmi $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID
+        - docker rmi $CI_REGISTRY/easy-kit-dev/server/ai:latest
+
 package-assets:
     stage: package
     only:
@@ -97,11 +119,9 @@ deploy-ai:
     tags:
         - dev
     script:
-        - java -version
-        - mvn -v
-        - mvn install -Dmaven.test.skip=true
-        - cd server-ai/
-        - mvn clean deploy -U -s ../settings.xml -Dmaven.test.skip=true
+        - cd ~/server/clover/server-ai
+        - docker compose down
+        - docker compose up -d
 
 deploy-assets:
     stage: deploy
