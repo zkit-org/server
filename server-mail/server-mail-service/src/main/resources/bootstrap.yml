@@ -8,14 +8,10 @@ spring:
     nacos:
       config:
         server-addr: ${NACOS_SERVER}
-        username: ${NACOS_USERNAME}
-        password: ${NACOS_PASSWORD}
         file-extension: yaml
         refresh-enabled: true
       discovery:
         server-addr: ${NACOS_SERVER}
-        username: ${NACOS_USERNAME}
-        password: ${NACOS_PASSWORD}
 dubbo:
   scan:
     base-packages:
@@ -24,7 +20,7 @@ dubbo:
     qos-enable: false
   protocol:
     name: dubbo
-    port: 10802
+    port: 10803
   provider:
     filter: support-exception,support-language,-exception
   consumer:
@@ -32,6 +28,4 @@ dubbo:
     filter: support-exception,support-language,-exception
   registry:
     address: nacos://${NACOS_SERVER}
-    username: ${NACOS_USERNAME}
-    password: ${NACOS_PASSWORD}
     group: dubbo

@@ -20,7 +20,7 @@ dubbo:
     qos-enable: false
   protocol:
     name: dubbo
-    port: 10803
+    port: 10802
   provider:
     filter: support-exception,support-language,-exception
   consumer:
