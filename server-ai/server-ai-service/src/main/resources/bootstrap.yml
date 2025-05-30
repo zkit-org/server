@@ -8,8 +8,6 @@ spring:
     nacos:
       config:
         server-addr: ${NACOS_SERVER}
-        username: ${NACOS_USERNAME}
-        password: ${NACOS_PASSWORD}
         file-extension: yaml
         refresh-enabled: true
       discovery:
