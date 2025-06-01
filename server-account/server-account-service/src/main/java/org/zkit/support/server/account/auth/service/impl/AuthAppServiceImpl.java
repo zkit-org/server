@@ -9,12 +9,12 @@ import jakarta.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import okhttp3.Headers;
 import org.zkit.support.server.account.api.entity.request.AccountLoginRequest;
+import org.zkit.support.server.account.api.entity.request.AuthLinkBindRequest;
 import org.zkit.support.server.account.api.entity.request.CreateTokenRequest;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthApp;
 import org.zkit.support.server.account.auth.entity.dto.AuthOpenUser;
 import org.zkit.support.server.account.auth.entity.mapstruct.AuthOpenUserMapStruct;
-import org.zkit.support.server.account.auth.entity.request.AuthLinkBindRequest;
 import org.zkit.support.server.account.auth.entity.response.AuthOpenUserResponse;
 import org.zkit.support.server.account.auth.mapper.AuthAppMapper;
 import org.zkit.support.server.account.auth.mapper.AuthOpenUserMapper;
@@ -203,6 +203,7 @@ public class AuthAppServiceImpl extends ServiceImpl<AuthAppMapper, AuthApp> impl
         AccountLoginRequest loginRequest = new AccountLoginRequest();
         loginRequest.setUsername(request.getAccount());
         loginRequest.setPassword(request.getPassword());
+        loginRequest.setCode(request.getCode());
         TokenResponse tokenResponse = authAccountService.login(loginRequest);
 
         SessionUser user = sessionService.get(tokenResponse.getToken());

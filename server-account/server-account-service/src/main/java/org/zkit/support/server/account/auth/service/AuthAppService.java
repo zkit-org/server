@@ -1,10 +1,11 @@
 package org.zkit.support.server.account.auth.service;
 
 import jakarta.servlet.http.HttpServletResponse;
+
+import org.zkit.support.server.account.api.entity.request.AuthLinkBindRequest;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.auth.entity.dto.AuthApp;
 import com.baomidou.mybatisplus.extension.service.IService;
-import org.zkit.support.server.account.auth.entity.request.AuthLinkBindRequest;
 import org.zkit.support.server.account.auth.entity.response.AuthOpenUserResponse;
 
 import java.io.IOException;

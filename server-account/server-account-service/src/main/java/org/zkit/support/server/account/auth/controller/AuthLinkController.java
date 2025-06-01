@@ -6,8 +6,6 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.web.bind.annotation.*;
-import org.zkit.support.server.account.api.entity.response.TokenResponse;
-import org.zkit.support.server.account.auth.entity.request.AuthLinkBindRequest;
 import org.zkit.support.server.account.auth.entity.response.AuthOpenUserResponse;
 import org.zkit.support.server.account.auth.service.AuthAppService;
 import org.zkit.support.starter.security.annotation.PublicRequest;
@@ -40,13 +38,6 @@ public class AuthLinkController {
             @Parameter(description = "临时请求码") @RequestParam("code") String code
     ) {
         return authAppService.info(type, code);
-    }
-
-    @PublicRequest
-    @Operation(summary = "验证临时授权")
-    @PostMapping("/bind")
-    public TokenResponse bind(@RequestBody AuthLinkBindRequest request) {
-        return authAppService.bind(request);
     }
 
 }
