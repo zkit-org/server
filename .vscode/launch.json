@@ -29,6 +29,16 @@
             "projectName": "server-assets-service",
             "args": "",
             "envFile": "${workspaceFolder}/server-assets/.env"
+        },
+        {
+            "type": "java",
+            "name": "mail",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.zkit.support.server.mail.Application",
+            "projectName": "server-mail-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/server-mail/.env"
         }
     ]
 }
