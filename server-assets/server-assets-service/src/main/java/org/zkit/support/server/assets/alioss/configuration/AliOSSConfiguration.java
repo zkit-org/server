@@ -12,6 +12,8 @@ public class AliOSSConfiguration {
     private String endpoint;
     private String keyId;
     private String keySecret;
-    private String bucket;
+    private String bucketPrivate;
+    private String bucketPublic;
+    private Long expireTime;
 
 }

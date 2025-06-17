@@ -27,22 +27,22 @@ public class AliOSSService {
     @Resource
     private AliOSSConfiguration configuration;
 
-    public String sign(String objectName) {
-        return sign(objectName, null, null);
+    public String presign(String objectName, Integer type) {
+        return presign(objectName, type, null, null);
     }
 
-    public String sign(String objectName, Map<String, String> headers) {
-        return sign(objectName, headers, null);
+    public String presign(String objectName, Integer type, Map<String, String> headers) {
+        return presign(objectName, type, headers, null);
     }
 
-    public String sign(String objectName, Map<String, String> headers, Map<String, String> metadata) {
+    public String presign(String objectName, Integer type, Map<String, String> headers, Map<String, String> metadata) {
         log.info("config {}", configuration);
         // 以华东1（杭州）的外网Endpoint为例，其它Region请按实际情况填写。
         String endpoint = configuration.getEndpoint();
         // 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET。
-        // 填写Bucket名称，例如examplebucket。
-        String bucketName = configuration.getBucket();
-        // 填写Object完整路径，例如exampleobject.txt。Object完整路径中不能包含Bucket名称。
+        // 填写Bucket名称。
+        String bucketName = type == 0 ? configuration.getBucketPrivate() : configuration.getBucketPublic();
+        // 填写Object完整路径。Object完整路径中不能包含Bucket名称。
 
         // 创建OSSClient实例
         OSS ossClient = new OSSClientBuilder().build(endpoint, configuration.getKeyId(), configuration.getKeySecret());
@@ -50,7 +50,7 @@ public class AliOSSService {
         URL signedUrl = null;
         try {
             // 指定生成的签名URL过期时间，单位为毫秒。本示例以设置过期时间为1小时为例。
-            Date expiration = new Date(new Date().getTime() + 3600 * 1000L);
+            Date expiration = new Date(new Date().getTime() + configuration.getExpireTime());
 
             // 生成签名URL。
             GeneratePresignedUrlRequest request = new GeneratePresignedUrlRequest(bucketName, objectName, HttpMethod.PUT);

@@ -1,0 +1,8 @@
+{
+  "editor.tabSize": 4,
+  "editor.insertSpaces": true,
+  "editor.formatOnPaste": true,
+  "cSpell.words": [
+    "Easykit", "Dubbo", "zkit", "mybatis", "redisson", "pointcut", "Configurer", "alioss", "presign"
+  ],
+}

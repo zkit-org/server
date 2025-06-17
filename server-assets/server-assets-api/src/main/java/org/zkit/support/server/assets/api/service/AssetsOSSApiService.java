@@ -1,9 +1,10 @@
 package org.zkit.support.server.assets.api.service;
 
-import org.zkit.support.server.assets.api.entity.request.OSSSignRequest;
+import org.zkit.support.server.assets.api.entity.request.OSSPresignRequest;
+import org.zkit.support.server.assets.api.entity.response.OSSPresignResponse;
 
 public interface AssetsOSSApiService {
 
-    String sign(OSSSignRequest request);
+    OSSPresignResponse presign(OSSPresignRequest request);
 
 }

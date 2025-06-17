@@ -2,19 +2,19 @@ package org.zkit.support.server.assets.api;
 
 import jakarta.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
-import org.zkit.support.server.assets.alioss.service.AliOSSService;
-import org.zkit.support.server.assets.api.entity.request.OSSSignRequest;
+import org.zkit.support.server.assets.api.entity.request.OSSPresignRequest;
+import org.zkit.support.server.assets.api.entity.response.OSSPresignResponse;
 import org.zkit.support.server.assets.api.service.AssetsOSSApiService;
+import org.zkit.support.server.assets.oss.service.OssFileService;
 
 @DubboService
 public class AssetsOSSApiServiceImpl implements AssetsOSSApiService {
 
     @Resource
-    private AliOSSService aliOSSService;
-
+    private OssFileService ossFileService;
 
     @Override
-    public String sign(OSSSignRequest request) {
-        return aliOSSService.sign(request.getFileName(), request.getHeaders(), request.getMetadata());
+    public OSSPresignResponse presign(OSSPresignRequest request) {
+        return ossFileService.presign(request);
     }
 }

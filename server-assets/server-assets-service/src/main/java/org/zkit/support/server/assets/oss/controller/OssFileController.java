@@ -8,8 +8,8 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.zkit.support.server.assets.oss.entity.request.AliOSSPreSignRequest;
-import org.zkit.support.server.assets.oss.entity.response.AliOSSPreSignResponse;
+import org.zkit.support.server.assets.api.entity.request.OSSPresignRequest;
+import org.zkit.support.server.assets.api.entity.response.OSSPresignResponse;
 import org.zkit.support.server.assets.oss.service.OssFileService;
 import org.zkit.support.starter.security.annotation.CurrentUser;
 import org.zkit.support.starter.security.entity.SessionUser;
@@ -32,12 +32,12 @@ public class OssFileController {
 
     @Operation(summary = "预签名")
     @PostMapping("/pre-sign")
-    public AliOSSPreSignResponse preSign(
+    public OSSPresignResponse preSign(
             @CurrentUser() @Parameter(hidden = true) SessionUser user,
-            @RequestBody() AliOSSPreSignRequest request
+            @RequestBody() OSSPresignRequest request
     ) {
         request.setUserId(user.getId());
-        return ossFileService.preSign(request);
+        return ossFileService.presign(request);
     }
 
 }
