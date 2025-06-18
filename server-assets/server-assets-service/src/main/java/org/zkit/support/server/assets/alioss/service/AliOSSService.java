@@ -41,7 +41,7 @@ public class AliOSSService {
         String endpoint = configuration.getEndpoint();
         // 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET。
         // 填写Bucket名称。
-        String bucketName = type == 0 ? configuration.getBucketPrivate() : configuration.getBucketPublic();
+        String bucketName = type == 0 ? configuration.getBucketPublic() : configuration.getBucketPrivate();
         // 填写Object完整路径。Object完整路径中不能包含Bucket名称。
 
         // 创建OSSClient实例
