@@ -16,5 +16,6 @@ import com.baomidou.mybatisplus.extension.service.IService;
 public interface OssFileService extends IService<OssFile> {
 
     public OSSPresignResponse presign(OSSPresignRequest request);
+    public String sign(String url);
 
 }

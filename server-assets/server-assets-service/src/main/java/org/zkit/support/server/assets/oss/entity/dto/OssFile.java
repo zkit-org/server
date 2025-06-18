@@ -1,7 +1,5 @@
 package org.zkit.support.server.assets.oss.entity.dto;
 
-import com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,9 +14,8 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author generator
- * @since 2025-04-22
+ * @since 2025-06-18
  */
-@SuppressWarnings("unused")
 @Data
 @Accessors(chain = true)
 @TableName("oss_file")
@@ -50,4 +47,7 @@ public class OssFile implements Serializable {
 
     @Schema(description = "UUID")
     private String hash;
+
+    @Schema(description = "桶")
+    private String bucket;
 }

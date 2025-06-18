@@ -19,7 +19,7 @@ public class AliOSSServiceTest {
 
     @Test
     public void testSign() throws IOException {
-        String signedUrl = aliOSSService.presign("test.pdf", 0);
+        String signedUrl = aliOSSService.presign("test","test.pdf");
         log.info("signedUrl {}", signedUrl);
         // 填写本地文件的完整路径。如果未指定本地路径，则默认从示例程序所属项目对应本地路径中上传文件。
         String pathName = "/Users/zhaozhenhua/Downloads/test.pdf";

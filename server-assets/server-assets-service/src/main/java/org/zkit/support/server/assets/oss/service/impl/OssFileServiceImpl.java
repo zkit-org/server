@@ -10,6 +10,8 @@ import org.zkit.support.server.assets.configuration.OSSConfiguration;
 import org.zkit.support.server.assets.oss.entity.dto.OssFile;
 import org.zkit.support.server.assets.oss.mapper.OssFileMapper;
 import org.zkit.support.server.assets.oss.service.OssFileService;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 
 import org.springframework.http.MediaType;
@@ -71,8 +73,10 @@ public class OssFileServiceImpl extends ServiceImpl<OssFileMapper, OssFile> impl
         }
 
         String signedUrl = null;
+        String bucketName = null;
         if(configuration.getProvider().equals("alioss")) {
-            signedUrl = aliOSSService.presign(configuration.getPrefix() + hash, request.getType(), headers, request.getMetadata());
+            bucketName = aliOSSService.getBucket(request.getType());
+            signedUrl = aliOSSService.presign(bucketName, configuration.getPrefix() + hash, headers, request.getMetadata());
         } else {
             throw new RuntimeException("Provider not supported");
         }
@@ -88,6 +92,7 @@ public class OssFileServiceImpl extends ServiceImpl<OssFileMapper, OssFile> impl
         file.setContentType(contentType);
         file.setUserId(request.getUserId());
         file.setHash(hash);
+        file.setBucket(bucketName);
         save(file);
 
         response.setFileName(request.getFileName());
@@ -95,6 +100,19 @@ public class OssFileServiceImpl extends ServiceImpl<OssFileMapper, OssFile> impl
         response.setUrl(url);
 
         return response;
+    }
+
+    @Override
+    public String sign(String url) {
+        OssFile file = getBaseMapper().selectOne(new LambdaQueryWrapper<OssFile>().eq(OssFile::getUrl, url));
+        if(file == null) {
+            throw new RuntimeException("File not found");
+        }
+        if(configuration.getProvider().equals("alioss")) {
+            return aliOSSService.sign(file.getBucket(), configuration.getPrefix() + file.getHash());
+        } else {
+            throw new RuntimeException("Provider not supported");
+        }
     }
 
 }

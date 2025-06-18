@@ -17,4 +17,9 @@ public class AssetsOSSApiServiceImpl implements AssetsOSSApiService {
     public OSSPresignResponse presign(OSSPresignRequest request) {
         return ossFileService.presign(request);
     }
+
+    @Override
+    public String sign(String url) {
+        return ossFileService.sign(url);
+    }
 }

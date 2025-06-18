@@ -1,6 +1,10 @@
 package org.zkit.support.server.assets.alioss.service;
 
 import com.aliyun.oss.*;
+import com.aliyun.oss.common.auth.CredentialsProviderFactory;
+import com.aliyun.oss.common.auth.DefaultCredentialProvider;
+import com.aliyun.oss.common.auth.EnvironmentVariableCredentialsProvider;
+import com.aliyun.oss.common.comm.SignVersion;
 import com.aliyun.oss.model.GeneratePresignedUrlRequest;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -27,21 +31,25 @@ public class AliOSSService {
     @Resource
     private AliOSSConfiguration configuration;
 
-    public String presign(String objectName, Integer type) {
-        return presign(objectName, type, null, null);
+    public String getBucket(Integer type) {
+        return type == 0 ? configuration.getBucketPublic() : configuration.getBucketPrivate();
+    }
+    
+    public String presign(String bucket, String objectName) {
+        return presign(bucket, objectName, null, null);
     }
 
-    public String presign(String objectName, Integer type, Map<String, String> headers) {
-        return presign(objectName, type, headers, null);
+    public String presign(String bucket, String objectName, Map<String, String> headers) {
+        return presign(bucket,objectName, headers, null);
     }
 
-    public String presign(String objectName, Integer type, Map<String, String> headers, Map<String, String> metadata) {
+    public String presign(String bucket, String objectName, Map<String, String> headers, Map<String, String> metadata) {
         log.info("config {}", configuration);
         // 以华东1（杭州）的外网Endpoint为例，其它Region请按实际情况填写。
         String endpoint = configuration.getEndpoint();
         // 从环境变量中获取访问凭证。运行本代码示例之前，请确保已设置环境变量OSS_ACCESS_KEY_ID和OSS_ACCESS_KEY_SECRET。
         // 填写Bucket名称。
-        String bucketName = type == 0 ? configuration.getBucketPublic() : configuration.getBucketPrivate();
+        String bucketName = bucket;
         // 填写Object完整路径。Object完整路径中不能包含Bucket名称。
 
         // 创建OSSClient实例
@@ -124,6 +132,50 @@ public class AliOSSService {
                 log.error(e.getMessage());
             }
         }
+    }
+
+    public String sign(String bucket, String objectName) {
+        OSS ossClient = null;
+        try {
+            String endpoint = configuration.getEndpoint(); 
+            DefaultCredentialProvider credentialsProvider = CredentialsProviderFactory
+                    .newDefaultCredentialProvider(configuration.getKeyId(), configuration.getKeySecret());
+            String bucketName = bucket;
+            String region = configuration.getRegion();
+
+            ClientBuilderConfiguration clientBuilderConfiguration = new ClientBuilderConfiguration();
+            clientBuilderConfiguration.setSignatureVersion(SignVersion.V4);
+            ossClient = OSSClientBuilder.create()
+                    .endpoint(endpoint)
+                    .credentialsProvider(credentialsProvider)
+                    .clientConfiguration(clientBuilderConfiguration)
+                    .region(region)
+                    .build();
+            // 设置预签名URL过期时间，单位为毫秒。本示例以设置过期时间为1小时为例。
+            Date expiration = new Date(new Date().getTime() + configuration.getExpireTime());
+            // 生成以GET方法访问的预签名URL。本示例没有额外请求头，其他人可以直接通过浏览器访问相关内容。
+            URL signedUrl = ossClient.generatePresignedUrl(bucketName, objectName, expiration);
+            return signedUrl.toString();
+        } catch (OSSException oe) {
+            log.error("Caught an OSSException, which means your request made it to OSS, "
+                    + "but was rejected with an error response for some reason.");
+            log.error("Error Message:" + oe.getErrorMessage());
+            log.error("Error Code:" + oe.getErrorCode());
+            log.error("Request ID:" + oe.getRequestId());
+            log.error("Host ID:" + oe.getHostId());
+        } catch (ClientException ce) {
+            log.error("Caught an ClientException, which means the client encountered "
+                    + "a serious internal problem while trying to communicate with OSS, "
+                    + "such as not being able to access the network.");
+            log.error("Error Message:" + ce.getMessage());
+        } catch (Exception e) {
+            log.error(e.getMessage());
+        } finally {
+            if (ossClient != null) {
+                ossClient.shutdown();
+            }
+        }
+        return null;
     }
 
 }

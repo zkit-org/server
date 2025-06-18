@@ -6,5 +6,6 @@ import org.zkit.support.server.assets.api.entity.response.OSSPresignResponse;
 public interface AssetsOSSApiService {
 
     OSSPresignResponse presign(OSSPresignRequest request);
+    String sign(String url);
 
 }
