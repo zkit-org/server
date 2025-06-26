@@ -3,6 +3,18 @@
   "editor.insertSpaces": true,
   "editor.formatOnPaste": true,
   "cSpell.words": [
-    "Easykit", "Dubbo", "zkit", "mybatis", "redisson", "pointcut", "Configurer", "alioss", "presign"
+    "Easykit",
+    "Dubbo",
+    "zkit",
+    "mybatis",
+    "redisson",
+    "pointcut",
+    "Configurer",
+    "alioss",
+    "presign",
+    "springframework",
+    "webmvc",
+    "httpclient",
+    "jdbc"
   ],
 }

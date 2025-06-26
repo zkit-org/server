@@ -5,7 +5,7 @@ import org.springframework.ai.chat.client.advisor.vectorstore.QuestionAnswerAdvi
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.embedding.EmbeddingModel;
 import org.springframework.ai.vectorstore.SearchRequest;
-import org.springframework.ai.vectorstore.VectorStore;
+import org.springframework.ai.vectorstore.redis.RedisVectorStore;
 import org.springframework.ai.chat.prompt.PromptTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -65,7 +65,7 @@ public class AIConfigurer {
     @Bean
     public ChatClient chatClient(
         ChatModel model,
-        VectorStore vectorStore
+        RedisVectorStore vectorStore
     ) {
         var qaAdvisor = QuestionAnswerAdvisor.builder(vectorStore)
             .searchRequest(SearchRequest.builder().topK(10).build())
