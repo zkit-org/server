@@ -1,16 +1,29 @@
 package org.zkit.support.server.ai.api.entity;
 
-import com.alibaba.fastjson2.JSONObject;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Map;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
-import java.util.List;
-
 @Data
-public class InvokeRequest {
+@Schema(description = "调用请求")
+public class InvokeRequest implements Serializable {
 
-    private String content;
-    private List<Message> messages;
-    private JSONObject filter;
-    private Boolean useVector = false;
+    @Schema(description = "模型")
+    private String message;
+
+    @Schema(description = "规则")
+    private List<String> rules;
+
+    @Schema(description = "元数据")
+    private Map<String, Object> metadata;
+
+    @Schema(description = "topK")
+    private Integer topK;
+
+    @Schema(description = "是否使用上下文")
+    private Boolean useContext = false;
 
 }

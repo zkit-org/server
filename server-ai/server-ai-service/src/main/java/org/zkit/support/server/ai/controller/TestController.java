@@ -17,7 +17,7 @@ import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 
 @RestController
-@RequestMapping("/ai")
+@RequestMapping("/test")
 @Slf4j
 public class TestController {
 
@@ -34,24 +34,12 @@ public class TestController {
         return Map.of("generation", chatClient.prompt(message).call().content());
     }
 
-    @GetMapping("/vector")
+    @GetMapping("/vector/search")
     @PublicRequest
     public List<Document> vector() {
-        // addDocuments();
-        // Retrieve documents similar to a query
         List<Document> results = vectorStore.similaritySearch(SearchRequest.builder().query("Big").topK(5).build());
         log.info("results: " + results);
         return results;
     }
-
-    @SuppressWarnings("unused")
-    private void addDocuments() {
-        vectorStore.add(List.of(
-            new Document(
-                    "Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!! Spring AI rocks!!",
-                    Map.of("meta1", "meta1")),
-            new Document("The World is Big and Salvation Lurks Around the Corner"),
-            new Document("You walk forward facing the past and you turn back toward the future.",
-                    Map.of("meta2", "meta2"))));
-    }
+    
 }

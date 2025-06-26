@@ -1,13 +1,20 @@
 package org.zkit.support.server.ai.api.entity;
 
-import com.alibaba.fastjson2.JSONObject;
+import java.io.Serializable;
+import java.util.Map;
+
+import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
 
 @Data
-public class Document {
+@Schema(description = "向量文档")
+public class Document implements Serializable {
 
-    private String page_content;
+    @Schema(description = "内容")
+    private String content;
+    @Schema(description = "id")
     private String id;
-    private JSONObject metadata;
+    @Schema(description = "元数据")
+    private Map<String, Object> metadata;
 
 }
