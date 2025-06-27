@@ -11,14 +11,14 @@ import lombok.Data;
 @Schema(description = "调用请求")
 public class InvokeRequest implements Serializable {
 
-    @Schema(description = "模型")
+    @Schema(description = "消息")
     private String message;
 
     @Schema(description = "规则")
     private List<String> rules;
 
     @Schema(description = "元数据")
-    private Map<String, Object> metadata;
+    private Map<String, String> metadata;
 
     @Schema(description = "topK")
     private Integer topK;

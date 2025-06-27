@@ -12,9 +12,7 @@ public class Document implements Serializable {
 
     @Schema(description = "内容")
     private String content;
-    @Schema(description = "id")
-    private String id;
     @Schema(description = "元数据")
-    private Map<String, Object> metadata;
+    private Map<String, String> metadata;
 
 }

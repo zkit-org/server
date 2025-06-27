@@ -1,28 +1,33 @@
 package org.zkit.support.server.ai.api;
 
 import org.zkit.support.server.ai.api.service.VectorStoreApiService;
+import org.zkit.support.server.ai.vector.service.VectorStoreService;
 
 import jakarta.annotation.Resource;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.dubbo.config.annotation.DubboService;
-import org.springframework.ai.document.Document;
-import org.springframework.ai.vectorstore.VectorStore;
 
 @DubboService
 public class VectorStoreApiServiceImpl implements VectorStoreApiService {
 
     @Resource
-    private VectorStore vectorStore;
+    private VectorStoreService vectorStoreService;
 
     @Override
     public void add(org.zkit.support.server.ai.api.entity.Document document) {
-        vectorStore.add(List.of(new Document(document.getId(), document.getContent(), document.getMetadata())));
+        vectorStoreService.add(List.of(document));
     }
 
     @Override
     public void add(List<org.zkit.support.server.ai.api.entity.Document> documents) {
-        vectorStore.add(documents.stream().map(document -> new Document(document.getId(), document.getContent(), document.getMetadata())).toList());
+        vectorStoreService.add(documents);
+    }
+
+    @Override
+    public void delete(Map<String, String> metadata) {
+        vectorStoreService.delete(metadata);
     }
 }
