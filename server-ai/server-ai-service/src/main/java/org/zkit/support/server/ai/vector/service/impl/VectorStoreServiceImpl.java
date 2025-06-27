@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.springframework.stereotype.Service;
 import org.springframework.ai.document.Document;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
@@ -12,6 +13,7 @@ import org.zkit.support.server.ai.vector.service.VectorStoreService;
 
 import jakarta.annotation.Resource;
 
+@Service
 public class VectorStoreServiceImpl implements VectorStoreService {
 
     @Resource
