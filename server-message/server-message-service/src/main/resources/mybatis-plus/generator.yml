@@ -1,0 +1,15 @@
+# 基础包名
+basePackage: org.zkit.support.server.message
+mapperPackage: src/main/resources/mapper
+# 数据源
+datasource:
+  url: jdbc:mysql://mysql:7307/clover_message
+# 激活的模块
+actives:
+  - template
+# 模块配置
+modules:
+  - name: template
+    tables:
+      - template
+      - template_language

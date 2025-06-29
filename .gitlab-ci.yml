@@ -24,27 +24,27 @@ package-account:
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID
         - docker rmi $CI_REGISTRY/easy-kit-dev/server/account:latest
 
-package-mail:
+package-message:
     stage: package
     only:
-        - /^mail-.*$/
+        - /^message-.*$/
     tags:
         - dev
     script:
         - java -version
         - mvn -v
         - mvn install -Dmaven.test.skip=true
-        - cd server-mail/server-mail-api
+        - cd server-message/server-message-api
         - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
-        - cd ../../server-mail/server-mail-service
+        - cd ../../server-message/server-message-service
         - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
         - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
-        - docker build -t $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID -f ./Dockerfile .
-        - docker tag $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/mail:latest
-        - docker push $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID
-        - docker push $CI_REGISTRY/easy-kit-dev/server/mail:latest
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/mail:$CI_PIPELINE_ID
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/mail:latest
+        - docker build -t $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID -f ./Dockerfile .
+        - docker tag $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/message:latest
+        - docker push $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID
+        - docker push $CI_REGISTRY/easy-kit-dev/server/message:latest
+        - docker rmi $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID
+        - docker rmi $CI_REGISTRY/easy-kit-dev/server/message:latest
 
 package-ai:
     stage: package

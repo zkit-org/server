@@ -32,13 +32,13 @@
         },
         {
             "type": "java",
-            "name": "mail",
+            "name": "message",
             "request": "launch",
             "cwd": "${workspaceFolder}",
-            "mainClass": "org.zkit.support.server.mail.Application",
-            "projectName": "server-mail-service",
+            "mainClass": "org.zkit.support.server.message.Application",
+            "projectName": "server-message-service",
             "args": "",
-            "envFile": "${workspaceFolder}/server-mail/.env"
+            "envFile": "${workspaceFolder}/server-message/.env"
         }
     ]
 }

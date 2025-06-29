@@ -1,0 +1,33 @@
+spring:
+  application:
+    name: easy-server-message
+  cloud:
+    loadbalancer:
+      nacos:
+        enabled: true
+    nacos:
+      config:
+        server-addr: ${NACOS_SERVER}
+        file-extension: yaml
+        refresh-enabled: true
+      discovery:
+        server-addr: ${NACOS_SERVER}
+dubbo:
+  scan:
+    base-packages:
+      - org.zkit.support.server
+  application:
+    qos-enable: false
+  protocol:
+    name: dubbo
+    port: 10803
+  provider:
+    timeout: 30000
+    filter: support-exception,support-language,-exception
+  consumer:
+    check: false
+    timeout: 30000
+    filter: support-exception,support-language,-exception
+  registry:
+    address: nacos://${NACOS_SERVER}
+    group: dubbo
