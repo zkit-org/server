@@ -101,14 +101,14 @@ deploy-account:
         - docker compose down
         - docker compose up -d
 
-deploy-mail:
+deploy-message:
     stage: deploy
     only:
-        - /^mail-.*$/
+        - /^message-.*$/
     tags:
         - dev
     script:
-        - cd ~/server/clover/server-mail
+        - cd ~/server/clover/server-message
         - docker compose down
         - docker compose up -d
 
