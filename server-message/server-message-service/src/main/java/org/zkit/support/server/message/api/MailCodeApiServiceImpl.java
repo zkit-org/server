@@ -4,26 +4,17 @@ import jakarta.annotation.Resource;
 import org.apache.dubbo.config.annotation.DubboService;
 import org.zkit.support.server.message.api.entity.request.CheckCodeRequest;
 import org.zkit.support.server.message.api.entity.request.SendCodeRequest;
-import org.zkit.support.server.message.api.entity.request.SendMailRequest;
-import org.zkit.support.server.message.api.service.MailApiService;
+import org.zkit.support.server.message.api.service.MailCodeApiService;
 import org.zkit.support.server.message.service.EmailCodeService;
-import org.zkit.support.server.message.service.ServerMailApi;
 
 @DubboService
-public class MailApiServiceImpl implements MailApiService {
+public class MailCodeApiServiceImpl implements MailCodeApiService {
 
     @Resource
     private EmailCodeService emailCodeService;
-    @Resource
-    private ServerMailApi serverMailApi;
 
     @Override
-    public void send(SendMailRequest request) {
-        serverMailApi.send(request);
-    }
-
-    @Override
-    public void sendCode(SendCodeRequest request) {
+    public void send(SendCodeRequest request) {
         emailCodeService.send(request.getEmail(), request.getAction());
     }
 

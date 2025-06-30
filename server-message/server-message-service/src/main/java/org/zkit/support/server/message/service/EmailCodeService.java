@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.zkit.support.server.message.configuration.EmailConfiguration;
 import org.zkit.support.server.message.entity.EmailCode;
 import org.zkit.support.server.message.api.entity.request.SendMailRequest;
+import org.zkit.support.server.message.api.service.MailApiService;
 import org.zkit.support.starter.boot.code.PublicCode;
 import org.zkit.support.starter.boot.exception.ResultException;
 import org.zkit.support.starter.boot.utils.MessageUtils;
@@ -25,7 +26,7 @@ public class EmailCodeService {
     @Resource
     private EmailConfiguration configuration;
     @Resource
-    private ServerMailApi emailService;
+    private MailApiService mailApiService;
 
     private EmailCode newCode(String email, String action) {
         String codeKey = "email:code:" + action + ":" + email;
@@ -64,7 +65,7 @@ public class EmailCodeService {
         map.put("code", code.getCode());
         request.setData(map);
         log.info("send email code: {}", request);
-        emailService.send(request);
+        mailApiService.send(request);
     }
 
     public boolean check(String email, String code, String action) {
