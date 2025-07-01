@@ -6,14 +6,14 @@ import org.zkit.support.server.account.api.entity.request.*;
 import org.zkit.support.server.account.api.entity.response.AccountResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.api.entity.response.TokenWithAccountResponse;
-import org.zkit.support.server.account.api.service.AuthAccountApiService;
+import org.zkit.support.server.account.api.service.AccountApiService;
 import org.zkit.support.server.account.auth.entity.dto.AuthAccount;
 import org.zkit.support.server.account.auth.entity.mapstruct.AuthAccountMapStruct;
 import org.zkit.support.server.account.auth.service.AuthAccountService;
 import org.zkit.support.starter.security.service.SessionService;
 
 @DubboService
-public class AuthAccountApiServiceImpl implements AuthAccountApiService {
+public class AccountApiServiceImpl implements AccountApiService {
 
     @Resource
     private AuthAccountService authAccountService;

@@ -13,6 +13,7 @@ public class AccountConfiguration {
     private String defaultRole;
     private String initPassword;
     private String transportPrivateKey;
+    private String transportPublicKey;
     private String aesKey;
     private boolean debug;
     private String emailCode;

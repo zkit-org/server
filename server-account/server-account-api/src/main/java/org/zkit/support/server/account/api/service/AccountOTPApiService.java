@@ -5,7 +5,7 @@ import org.zkit.support.server.account.api.entity.request.OTPDisableRequest;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.OTPStatusResponse;
 
-public interface AuthAccountOTPApiService {
+public interface AccountOTPApiService {
 
     OTPResponse otpSecret(Long accountId);
     OTPStatusResponse otpState(Long accountId);

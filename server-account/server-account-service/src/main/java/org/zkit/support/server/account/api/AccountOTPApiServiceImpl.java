@@ -6,11 +6,11 @@ import org.zkit.support.server.account.api.entity.request.OTPBindRequest;
 import org.zkit.support.server.account.api.entity.request.OTPDisableRequest;
 import org.zkit.support.server.account.api.entity.response.OTPResponse;
 import org.zkit.support.server.account.api.entity.response.OTPStatusResponse;
-import org.zkit.support.server.account.api.service.AuthAccountOTPApiService;
+import org.zkit.support.server.account.api.service.AccountOTPApiService;
 import org.zkit.support.server.account.auth.service.AuthAccountService;
 
 @DubboService
-public class AuthAccountOTPApiServiceImpl implements AuthAccountOTPApiService {
+public class AccountOTPApiServiceImpl implements AccountOTPApiService {
 
     @Resource
     private AuthAccountService authAccountService;

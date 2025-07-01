@@ -5,7 +5,7 @@ import org.zkit.support.server.account.api.entity.response.AccountResponse;
 import org.zkit.support.server.account.api.entity.response.TokenResponse;
 import org.zkit.support.server.account.api.entity.response.TokenWithAccountResponse;
 
-public interface AuthAccountApiService {
+public interface AccountApiService {
 
     AccountResponse findByUsername(String username);
     AccountResponse add(AccountAddRequest request);
