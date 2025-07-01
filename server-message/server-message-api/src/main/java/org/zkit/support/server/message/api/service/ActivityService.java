@@ -3,7 +3,7 @@ package org.zkit.support.server.message.api.service;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 import org.zkit.support.server.message.api.configuration.MessageConfiguration;
-import org.zkit.support.server.message.api.entity.request.SendMailRequest;
+import org.zkit.support.server.message.api.entity.request.ActivityRequest;
 
 import com.alibaba.fastjson2.JSONObject;
 
@@ -12,15 +12,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Component
 @Slf4j
-public class MailApiService {
+public class ActivityService {
 
     @Resource
     private KafkaTemplate<String, String> kafkaTemplate;
     @Resource
     private MessageConfiguration configuration;
 
-    public void send(SendMailRequest request) {
-        kafkaTemplate.send(configuration.getMailTopic(), JSONObject.toJSONString(request));
+    public void log(ActivityRequest request) {
+        kafkaTemplate.send(configuration.getActivityTopic(), JSONObject.toJSONString(request));
     }
 
 }

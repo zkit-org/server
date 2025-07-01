@@ -1,2 +1,3 @@
-org.zkit.support.server.message.api.service.MailApiService
+org.zkit.support.server.message.api.service.MailService
+org.zkit.support.server.message.api.service.ActivityService
 org.zkit.support.server.message.api.configuration.MessageConfiguration

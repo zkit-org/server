@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.zkit.support.server.message.configuration.EmailConfiguration;
 import org.zkit.support.server.message.entity.EmailCode;
 import org.zkit.support.server.message.api.entity.request.SendMailRequest;
-import org.zkit.support.server.message.api.service.MailApiService;
+import org.zkit.support.server.message.api.service.MailService;
 import org.zkit.support.starter.boot.code.PublicCode;
 import org.zkit.support.starter.boot.exception.ResultException;
 import org.zkit.support.starter.boot.utils.MessageUtils;
@@ -26,7 +26,7 @@ public class EmailCodeService {
     @Resource
     private EmailConfiguration configuration;
     @Resource
-    private MailApiService mailApiService;
+    private MailService mailApiService;
 
     private EmailCode newCode(String email, String action) {
         String codeKey = "email:code:" + action + ":" + email;

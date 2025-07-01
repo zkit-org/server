@@ -10,6 +10,6 @@ import org.springframework.stereotype.Component;
 public class MessageConfiguration {
 
     private String mailTopic;
-    private String activeTopic;
+    private String activityTopic;
 
 }
