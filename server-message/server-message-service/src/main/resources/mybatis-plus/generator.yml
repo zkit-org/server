@@ -7,9 +7,14 @@ datasource:
 # 激活的模块
 actives:
   - template
+  - activity
 # 模块配置
 modules:
   - name: template
     tables:
       - template
       - template_language
+  - name: activity
+    tables:
+      - activity
+      - activity_notice

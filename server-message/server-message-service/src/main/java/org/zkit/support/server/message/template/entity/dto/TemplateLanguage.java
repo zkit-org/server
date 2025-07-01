@@ -1,7 +1,5 @@
 package org.zkit.support.server.message.template.entity.dto;
 
-import com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -11,17 +9,16 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 
+ * 模板语言
  * </p>
  *
  * @author generator
- * @since 2025-04-22
+ * @since 2025-07-01
  */
-@SuppressWarnings("unused")
 @Data
 @Accessors(chain = true)
 @TableName("template_language")
-@Schema(name = "TemplateLanguage", description = "")
+@Schema(name = "TemplateLanguage", description = "模板语言")
 public class TemplateLanguage implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;

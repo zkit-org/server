@@ -1,0 +1,16 @@
+package org.zkit.support.server.message.activity.service;
+
+import org.zkit.support.server.message.activity.entity.dto.Activity;
+import com.baomidou.mybatisplus.extension.service.IService;
+
+/**
+ * <p>
+ * 动态 服务类
+ * </p>
+ *
+ * @author generator
+ * @since 2025-07-01
+ */
+public interface ActivityService extends IService<Activity> {
+
+}
