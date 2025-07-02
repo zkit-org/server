@@ -15,16 +15,10 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ActivityRequest implements Serializable {
     
-    @Schema(description = "标题")
-    private String title;
+    @Schema(description = "操作")
+    private String action;
 
-    @Schema(description = "摘要")
-    private String summary;
-
-    @Schema(description = "富文本内容")
-    private JSONObject content;
-
-    @Schema(description = "应用ID")
+    @Schema(description = "应用标识")
     private String app;
 
     @Schema(description = "地址")
@@ -35,6 +29,9 @@ public class ActivityRequest implements Serializable {
 
     @Schema(description = "动态时间")
     private Date createTime;
+
+    @Schema(description = "标题")
+    private String title;
 
     @Schema(description = "元数据")
     private JSONObject metadata;

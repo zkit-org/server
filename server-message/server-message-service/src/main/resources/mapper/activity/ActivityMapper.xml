@@ -6,9 +6,8 @@
     <resultMap id="BaseResultMap" type="org.zkit.support.server.message.activity.entity.dto.Activity">
         <id column="id" property="id" />
         <result column="title" property="title" />
-        <result column="summary" property="summary" />
-        <result column="content" property="content" typeHandler="com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler" />
-        <result column="app" property="app" />
+        <result column="action" property="action" />
+        <result column="app_id" property="appId" />
         <result column="url" property="url" />
         <result column="user_id" property="userId" />
         <result column="create_time" property="createTime" />
@@ -17,7 +16,7 @@
 
     <!-- 通用查询结果列 -->
     <sql id="Base_Column_List">
-        id, title, summary, content, app, url, user_id, create_time, metadata
+        id, title, action, app_id, url, user_id, create_time, metadata
     </sql>
 
 </mapper>

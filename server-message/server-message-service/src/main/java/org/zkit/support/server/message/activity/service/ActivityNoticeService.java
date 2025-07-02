@@ -1,5 +1,7 @@
 package org.zkit.support.server.message.activity.service;
 
+import java.util.List;
+
 import org.zkit.support.server.message.activity.entity.dto.ActivityNotice;
 import com.baomidou.mybatisplus.extension.service.IService;
 
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-07-01
  */
 public interface ActivityNoticeService extends IService<ActivityNotice> {
+
+    void addUser(Long activityId, List<Long> userIds);
 
 }

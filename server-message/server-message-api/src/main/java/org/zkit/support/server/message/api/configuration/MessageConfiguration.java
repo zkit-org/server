@@ -11,5 +11,6 @@ public class MessageConfiguration {
 
     private String mailTopic;
     private String activityTopic;
+    private String app;
 
 }

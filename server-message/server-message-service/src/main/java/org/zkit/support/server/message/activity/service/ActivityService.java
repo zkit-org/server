@@ -1,6 +1,8 @@
 package org.zkit.support.server.message.activity.service;
 
 import org.zkit.support.server.message.activity.entity.dto.Activity;
+import org.zkit.support.server.message.api.entity.request.ActivityRequest;
+
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
@@ -12,5 +14,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
  * @since 2025-07-01
  */
 public interface ActivityService extends IService<Activity> {
+
+    void save(ActivityRequest request);;
 
 }

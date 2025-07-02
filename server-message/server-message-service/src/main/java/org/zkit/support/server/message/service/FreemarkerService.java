@@ -4,10 +4,8 @@ import freemarker.cache.StringTemplateLoader;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
 import freemarker.template.Version;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.view.freemarker.FreeMarkerConfigurer;
 
 import java.io.StringWriter;
 import java.util.Map;
@@ -15,9 +13,6 @@ import java.util.Map;
 @Slf4j
 @Component
 public class FreemarkerService {
-
-    @Resource
-    private FreeMarkerConfigurer configurer;
 
     public String render(String templateName, String templateContext, Map<String, Object> data) {
         log.info("render template: {}", data);

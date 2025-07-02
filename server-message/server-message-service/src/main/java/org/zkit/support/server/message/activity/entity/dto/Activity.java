@@ -15,7 +15,7 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author generator
- * @since 2025-07-01
+ * @since 2025-07-02
  */
 @Data
 @Accessors(chain = true)
@@ -27,21 +27,17 @@ public class Activity implements Serializable {
     @Schema(description = "主键")
     private Long id;
 
-    @Schema(description = "标题")
-    private String title;
-
-    @Schema(description = "摘要")
-    private String summary;
-
-    @Schema(description = "富文本内容")
-    @TableField(typeHandler = Fastjson2TypeHandler.class)
-    private Object content;
+    @Schema(description = "动作")
+    private String action;
 
     @Schema(description = "应用ID")
-    private String app;
+    private Long appId;
 
     @Schema(description = "地址")
     private String url;
+
+    @Schema(description = "标题")
+    private String title;
 
     @Schema(description = "用户ID")
     private Long userId;
@@ -51,5 +47,5 @@ public class Activity implements Serializable {
 
     @Schema(description = "元数据")
     @TableField(typeHandler = Fastjson2TypeHandler.class)
-    private Object metadata;
+    private Object matedata;
 }

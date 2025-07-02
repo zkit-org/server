@@ -10,7 +10,7 @@ import com.alibaba.fastjson2.JSONObject;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 
-@Component
+@Component("apiActivityService")
 @Slf4j
 public class ActivityService {
 

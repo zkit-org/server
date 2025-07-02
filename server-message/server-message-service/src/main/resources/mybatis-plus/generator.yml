@@ -18,3 +18,5 @@ modules:
     tables:
       - activity
       - activity_notice
+      - activity_app
+      - activity_action

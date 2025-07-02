@@ -1,4 +1,4 @@
-package org.zkit.support.server.message.template.entity.dto;
+package org.zkit.support.server.message.activity.entity.dto;
 
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -9,7 +9,7 @@ import lombok.experimental.Accessors;
 
 /**
  * <p>
- * 模板语言
+ * 操作项
  * </p>
  *
  * @author generator
@@ -17,18 +17,21 @@ import lombok.experimental.Accessors;
  */
 @Data
 @Accessors(chain = true)
-@TableName("template_language")
-@Schema(name = "TemplateLanguage", description = "模板语言")
-public class TemplateLanguage implements Serializable {
+@TableName("activity_action")
+@Schema(name = "ActivityAction", description = "操作项")
+public class ActivityAction implements Serializable {
     @Serial
     private static final long serialVersionUID = 1L;
 
     @Schema(description = "主键")
     private Long id;
 
-    @Schema(description = "语言代码")
-    private String code;
+    @Schema(description = "应用ID")
+    private Long appId;
 
-    @Schema(description = "描述")
+    @Schema(description = "操作")
+    private String action;
+
+    @Schema(description = "备注")
     private String memo;
 }
