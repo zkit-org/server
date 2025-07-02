@@ -1,3 +1,4 @@
 org.zkit.support.server.message.api.service.MailService
 org.zkit.support.server.message.api.service.ActivityService
 org.zkit.support.server.message.api.configuration.MessageConfiguration
+org.zkit.support.server.message.api.aspect.ActivityAspect
