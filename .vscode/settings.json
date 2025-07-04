@@ -17,6 +17,10 @@
     "httpclient",
     "jdbc",
     "Freemarker",
-    "mapstruct"
+    "mapstruct",
+    "spel",
+    "baomidou",
+    "mybatisplus",
+    "fastjson"
   ],
 }
