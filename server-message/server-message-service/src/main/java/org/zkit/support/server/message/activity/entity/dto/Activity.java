@@ -47,5 +47,5 @@ public class Activity implements Serializable {
 
     @Schema(description = "元数据")
     @TableField(typeHandler = Fastjson2TypeHandler.class)
-    private Object matedata;
+    private Object metadata;
 }
