@@ -7,6 +7,10 @@ import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 import org.zkit.support.server.message.service.MailService;
 
+import com.alibaba.fastjson2.JSON;
+
+import org.zkit.support.server.message.api.entity.request.SendMailRequest;
+
 import java.util.List;
 
 @Component
@@ -17,9 +21,14 @@ public class MailTopicListener {
     private MailService mailService;
 
     @KafkaListener(topics = {"${message.mail-topic}"}, containerFactory = "batchFactory")
-    public void batchConsumer(List<ConsumerRecord<?, ?>> consumerRecords) {
+    public void batchConsumer(List<ConsumerRecord<String, String>> consumerRecords) {
         consumerRecords.forEach(record -> {
-            mailService.sendMail(record.value().toString());
+            try {
+                log.info("MailTopicListener: {}", record.value());
+                mailService.sendMail(JSON.parseObject(record.value(), SendMailRequest.class));
+            } catch (Exception e) {
+                log.error("MailTopicListener error: {}", e.getMessage(), e);
+            }
         });
     }
 

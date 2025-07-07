@@ -5,7 +5,7 @@ import org.springframework.stereotype.Component;
 import org.zkit.support.server.message.api.configuration.MessageConfiguration;
 import org.zkit.support.server.message.api.entity.request.ActivityRequest;
 
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSON;
 
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,7 @@ public class ActivityService {
     private MessageConfiguration configuration;
 
     public void log(ActivityRequest request) {
-        kafkaTemplate.send(configuration.getActivityTopic(), JSONObject.toJSONString(request));
+        kafkaTemplate.send(configuration.getActivityTopic(), JSON.toJSONString(request));
     }
 
 }

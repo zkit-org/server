@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 import org.zkit.support.server.message.activity.service.ActivityService;
 import org.zkit.support.server.message.api.entity.request.ActivityRequest;
 
-import com.alibaba.fastjson2.JSONObject;
+import com.alibaba.fastjson2.JSON;
 
 import jakarta.annotation.Resource;
 
@@ -21,13 +21,13 @@ public class ActivityTopicListener {
     private ActivityService activityService;
 
     @KafkaListener(topics = {"${message.activity-topic}"}, containerFactory = "batchFactory")
-    public void batchConsumer(List<ConsumerRecord<?, ?>> consumerRecords) {
+    public void batchConsumer(List<ConsumerRecord<String, String>> consumerRecords) {
         consumerRecords.forEach(record -> {
             try {
-                log.info("ActivityTopicListener: {}", record.value().toString());
-                activityService.save(JSONObject.parseObject(record.value().toString(), ActivityRequest.class));
+                log.info("ActivityTopicListener: {}", record.value());
+                activityService.save(JSON.parseObject(record.value(), ActivityRequest.class));
             } catch (Exception e) {
-                log.error("ActivityTopicListener: {}", e.getMessage());
+                log.error("ActivityTopicListener error: {}", e.getMessage(), e);
             }
         });
     }
