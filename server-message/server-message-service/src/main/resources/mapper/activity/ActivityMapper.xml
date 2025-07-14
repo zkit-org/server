@@ -19,4 +19,30 @@
         id, title, action, app_id, url, user_id, create_time, metadata
     </sql>
 
+    <select id="query" resultMap="BaseResultMap">
+        SELECT
+            a.*
+        FROM
+            activity AS a
+        LEFT JOIN 
+            activity_app AS aa
+        ON 
+            a.app_id = aa.id
+        <where>
+            <trim prefixOverrides="AND|OR">
+                <if test="request.app != null">
+                    AND aa.label = #{request.app}
+                </if>
+                <if test="request.userId != null">
+                    AND a.user_id = #{request.userId}
+                </if>
+                <if test="request.metadata != null">
+                    <foreach collection="request.metadata" index="key" item="value" separator=" AND ">
+                        AND JSON_EXTRACT(a.metadata, CONCAT('$.', #{key})) = #{value}
+                    </foreach>
+                </if>
+            </trim>
+        </where>
+    </select>
+
 </mapper>

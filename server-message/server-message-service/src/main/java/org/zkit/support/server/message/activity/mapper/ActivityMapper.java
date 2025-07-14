@@ -1,6 +1,11 @@
 package org.zkit.support.server.message.activity.mapper;
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import org.zkit.support.server.message.activity.entity.dto.Activity;
+import org.zkit.support.server.message.api.entity.request.ActivityListRequest;
+
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -12,5 +17,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @since 2025-07-01
  */
 public interface ActivityMapper extends BaseMapper<Activity> {
+
+    List<Activity> query(@Param("request") ActivityListRequest request);
 
 }
