@@ -14,6 +14,9 @@ import lombok.experimental.Accessors;
 @Accessors(chain = true)
 public class ActivityResponse implements Serializable {
 
+    @Schema(description = "动态ID")
+    private Long id;
+
     @Schema(description = "操作")
     private String action;
 

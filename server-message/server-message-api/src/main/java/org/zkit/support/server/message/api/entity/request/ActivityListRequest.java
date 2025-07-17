@@ -1,7 +1,8 @@
 package org.zkit.support.server.message.api.entity.request;
 
 import java.io.Serializable;
-import java.util.Map;
+
+import com.alibaba.fastjson2.JSONObject;
 
 import io.swagger.v3.oas.annotations.media.Schema;
 import lombok.Data;
@@ -19,7 +20,7 @@ public class ActivityListRequest implements Serializable {
     private Long userId;
 
     @Schema(description = "元数据")
-    private Map<String, Object> metadata;
+    private JSONObject metadata;
     
     @Schema(description = "页码")
     private Integer page;
