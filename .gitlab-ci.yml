@@ -13,6 +13,8 @@ package-account:
         - mvn -v
         - mvn install -Dmaven.test.skip=true
         - cd $CI_PROJECT_DIR/server-account/server-account-api
+        - echo $NEXUS_USERNAME
+        - echo $NEXUS_PASSWORD
         - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
         - cd $CI_PROJECT_DIR/server-account/server-account-service
         - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
