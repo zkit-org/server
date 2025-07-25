@@ -16,7 +16,6 @@ package-account:
         - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
         - cd $CI_PROJECT_DIR/server-account/server-account-service
         - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        # - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
         - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/account:latest
@@ -35,11 +34,11 @@ package-message:
         - java -version
         - mvn -v
         - mvn install -Dmaven.test.skip=true
-        - cd server-message/server-message-api
-        - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
-        - cd ../../server-message/server-message-service
-        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
-        - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
+        - cd $CI_PROJECT_DIR/server-message/server-message-api
+        - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
+        - cd $CI_PROJECT_DIR/server-message/server-message-service
+        - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
+        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/message:latest
         - docker push $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID
@@ -57,11 +56,11 @@ package-ai:
         - java -version
         - mvn -v
         - mvn install -Dmaven.test.skip=true
-        - cd server-ai/server-ai-api
-        - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
-        - cd ../../server-ai/server-ai-service
-        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
-        - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
+        - cd $CI_PROJECT_DIR/server-ai/server-ai-api
+        - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
+        - cd $CI_PROJECT_DIR/server-ai/server-ai-service
+        - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
+        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/ai:latest
         - docker push $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID
@@ -83,7 +82,7 @@ package-assets:
         - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
         - cd $CI_PROJECT_DIR/server-assets/server-assets-service
         - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
+        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/assets:latest
         - docker push $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID
@@ -99,6 +98,7 @@ deploy-account:
         - dev
     script:
         - cd ~/server/clover/server-account
+        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
         - docker compose down
         - docker compose up -d
 
@@ -110,6 +110,7 @@ deploy-message:
         - dev
     script:
         - cd ~/server/clover/server-message
+        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
         - docker compose down
         - docker compose up -d
 
@@ -121,6 +122,7 @@ deploy-ai:
         - dev
     script:
         - cd ~/server/clover/server-ai
+        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
         - docker compose down
         - docker compose up -d
 
@@ -132,5 +134,6 @@ deploy-assets:
         - dev
     script:
         - cd ~/server/clover/server-assets
+        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
         - docker compose down
         - docker compose up -d
