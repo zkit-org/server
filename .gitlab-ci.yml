@@ -12,10 +12,10 @@ package-account:
         - java -version
         - mvn -v
         - mvn install -Dmaven.test.skip=true
-        - cd server-account/server-account-api
-        - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
-        - cd ../../server-account/server-account-service
-        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
+        - cd $CI_PROJECT_DIR/server-account/server-account-api
+        - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
+        - cd $CI_PROJECT_DIR/server-account/server-account-service
+        - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
         - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/account:latest
@@ -78,10 +78,10 @@ package-assets:
         - java -version
         - mvn -v
         - mvn install -Dmaven.test.skip=true
-        - cd server-assets/server-assets-api
-        - mvn clean deploy -U -s ../../settings.xml -Dmaven.test.skip=true
-        - cd ../../server-assets/server-assets-service
-        - mvn clean package -U -s ../../settings.xml -Dmaven.test.skip=true
+        - cd $CI_PROJECT_DIR/server-assets/server-assets-api
+        - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
+        - cd $CI_PROJECT_DIR/server-assets/server-assets-service
+        - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
         - echo "$DOCKER_TOKEN" | docker login -u $DOCKER_USER --password-stdin $CI_REGISTRY
         - docker build -t $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID -f ./Dockerfile .
         - docker tag $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/assets:latest
