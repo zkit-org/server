@@ -29,14 +29,18 @@
 .deploy_script: &deploy_script |
   git clone https://$GIT_USERNAME:$GIT_TOKEN@git.zkit.org/deploy/easykit.git
   cd easykit
+  git checkout main
+
+  BRANCH="${IMAGE_TAG}"
+  git checkout -b $BRANCH
   
-  sed -i "s/targetRevision: \".*\"/targetRevision: \"$IMAGE_TAG\"/" support/${PROJECT_NAME}/application.yaml
+  yq e '.spec.template.spec.containers[0].image = "hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:'"${IMAGE_TAG}"'"' -i support/${PROJECT_NAME}/deployment.yaml
   
   git config user.name "gitlab-ci"
   git config user.email "gitlab-ci@local"
-  git add support/${PROJECT_NAME}/application.yaml
+  git add support/${PROJECT_NAME}/deployment.yaml
   git commit -m "ci: update targetRevision to $IMAGE_TAG [ci skip]" || echo "No changes to commit"
-  git push origin main
+  git push origin $BRANCH
   
   # 从 IMAGE_TAG 中提取环境信息
   if [[ $IMAGE_TAG =~ ^prod-(.*)$ ]]; then
@@ -54,7 +58,7 @@
   -H "Authorization: Bearer $ARGOCD_TOKEN" \
   -H "Content-Type: application/json" \
   -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" \
-  -d '{"revision":"$IMAGE_TAG"}'
+  -d '{"revision":"$BRANCH"}'
 
 stages:
   - package
