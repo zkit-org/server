@@ -54,17 +54,20 @@
   ARGOCD_SERVER="$ARGOCD_SERVER"
   ARGOCD_APP="easykit-server-${PROJECT_NAME}-${ENV}"
   ARGOCD_TOKEN="$ARGOCD_TOKEN"
-  curl -k \
-  -H "Authorization: Bearer $ARGOCD_TOKEN" \
-  -H "Content-Type: application/json" \
-  -X PATCH "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP" \
-  -d "{\"spec\":{\"source\":{\"targetRevision\":\"${BRANCH}\"}}}"
+  PATCH="{\"spec\":{\"source\":{\"targetRevision\":\"${BRANCH}\"}}}"
+
+  curl -k -w "\n" \
+    -H "Authorization: Bearer $ARGOCD_TOKEN" \
+    -H "Content-Type: application/json" \
+    -X PATCH "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP" \
+    -d "{\"patch\":\"$PATCH\",\"patchType\":\"merge\"}"
   echo "ArgoCD set targetRevision: $BRANCH"
-  curl -k \
-  -H "Authorization: Bearer $ARGOCD_TOKEN" \
-  -H "Content-Type: application/json" \
-  -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" \
-  -d "{\"revision\":\"${BRANCH}\"}"
+
+  curl -k -w "\n" \
+    -H "Authorization: Bearer $ARGOCD_TOKEN" \
+    -H "Content-Type: application/json" \
+    -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" \
+    -d "{\"revision\":\"${BRANCH}\"}"
   echo "ArgoCD sync revision: $BRANCH"
 
 stages:
