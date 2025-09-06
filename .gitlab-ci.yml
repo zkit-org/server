@@ -34,7 +34,7 @@
   BRANCH="${IMAGE_TAG}"
   git checkout -b $BRANCH
   
-  yq e '.spec.template.spec.containers[0].image = "hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:'"${IMAGE_TAG}"'"' -i support/${PROJECT_NAME}/deployment.yaml
+  yq e ".spec.template.spec.containers[0].image = \"hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i support/${PROJECT_NAME}/deployment.yaml
   
   git config user.name "gitlab-ci"
   git config user.email "gitlab-ci@local"
