@@ -35,7 +35,7 @@
   git checkout -b $BRANCH
   
   yq e ".spec.template.spec.containers[0].image = \"hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i support/${PROJECT_NAME}/deployment.yaml
-  
+
   git config user.name "gitlab-ci"
   git config user.email "gitlab-ci@local"
   git add support/${PROJECT_NAME}/deployment.yaml
@@ -58,7 +58,8 @@
   -H "Authorization: Bearer $ARGOCD_TOKEN" \
   -H "Content-Type: application/json" \
   -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" \
-  -d '{"revision":"$BRANCH"}'
+  -d "{\"revision\":\"${BRANCH}\"}"
+  echo "ArgoCD sync revision: $BRANCH"
 
 stages:
   - package
