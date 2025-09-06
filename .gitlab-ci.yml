@@ -1,139 +1,79 @@
+.get_image_tag_script: &get_image_tag_script |
+  if [[ $CI_COMMIT_TAG =~ ^${PROJECT_NAME}-prod-(.*)$ ]]; then
+    IMAGE_TAG="prod-${BASH_REMATCH[1]}"
+  elif [[ $CI_COMMIT_TAG =~ ^${PROJECT_NAME}-dev-(.*)$ ]]; then
+    IMAGE_TAG="dev-${BASH_REMATCH[1]}"
+  else
+    IMAGE_TAG=$CI_PIPELINE_ID
+  fi
+  echo "Using image tag: $IMAGE_TAG"
+
+.mvn_package_script: &mvn_package_script |
+  java -version
+  mvn -v
+  mvn install -Dmaven.test.skip=true
+  cd $CI_PROJECT_DIR/server-${PROJECT_NAME}/server-${PROJECT_NAME}-api
+  mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
+  cd $CI_PROJECT_DIR/server-${PROJECT_NAME}/server-${PROJECT_NAME}-service
+  mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
+
+.docker_build_script: &docker_build_script |
+  echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
+  docker build -t $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:$IMAGE_TAG -f ./Dockerfile .
+  docker tag $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:$IMAGE_TAG $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:latest
+  docker push $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:$IMAGE_TAG
+  docker push $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:latest
+  docker rmi $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:$IMAGE_TAG
+  docker rmi $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:latest
+
+.deploy_script: &deploy_script |
+  # clone infra 仓库
+  git clone https://git.zkit.org/deploy/easykit.git
+  cd easykit
+  
+  # 替换 app.yaml（请根据实际路径调整）
+  sed -i "s/targetRevision: \".*\"/targetRevision: \"$IMAGE_TAG\"/" support/${PROJECT_NAME}/application.yaml
+  
+  # 提交并推送（若需要设置 token 可用 CI/CD secret 变量/ssh key）
+  git config user.name "gitlab-ci"
+  git config user.email "gitlab-ci@local"
+  git add support/${PROJECT_NAME}/application.yaml
+  git commit -m "ci: update targetRevision to $IMAGE_TAG [ci skip]" || echo "No changes to commit"
+  git push origin main # 或者具体分支
+  
+  # 触发 ArgoCD sync
+  ARGOCD_SERVER="$ARGOCD_SERVER"
+  ARGOCD_APP="easykit-server-${PROJECT_NAME}"
+  ARGOCD_TOKEN="$ARGOCD_TOKEN"
+  curl -k -H "Authorization: Bearer $ARGOCD_TOKEN" -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" 
+
 stages:
-    - package
-    - deploy
+  - package
+  - deploy
 
 package-account:
-    stage: package
-    only:
-        - /^account-.*$/
-    tags:
-        - dev
-    script:
-        - java -version
-        - mvn -v
-        - mvn install -Dmaven.test.skip=true
-        - cd $CI_PROJECT_DIR/server-account/server-account-api
-        - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - cd $CI_PROJECT_DIR/server-account/server-account-service
-        - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-        - docker build -t $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID -f ./Dockerfile .
-        - docker tag $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/account:latest
-        - docker push $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID
-        - docker push $CI_REGISTRY/easy-kit-dev/server/account:latest
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/account:$CI_PIPELINE_ID
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/account:latest
-
-package-message:
-    stage: package
-    only:
-        - /^message-.*$/
-    tags:
-        - dev
-    script:
-        - java -version
-        - mvn -v
-        - mvn install -Dmaven.test.skip=true
-        - cd $CI_PROJECT_DIR/server-message/server-message-api
-        - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - cd $CI_PROJECT_DIR/server-message/server-message-service
-        - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-        - docker build -t $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID -f ./Dockerfile .
-        - docker tag $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/message:latest
-        - docker push $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID
-        - docker push $CI_REGISTRY/easy-kit-dev/server/message:latest
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/message:$CI_PIPELINE_ID
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/message:latest
-
-package-ai:
-    stage: package
-    only:
-        - /^ai-.*$/
-    tags:
-        - dev
-    script:
-        - java -version
-        - mvn -v
-        - mvn install -Dmaven.test.skip=true
-        - cd $CI_PROJECT_DIR/server-ai/server-ai-api
-        - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - cd $CI_PROJECT_DIR/server-ai/server-ai-service
-        - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-        - docker build -t $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID -f ./Dockerfile .
-        - docker tag $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/ai:latest
-        - docker push $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID
-        - docker push $CI_REGISTRY/easy-kit-dev/server/ai:latest
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/ai:$CI_PIPELINE_ID
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/ai:latest
-
-package-assets:
-    stage: package
-    only:
-        - /^assets-.*$/
-    tags:
-        - dev
-    script:
-        - java -version
-        - mvn -v
-        - mvn install -Dmaven.test.skip=true
-        - cd $CI_PROJECT_DIR/server-assets/server-assets-api
-        - mvn clean deploy -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - cd $CI_PROJECT_DIR/server-assets/server-assets-service
-        - mvn clean package -U -s $CI_PROJECT_DIR/settings.xml -Dmaven.test.skip=true
-        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-        - docker build -t $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID -f ./Dockerfile .
-        - docker tag $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID $CI_REGISTRY/easy-kit-dev/server/assets:latest
-        - docker push $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID
-        - docker push $CI_REGISTRY/easy-kit-dev/server/assets:latest
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/assets:$CI_PIPELINE_ID
-        - docker rmi $CI_REGISTRY/easy-kit-dev/server/assets:latest
+  stage: package
+  only:
+    - /^account-prod-.*$/
+    - /^account-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "account"
+  script:
+    - *mvn_package_script
+    - *get_image_tag_script
+    - *docker_build_script
 
 deploy-account:
-    stage: deploy
-    only:
-        - /^account-.*$/
-    tags:
-        - dev
-    script:
-        - cd ~/server/clover/server-account
-        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-        - docker compose down
-        - docker compose up -d
-
-deploy-message:
-    stage: deploy
-    only:
-        - /^message-.*$/
-    tags:
-        - dev
-    script:
-        - cd ~/server/clover/server-message
-        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-        - docker compose down
-        - docker compose up -d
-
-deploy-ai:
-    stage: deploy
-    only:
-        - /^ai-.*$/
-    tags:
-        - dev
-    script:
-        - cd ~/server/clover/server-ai
-        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-        - docker compose down
-        - docker compose up -d
-
-deploy-assets:
-    stage: deploy
-    only:
-        - /^assets-.*$/
-    tags:
-        - dev
-    script:
-        - cd ~/server/clover/server-assets
-        - echo $CI_REGISTRY_PASSWORD | docker login -u $CI_REGISTRY_USER --password-stdin $CI_REGISTRY
-        - docker compose down
-        - docker compose up -d
+  stage: deploy
+  only:
+    - /^account-prod-.*$/
+    - /^account-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "account"
+  script:
+    - *get_image_tag_script
+    - *deploy_script
