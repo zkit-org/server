@@ -31,7 +31,7 @@
   cd easykit
   git checkout main
 
-  BRANCH="${IMAGE_TAG}"
+  BRANCH="${PROJECT_NAME}-${IMAGE_TAG}"
   git checkout -b $BRANCH
   
   yq e ".spec.template.spec.containers[0].image = \"hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i support/${PROJECT_NAME}/deployment.yaml
