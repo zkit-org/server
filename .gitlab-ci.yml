@@ -57,6 +57,12 @@
   curl -k \
   -H "Authorization: Bearer $ARGOCD_TOKEN" \
   -H "Content-Type: application/json" \
+  -X PATCH "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP" \
+  -d "{\"spec\":{\"source\":{\"targetRevision\":\"${BRANCH}\"}}}"
+  echo "ArgoCD set targetRevision: $BRANCH"
+  curl -k \
+  -H "Authorization: Bearer $ARGOCD_TOKEN" \
+  -H "Content-Type: application/json" \
   -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" \
   -d "{\"revision\":\"${BRANCH}\"}"
   echo "ArgoCD sync revision: $BRANCH"
