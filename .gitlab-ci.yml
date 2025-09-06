@@ -27,17 +27,6 @@
   docker rmi $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:latest
 
 .deploy_script: &deploy_script |
-  git clone https://$GIT_USERNAME:$GIT_TOKEN@git.zkit.org/deploy/easykit.git
-  cd easykit
-  
-  sed -i "s/targetRevision: \".*\"/targetRevision: \"$IMAGE_TAG\"/" support/${PROJECT_NAME}/application.yaml
-  
-  git config user.name "gitlab-ci"
-  git config user.email "gitlab-ci@local"
-  git add support/${PROJECT_NAME}/application.yaml
-  git commit -m "ci: update targetRevision to $IMAGE_TAG [ci skip]" || echo "No changes to commit"
-  git push origin main
-  
   # 从 IMAGE_TAG 中提取环境信息
   if [[ $IMAGE_TAG =~ ^prod-(.*)$ ]]; then
     ENV="prod"
@@ -50,8 +39,11 @@
   ARGOCD_SERVER="$ARGOCD_SERVER"
   ARGOCD_APP="easykit-server-${PROJECT_NAME}-${ENV}"
   ARGOCD_TOKEN="$ARGOCD_TOKEN"
-  RESPONSE=$(curl -k -i -H "Authorization: Bearer $ARGOCD_TOKEN" -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync")
-  echo "$RESPONSE"
+  curl -k \
+  -H "Authorization: Bearer $ARGOCD_TOKEN" \
+  -H "Content-Type: application/json" \
+  -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" \
+  -d '{"revision":"$IMAGE_TAG"}'
 
 stages:
   - package
