@@ -28,7 +28,7 @@
 
 .deploy_script: &deploy_script |
   # clone infra 仓库
-  git clone https://git.zkit.org/deploy/easykit.git
+  git clone https://$GIT_USERNAME:$GIT_TOKEN@git.zkit.org/deploy/easykit.git
   cd easykit
   
   # 替换 app.yaml（请根据实际路径调整）
