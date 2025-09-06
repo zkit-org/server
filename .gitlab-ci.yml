@@ -79,6 +79,20 @@ package-account:
     - *get_image_tag_script
     - *docker_build_script
 
+package-assets:
+  stage: package
+  only:
+    - /^assets-prod-.*$/
+    - /^assets-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "assets"
+  script:
+    - *mvn_package_script
+    - *get_image_tag_script
+    - *docker_build_script
+
 deploy-account:
   stage: deploy
   only:
@@ -88,6 +102,19 @@ deploy-account:
     - easykit
   variables:
     PROJECT_NAME: "account"
+  script:
+    - *get_image_tag_script
+    - *deploy_script
+
+deploy-assets:
+  stage: deploy
+  only:
+    - /^assets-prod-.*$/
+    - /^assets-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "assets"
   script:
     - *get_image_tag_script
     - *deploy_script
