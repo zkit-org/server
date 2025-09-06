@@ -27,23 +27,28 @@
   docker rmi $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:latest
 
 .deploy_script: &deploy_script |
-  # clone infra 仓库
   git clone https://$GIT_USERNAME:$GIT_TOKEN@git.zkit.org/deploy/easykit.git
   cd easykit
   
-  # 替换 app.yaml（请根据实际路径调整）
   sed -i "s/targetRevision: \".*\"/targetRevision: \"$IMAGE_TAG\"/" support/${PROJECT_NAME}/application.yaml
   
-  # 提交并推送（若需要设置 token 可用 CI/CD secret 变量/ssh key）
   git config user.name "gitlab-ci"
   git config user.email "gitlab-ci@local"
   git add support/${PROJECT_NAME}/application.yaml
   git commit -m "ci: update targetRevision to $IMAGE_TAG [ci skip]" || echo "No changes to commit"
-  git push origin main # 或者具体分支
+  git push origin main
   
-  # 触发 ArgoCD sync
+  # 从 IMAGE_TAG 中提取环境信息
+  if [[ $IMAGE_TAG =~ ^prod-(.*)$ ]]; then
+    ENV="prod"
+  elif [[ $IMAGE_TAG =~ ^dev-(.*)$ ]]; then
+    ENV="dev"
+  else
+    ENV="dev"  # 默认为 dev 环境
+  fi
+  
   ARGOCD_SERVER="$ARGOCD_SERVER"
-  ARGOCD_APP="easykit-server-${PROJECT_NAME}"
+  ARGOCD_APP="easykit-server-${PROJECT_NAME}-${ENV}"
   ARGOCD_TOKEN="$ARGOCD_TOKEN"
   curl -k -H "Authorization: Bearer $ARGOCD_TOKEN" -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" 
 
