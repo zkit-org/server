@@ -50,7 +50,8 @@
   ARGOCD_SERVER="$ARGOCD_SERVER"
   ARGOCD_APP="easykit-server-${PROJECT_NAME}-${ENV}"
   ARGOCD_TOKEN="$ARGOCD_TOKEN"
-  curl -k -H "Authorization: Bearer $ARGOCD_TOKEN" -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" 
+  RESPONSE=$(curl -k -i -H "Authorization: Bearer $ARGOCD_TOKEN" -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync")
+  echo "$RESPONSE"
 
 stages:
   - package
