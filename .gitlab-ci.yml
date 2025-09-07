@@ -101,6 +101,20 @@ package-assets:
     - *get_image_tag_script
     - *docker_build_script
 
+package-ai:
+  stage: package
+  only:
+    - /^ai-prod-.*$/
+    - /^ai-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "ai"
+  script:
+    - *mvn_package_script
+    - *get_image_tag_script
+    - *docker_build_script
+
 deploy-account:
   stage: deploy
   only:
@@ -123,6 +137,19 @@ deploy-assets:
     - easykit
   variables:
     PROJECT_NAME: "assets"
+  script:
+    - *get_image_tag_script
+    - *deploy_script
+
+deploy-ai:
+  stage: deploy
+  only:
+    - /^ai-prod-.*$/
+    - /^ai-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "ai"
   script:
     - *get_image_tag_script
     - *deploy_script
