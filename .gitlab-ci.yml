@@ -107,6 +107,20 @@ package-assets:
     - *get_image_tag_script
     - *docker_build_script
 
+package-message:
+  stage: package
+  only:
+    - /^message-prod-.*$/
+    - /^message-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "message"
+  script:
+    - *mvn_package_script
+    - *get_image_tag_script
+    - *docker_build_script
+
 package-ai:
   stage: package
   only:
@@ -156,6 +170,19 @@ deploy-ai:
     - easykit
   variables:
     PROJECT_NAME: "ai"
+  script:
+    - *get_image_tag_script
+    - *deploy_script
+
+deploy-message:
+  stage: deploy
+  only:
+    - /^message-prod-.*$/
+    - /^message-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "message"
   script:
     - *get_image_tag_script
     - *deploy_script
