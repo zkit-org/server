@@ -32,7 +32,13 @@
   git checkout main
 
   BRANCH="${PROJECT_NAME}-${IMAGE_TAG}"
-  git checkout -b $BRANCH
+  git fetch origin
+  if git ls-remote --exit-code --heads origin $BRANCH; then
+    git checkout $BRANCH
+    git pull origin $BRANCH
+  else
+    git checkout -b $BRANCH
+  fi
   
   yq e ".spec.template.spec.containers[0].image = \"hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i support/${PROJECT_NAME}/deployment.yaml
 
