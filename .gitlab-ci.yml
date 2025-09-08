@@ -40,11 +40,11 @@
     git checkout -b $BRANCH
   fi
   
-  yq e ".spec.template.spec.containers[0].image = \"hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i support/${PROJECT_NAME}/deployment.yaml
+  yq e ".spec.template.spec.containers[0].image = \"hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i apps/support/${PROJECT_NAME}/deployment.yaml
 
   git config user.name "gitlab-ci"
   git config user.email "gitlab-ci@local"
-  git add support/${PROJECT_NAME}/deployment.yaml
+  git add apps/support/${PROJECT_NAME}/deployment.yaml
   git commit -m "ci: update targetRevision to $IMAGE_TAG [ci skip]" || echo "No changes to commit"
   git push origin $BRANCH
   
