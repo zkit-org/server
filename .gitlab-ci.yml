@@ -27,7 +27,7 @@
   docker rmi $CI_REGISTRY/easy-kit-dev/server/${PROJECT_NAME}:latest
 
 .deploy_script: &deploy_script |
-  git clone https://$GIT_USERNAME:$GIT_TOKEN@git.zkit.org/deploy/easykit.git
+  git clone https://$GIT_USERNAME:$GIT_TOKEN@git.xyc.plus/deploy/easykit.git
   cd easykit
   git checkout main
 
@@ -40,7 +40,7 @@
     git checkout -b $BRANCH
   fi
   
-  yq e ".spec.template.spec.containers[0].image = \"hub.zkit.org/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i apps/support/${PROJECT_NAME}/deployment.yaml
+  yq e ".spec.template.spec.containers[0].image = \"hub.xyc.plus/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i apps/support/${PROJECT_NAME}/deployment.yaml
 
   git config user.name "gitlab-ci"
   git config user.email "gitlab-ci@local"
