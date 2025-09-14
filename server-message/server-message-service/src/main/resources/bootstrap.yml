@@ -20,8 +20,6 @@ dubbo:
     qos-enable: false
   protocol:
     name: dubbo
-    port: ${DUBBO_PORT:10803}
-    host: ${DUBBO_HOST:}
   provider:
     timeout: 30000
     filter: support-exception,support-language,-exception
