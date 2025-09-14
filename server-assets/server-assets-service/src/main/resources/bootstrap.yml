@@ -21,6 +21,7 @@ dubbo:
   protocol:
     name: dubbo
     port: ${DUBBO_PORT:10804}
+    host: ${DUBBO_HOST:}
   provider:
     timeout: 30000
     filter: support-exception,support-language,-exception
