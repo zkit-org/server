@@ -39,15 +39,7 @@
   else
     git checkout -b $BRANCH
   fi
-  
-  yq e ".spec.template.spec.containers[0].image = \"hub.xyc.plus/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i apps/support/${PROJECT_NAME}/deployment.yaml
 
-  git config user.name "gitlab-ci"
-  git config user.email "gitlab-ci@local"
-  git add apps/support/${PROJECT_NAME}/deployment.yaml
-  git commit -m "ci: update targetRevision to $IMAGE_TAG [ci skip]" || echo "No changes to commit"
-  git push origin $BRANCH
-  
   # 从 IMAGE_TAG 中提取环境信息
   if [[ $IMAGE_TAG =~ ^prod-(.*)$ ]]; then
     ENV="prod"
@@ -56,6 +48,14 @@
   else
     ENV="dev"  # 默认为 dev 环境
   fi
+  
+  yq e ".spec.template.spec.containers[0].image = \"hub.xyc.plus/easy-kit-dev/server/${PROJECT_NAME}:${IMAGE_TAG}\"" -i apps/support/${ENV}/${PROJECT_NAME}/deployment.yaml
+
+  git config user.name "gitlab-ci"
+  git config user.email "gitlab-ci@local"
+  git add apps/support/${ENV}/${PROJECT_NAME}/deployment.yaml
+  git commit -m "ci: update targetRevision to $IMAGE_TAG [ci skip]" || echo "No changes to commit"
+  git push origin $BRANCH
   
   ARGOCD_SERVER="$ARGOCD_SERVER"
   ARGOCD_APP="easykit-server-${PROJECT_NAME}-${ENV}"
