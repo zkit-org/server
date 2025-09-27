@@ -2,17 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zkit.support.server.message.activity.mapper.ActivityAppMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="org.zkit.support.server.message.activity.entity.dto.ActivityApp">
-        <id column="id" property="id" />
-        <result column="label" property="label" />
-        <result column="name" property="name" />
-        <result column="base_url" property="baseUrl" />
+    <resultMap id="ResultMap" type="org.zkit.support.server.message.activity.entity.dto.ActivityApp" extends="org.zkit.support.server.message.activity.mapper.base.ActivityAppBaseMapper.BaseResultMap">
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, label, name, base_url
+    <sql id="Column_List">
+        <include refid="org.zkit.support.server.message.activity.mapper.base.ActivityAppBaseMapper.Base_Column_List"/>
     </sql>
 
 </mapper>

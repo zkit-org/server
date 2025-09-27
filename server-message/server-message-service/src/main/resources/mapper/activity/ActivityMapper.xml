@@ -2,24 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zkit.support.server.message.activity.mapper.ActivityMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="org.zkit.support.server.message.activity.entity.dto.Activity">
-        <id column="id" property="id" />
-        <result column="title" property="title" />
-        <result column="action" property="action" />
-        <result column="app_id" property="appId" />
-        <result column="url" property="url" />
-        <result column="user_id" property="userId" />
-        <result column="create_time" property="createTime" />
-        <result column="metadata" property="metadata" typeHandler="com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler" />
+    <resultMap id="ResultMap" type="org.zkit.support.server.message.activity.entity.dto.Activity" extends="org.zkit.support.server.message.activity.mapper.base.ActivityBaseMapper.BaseResultMap">
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, title, action, app_id, url, user_id, create_time, metadata
+    <sql id="Column_List">
+        <include refid="org.zkit.support.server.message.activity.mapper.base.ActivityBaseMapper.Base_Column_List"/>
     </sql>
 
-    <select id="query" resultMap="BaseResultMap">
+    <select id="query" resultMap="ResultMap">
         SELECT
             a.*
         FROM

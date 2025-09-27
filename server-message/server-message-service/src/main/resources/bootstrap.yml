@@ -1,13 +1,16 @@
 spring:
   application:
-    name: easy-server-message
+    name: ${APP_NAME:easy-server-message}
   cloud:
     loadbalancer:
       nacos:
         enabled: true
+    inetutils:
+      preferred-networks: ${PREFERRED_NETWORKS:}
     nacos:
       config:
         server-addr: ${NACOS_SERVER}
+        name: ${NACOS_DATA_ID:${spring.application.name}}
         file-extension: yaml
         refresh-enabled: true
       discovery:
@@ -17,6 +20,7 @@ dubbo:
     base-packages:
       - org.zkit.support.server
   application:
+    name: ${spring.application.name}-dubbo
     qos-enable: false
   protocol:
     name: dubbo
