@@ -1,7 +1,5 @@
 package org.zkit.support.server.account.access.entity.dto;
 
-import com.baomidou.mybatisplus.extension.handlers.Fastjson2TypeHandler;
-import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.util.Date;
@@ -16,9 +14,8 @@ import lombok.experimental.Accessors;
  * </p>
  *
  * @author generator
- * @since 2025-04-22
+ * @since 2025-09-27
  */
-@SuppressWarnings("unused")
 @Data
 @Accessors(chain = true)
 @TableName("access_authority")

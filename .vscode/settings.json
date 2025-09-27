@@ -21,6 +21,8 @@
     "spel",
     "baomidou",
     "mybatisplus",
-    "fastjson"
+    "fastjson",
+    "nacos",
+    "inetutils"
   ],
 }

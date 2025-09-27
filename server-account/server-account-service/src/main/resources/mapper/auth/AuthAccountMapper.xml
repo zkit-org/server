@@ -2,27 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zkit.support.server.account.auth.mapper.AuthAccountMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="org.zkit.support.server.account.auth.entity.dto.AuthAccount">
-        <id column="id" property="id" />
-        <result column="username" property="username" />
-        <result column="password" property="password" />
-        <result column="status" property="status" />
-        <result column="deleted" property="deleted" />
-        <result column="create_time" property="createTime" />
-        <result column="otp_secret" property="otpSecret" />
-        <result column="otp_status" property="otpStatus" />
-        <result column="otp_enable_time" property="otpEnableTime" />
+    <resultMap id="ResultMap" type="org.zkit.support.server.account.auth.entity.dto.AuthAccount" extends="org.zkit.support.server.account.auth.mapper.base.AuthAccountBaseMapper.BaseResultMap">
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, username, password, status, deleted, create_time, otp_secret, otp_status
+    <sql id="Column_List">
+        <include refid="org.zkit.support.server.account.auth.mapper.base.AuthAccountBaseMapper.Base_Column_List"/>
     </sql>
 
-    <select id="findOneByUsername" resultMap="BaseResultMap">
+    <select id="findOneByUsername" resultMap="ResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_List"/>
         from auth_account
         where
         username = #{username,jdbcType=VARCHAR}

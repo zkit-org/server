@@ -2,27 +2,16 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zkit.support.server.account.access.mapper.AccessRoleMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="org.zkit.support.server.account.access.entity.dto.AccessRole">
-        <id column="id" property="id" />
-        <result column="name" property="name" />
-        <result column="description" property="description" />
-        <result column="enable" property="enable" />
-        <result column="create_user" property="createUser" />
-        <result column="create_time" property="createTime" />
-        <result column="update_user" property="updateUser" />
-        <result column="update_time" property="updateTime" />
+    <resultMap id="ResultMap" type="org.zkit.support.server.account.access.entity.dto.AccessRole" extends="org.zkit.support.server.account.access.mapper.base.AccessRoleBaseMapper.BaseResultMap">
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, name, description, enable,
-          create_user, create_time, update_user, update_time
+    <sql id="Column_List">
+        <include refid="org.zkit.support.server.account.access.mapper.base.AccessRoleBaseMapper.Base_Column_List"/>
     </sql>
 
     <select id="query" resultType="org.zkit.support.server.account.access.entity.dto.AccessRole">
         select
-        <include refid="Base_Column_List" />
+        <include refid="Column_List" />
         from access_role
         <where>
             <if test="query.keyword != null">
@@ -34,9 +23,9 @@
         </where>
     </select>
 
-    <select id="findByNameIn" resultMap="BaseResultMap">
+    <select id="findByNameIn" resultMap="ResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_List"/>
         from access_role
         where
         name in
@@ -51,9 +40,9 @@
         where name = #{name,jdbcType=VARCHAR}
           AND enable = #{enable,jdbcType=BOOLEAN}
     </select>
-    <select id="findOneByNameAndEnable" resultMap="BaseResultMap">
+    <select id="findOneByNameAndEnable" resultMap="ResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_List"/>
         from access_role
         where
         name = #{name,jdbcType=VARCHAR}

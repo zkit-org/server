@@ -2,16 +2,11 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="org.zkit.support.server.account.access.mapper.AccessRoleAuthorityMapper">
 
-    <!-- 通用查询映射结果 -->
-    <resultMap id="BaseResultMap" type="org.zkit.support.server.account.access.entity.dto.AccessRoleAuthority">
-        <id column="id" property="id" />
-        <result column="role_id" property="roleId" />
-        <result column="authority_id" property="authorityId" />
+    <resultMap id="ResultMap" type="org.zkit.support.server.account.access.entity.dto.AccessRoleAuthority" extends="org.zkit.support.server.account.access.mapper.base.AccessRoleAuthorityBaseMapper.BaseResultMap">
     </resultMap>
 
-    <!-- 通用查询结果列 -->
-    <sql id="Base_Column_List">
-        id, role_id, authority_id
+    <sql id="Column_List">
+        <include refid="org.zkit.support.server.account.access.mapper.base.AccessRoleAuthorityBaseMapper.Base_Column_List"/>
     </sql>
     <delete id="deleteByAuthorityId">
         delete
@@ -31,9 +26,9 @@
         from access_role_authority
         where role_id = #{roleId,jdbcType=NUMERIC}
     </delete>
-    <select id="findByRoleId" resultMap="BaseResultMap">
+    <select id="findByRoleId" resultMap="ResultMap">
         select
-        <include refid="Base_Column_List"/>
+        <include refid="Column_List"/>
         from access_role_authority
         where
         role_id = #{roleId,jdbcType=NUMERIC}

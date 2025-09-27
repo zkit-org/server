@@ -3,7 +3,7 @@ basePackage: org.zkit.support.server.assets
 mapperPackage: src/main/resources/mapper
 # 数据源
 datasource:
-  url: jdbc:mysql://mysql:7307/clover_assets
+  url: jdbc:mysql://mysql:30308/clover_assets
 # 激活的模块
 actives:
   - oss
