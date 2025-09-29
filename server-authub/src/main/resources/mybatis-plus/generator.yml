@@ -6,20 +6,14 @@ datasource:
   url: jdbc:mysql://mysql:30308/authub
 # 激活的模块
 actives:
-  - access
-  - auth
+  - account
+  - app
 # 模块配置
 modules:
-  - name: access
+  - name: app
     tables:
-      - access_api
-      - access_authority
-      - access_authority_api
-      - access_role
-      - access_role_authority
-  - name: auth
+      - app
+  - name: account
     tables:
-      - auth_account
-      - auth_account_role
-      - auth_app
-      - auth_open_user
+      - account
+      - account_token

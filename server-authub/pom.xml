@@ -23,6 +23,16 @@
             <artifactId>redisson-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.zkit.support</groupId>
+            <artifactId>openapi-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>org.zkit.support</groupId>
+            <artifactId>security-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
 
     <build>
