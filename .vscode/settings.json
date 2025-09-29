@@ -23,6 +23,7 @@
     "mybatisplus",
     "fastjson",
     "nacos",
-    "inetutils"
+    "inetutils",
+    "authub"
   ],
 }

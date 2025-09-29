@@ -39,6 +39,16 @@
             "projectName": "server-message-service",
             "args": "",
             "envFile": "${workspaceFolder}/server-message/.env"
+        },
+        {
+            "type": "java",
+            "name": "authub",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.zkit.support.server.authub.Application",
+            "projectName": "server-authub",
+            "args": "",
+            "envFile": "${workspaceFolder}/server-authub/.env"
         }
     ]
 }
