@@ -7,22 +7,18 @@
         <version>0.0.1-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
+    <packaging>pom</packaging>
     <modelVersion>4.0.0</modelVersion>
     <artifactId>server-authub</artifactId>
     <version>0.0.1-SNAPSHOT</version>
     <name>Easy Kit Server - Authub</name>
 
+    <modules>
+        <module>server-authub-service</module>
+        <module>server-authub-api</module>
+    </modules>
+
     <dependencies>
-        <dependency>
-            <groupId>org.zkit.support</groupId>
-            <artifactId>mybatis-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>org.zkit.support</groupId>
-            <artifactId>redisson-starter</artifactId>
-            <version>0.0.1-SNAPSHOT</version>
-        </dependency>
         <dependency>
             <groupId>org.zkit.support</groupId>
             <artifactId>openapi-starter</artifactId>
@@ -33,34 +29,10 @@
             <artifactId>security-starter</artifactId>
             <version>0.0.1-SNAPSHOT</version>
         </dependency>
+        <dependency>
+            <groupId>org.zkit.support</groupId>
+            <artifactId>dubbo-starter</artifactId>
+            <version>0.0.1-SNAPSHOT</version>
+        </dependency>
     </dependencies>
-
-    <build>
-        <plugins>
-            <plugin>
-                <groupId>org.zkit.support</groupId>
-                <artifactId>mybatis-plus-maven-plugin</artifactId>
-                <version>0.0.1-SNAPSHOT</version>
-            </plugin>
-            <plugin>
-                <groupId>org.springframework.boot</groupId>
-                <artifactId>spring-boot-maven-plugin</artifactId>
-                <version>3.3.5</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-install-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-deploy-plugin</artifactId>
-                <configuration>
-                    <skip>true</skip>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
 </project>

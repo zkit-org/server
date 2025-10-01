@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.zkit.support.server.authub.app.mapper.base.AppAccountBaseMapper">
+
+    <!-- 通用查询映射结果 -->
+    <resultMap id="BaseResultMap" type="org.zkit.support.server.authub.app.entity.dto.AppAccount">
+        <id column="id" property="id" />
+        <result column="app_id" property="appId" />
+        <result column="account_id" property="accountId" />
+        <result column="join_time" property="joinTime" />
+    </resultMap>
+
+    <!-- 通用查询结果列 -->
+    <sql id="Base_Column_List">
+        id, app_id, account_id, join_time
+    </sql>
+
+</mapper>

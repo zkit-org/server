@@ -23,6 +23,7 @@
         <module>server-message</module>
         <module>server-assets</module>
         <module>server-authub</module>
+        <module>server-authub-gateway</module>
     </modules>
 
     <dependencies>

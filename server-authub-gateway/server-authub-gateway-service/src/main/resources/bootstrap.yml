@@ -1,0 +1,17 @@
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: ${APP_NAME:authub-server-gateway}
+  cloud:
+    loadbalancer:
+      nacos:
+        enabled: true
+    nacos:
+      config:
+        server-addr: ${NACOS_SERVER}
+        name: ${NACOS_DATA_ID:${spring.application.name}}
+        file-extension: yaml
+        refresh-enabled: true
+      discovery:
+        enabled: false

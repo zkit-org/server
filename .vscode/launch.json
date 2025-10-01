@@ -46,9 +46,19 @@
             "request": "launch",
             "cwd": "${workspaceFolder}",
             "mainClass": "org.zkit.support.server.authub.Application",
-            "projectName": "server-authub",
+            "projectName": "server-authub-service",
             "args": "",
             "envFile": "${workspaceFolder}/server-authub/.env"
+        },
+        {
+            "type": "java",
+            "name": "authub-gateway",
+            "request": "launch",
+            "cwd": "${workspaceFolder}",
+            "mainClass": "org.zkit.support.server.authub.gateway.Application",
+            "projectName": "server-authub-gateway-service",
+            "args": "",
+            "envFile": "${workspaceFolder}/server-authub-gateway/.env"
         }
     ]
 }
