@@ -135,6 +135,20 @@ package-ai:
     - *get_image_tag_script
     - *docker_build_script
 
+package-authub-gateway:
+  stage: package
+  only:
+    - /^authub-gateway-prod-.*$/
+    - /^authub-gateway-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "authub-gateway"
+  script:
+    - *mvn_package_script
+    - *get_image_tag_script
+    - *docker_build_script
+
 deploy-account:
   stage: deploy
   only:
@@ -183,6 +197,19 @@ deploy-message:
     - easykit
   variables:
     PROJECT_NAME: "message"
+  script:
+    - *get_image_tag_script
+    - *deploy_script
+
+deploy-authub-gateway:
+  stage: deploy
+  only:
+    - /^authub-gateway-prod-.*$/
+    - /^authub-gateway-dev-.*$/
+  tags:
+    - easykit
+  variables:
+    PROJECT_NAME: "authub-gateway"
   script:
     - *get_image_tag_script
     - *deploy_script
