@@ -58,20 +58,20 @@
   git push origin $BRANCH
   
   ARGOCD_SERVER="$ARGOCD_SERVER"
-  ARGOCD_APP="easykit-server-${PROJECT_NAME}-${ENV}"
+  ARGOCD_APP_NAME="${ARGOCD_APP}-${ENV}"
   ARGOCD_TOKEN="$ARGOCD_TOKEN"
 
   curl -k -w "\n" \
     -H "Authorization: Bearer $ARGOCD_TOKEN" \
     -H "Content-Type: application/json" \
-    -X PATCH "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP" \
+    -X PATCH "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP_NAME" \
     -d "{\"patch\":\"{\\\"spec\\\":{\\\"source\\\":{\\\"targetRevision\\\":\\\"${BRANCH}\\\"}}}\",\"patchType\":\"merge\"}"
   echo "ArgoCD set targetRevision: $BRANCH"
 
   curl -k -w "\n" \
     -H "Authorization: Bearer $ARGOCD_TOKEN" \
     -H "Content-Type: application/json" \
-    -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP/sync" \
+    -X POST "$ARGOCD_SERVER/api/v1/applications/$ARGOCD_APP_NAME/sync" \
     -d "{\"revision\":\"${BRANCH}\"}"
   echo "ArgoCD sync revision: $BRANCH"
 
@@ -88,6 +88,7 @@ package-account:
     - easykit
   variables:
     PROJECT_NAME: "account"
+    ARGOCD_APP: "easykit-server-account"
   script:
     - *mvn_package_script
     - *get_image_tag_script
@@ -102,6 +103,7 @@ package-assets:
     - easykit
   variables:
     PROJECT_NAME: "assets"
+    ARGOCD_APP: "easykit-server-assets"
   script:
     - *mvn_package_script
     - *get_image_tag_script
@@ -116,6 +118,7 @@ package-message:
     - easykit
   variables:
     PROJECT_NAME: "message"
+    ARGOCD_APP: "easykit-server-message"
   script:
     - *mvn_package_script
     - *get_image_tag_script
@@ -130,6 +133,7 @@ package-ai:
     - easykit
   variables:
     PROJECT_NAME: "ai"
+    ARGOCD_APP: "easykit-server-ai"
   script:
     - *mvn_package_script
     - *get_image_tag_script
@@ -144,6 +148,7 @@ package-authub-gateway:
     - easykit
   variables:
     PROJECT_NAME: "authub-gateway"
+    ARGOCD_APP: "authub-gateway"
   script:
     - *mvn_package_script
     - *get_image_tag_script
@@ -158,6 +163,7 @@ deploy-account:
     - easykit
   variables:
     PROJECT_NAME: "account"
+    ARGOCD_APP: "easykit-server-account"
   script:
     - *get_image_tag_script
     - *deploy_script
@@ -171,6 +177,7 @@ deploy-assets:
     - easykit
   variables:
     PROJECT_NAME: "assets"
+    ARGOCD_APP: "easykit-server-assets"
   script:
     - *get_image_tag_script
     - *deploy_script
@@ -184,6 +191,7 @@ deploy-ai:
     - easykit
   variables:
     PROJECT_NAME: "ai"
+    ARGOCD_APP: "easykit-server-ai"
   script:
     - *get_image_tag_script
     - *deploy_script
@@ -197,6 +205,7 @@ deploy-message:
     - easykit
   variables:
     PROJECT_NAME: "message"
+    ARGOCD_APP: "easykit-server-message"
   script:
     - *get_image_tag_script
     - *deploy_script
@@ -210,6 +219,7 @@ deploy-authub-gateway:
     - easykit
   variables:
     PROJECT_NAME: "authub-gateway"
+    ARGOCD_APP: "authub-gateway"
   script:
     - *get_image_tag_script
     - *deploy_script
