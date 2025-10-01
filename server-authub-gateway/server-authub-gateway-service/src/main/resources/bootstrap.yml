@@ -14,4 +14,4 @@ spring:
         file-extension: yaml
         refresh-enabled: true
       discovery:
-        enabled: false
+        server-addr: ${NACOS_SERVER}
